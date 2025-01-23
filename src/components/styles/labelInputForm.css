@@ -1,0 +1,40 @@
+.duoLabelInput {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.labelForm {
+  margin-bottom: 5px;
+  color: white;
+  font-size: 15px;
+  font-family: "Economica", sans-serif;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.inputForm {
+  width: 100%;
+  padding: 5px;
+  padding-right: 2.5rem;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.inputAddon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.inputContainer .eye {
+  width: 25px;
+  height: 15px;
+  cursor: pointer;
+}

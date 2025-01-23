@@ -1,0 +1,33 @@
+.totalbutton {
+  margin-left: 40px;
+  width: 150px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #dcdbed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.smallbutton {
+  background-color: #6c63ff;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0;
+}
+
+.label {
+  margin-left: 12px;
+  font-size: 20px;
+  font-family: "Economica", sans-serif;
+}
+
+.arrow {
+  font-size: 20px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
