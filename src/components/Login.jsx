@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import eye from "./pictures/eye.png";
 import logo from "./pictures/logo.png";
 import LabelInputForm from "./reusables/LabelInputForm";
+import "./styles/signUp.css";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -37,6 +39,12 @@ function Login() {
           ></img>
         </LabelInputForm>
         <button className="loginButton">Login</button>
+        <div className="loginDiv">
+          <p className="underText1">Don't have an account?</p>
+          <Link className="underText2" to="/signup">
+            Sign up here
+          </Link>
+        </div>
       </div>
     </div>
   );

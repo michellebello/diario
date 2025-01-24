@@ -6,7 +6,7 @@ import "./styles/mainPage.css";
 function MainPage() {
   return (
     <div className="mainPage">
-      <p className="title">Contador</p>
+      <p className="title">Cuenta</p>
       <p className="text">Finance management for everyone</p>
       <div className="buttons">
         <Buttons linkTo="/login">Login</Buttons>

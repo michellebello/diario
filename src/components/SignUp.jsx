@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import LabelInputForm from "./reusables/LabelInputForm";
 import logo from "./pictures/logo.png";
 import eye from "./pictures/eye.png";
@@ -77,6 +78,12 @@ function SignUp() {
         </LabelInputForm>
       </div>
       <button className="signUpButton">Sign Up</button>
+      <div className="loginDiv">
+        <p className="underText1">Already registered?</p>
+        <Link className="underText2" to="/login">
+          Login here
+        </Link>
+      </div>
     </div>
   );
 }

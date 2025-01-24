@@ -10,7 +10,7 @@ body {
   height: max-content;
   margin-left: 35%;
   margin-right: 35%;
-  margin-top: 8%;
+  margin-top: 5%;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -25,12 +25,13 @@ img {
 }
 
 .entries {
-  margin-bottom: 3%;
+  margin-top: 5%;
+  margin-bottom: 1%;
   width: 80%;
 }
 
 .signUpButton {
-  margin-bottom: 10%;
+  margin-top: 2%;
   width: 80%;
   padding: 5px;
   background-color: #b2b4ed;
@@ -41,8 +42,7 @@ img {
 }
 
 .loginButton {
-  margin-top: 15px;
-  margin-bottom: 10%;
+  margin-top: 3%;
   width: 100%;
   padding: 5px;
   background-color: #b2b4ed;
@@ -50,4 +50,29 @@ img {
   font-size: 15px;
   font-family: "Economica", sans-serif;
   border-radius: 5px;
+}
+
+.loginDiv {
+  margin-top: 3%;
+  margin-bottom: 4%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.underText1 {
+  font-size: 15px;
+  font-family: "Economica", sans-serif;
+  color: white;
+  margin-right: 10px;
+}
+
+.underText2 {
+  font-size: 15px;
+  font-family: "Economica", sans-serif;
+  color: #a6a4c7;
+  float: right;
+  right: 0;
 }
