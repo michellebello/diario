@@ -14,23 +14,24 @@ body {
 .title {
   margin-top: 5%;
   margin-bottom: 0px;
-  font-size: 50px;
+  font-size: 40px;
   font-weight: bold;
 }
 
 .text {
   margin-top: 20px;
-  font-size: 35px;
+  font-size: 30px;
 }
 
 .buttons {
-  margin-top: 30px;
+  margin-top: 4%;
   display: flex;
   flex-direction: row;
   align-items: center;
+  position: relative;
 }
 
 .pic {
-  margin-top: 7%;
-  width: 45%;
+  margin-top: 10%;
+  width: 40%;
 }

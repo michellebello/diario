@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import LabelInputForm from "./reusables/LabelInputForm";
+import Network from "../utils/network";
 import logo from "./pictures/logo.png";
 import eye from "./pictures/eye.png";
 import "./styles/signUp.css";
@@ -14,6 +15,8 @@ function SignUp() {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prev) => !prev);
@@ -21,6 +24,45 @@ function SignUp() {
 
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisible((prev) => !prev);
+  };
+
+  const handleSubmit = async () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    if (!firstName || !lastName || !username || !password || !confirmPassword) {
+      setErrorMessage("All fields are required");
+    }
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    const registerData = {
+      userInfo: {
+        firstName: firstName,
+        lastName: lastName,
+      },
+      credentials: {
+        username: username,
+        password: password,
+      },
+    };
+
+    try {
+      const network = new Network();
+      await network.post("/auth/register", registerData);
+      setSuccessMessage("Registration sucessful");
+    } catch (error) {
+      console.error("Error object:", error); // Log the entire error object
+      if (error.response) {
+        console.error("Error response:", error.response); // Log the response if available
+        setErrorMessage(error.response.data?.message || "Registration failed");
+      } else {
+        console.error("Network error or no response received");
+        setErrorMessage("An error occurred, please try again");
+      }
+    }
   };
 
   return (
@@ -77,7 +119,11 @@ function SignUp() {
           />
         </LabelInputForm>
       </div>
-      <button className="signUpButton">Sign Up</button>
+      {errorMessage && <p className="error">{errorMessage}</p>}
+      {successMessage && <p className="success">{successMessage}</p>}
+      <button className="signUpButton" onClick={handleSubmit}>
+        Register
+      </button>
       <div className="loginDiv">
         <p className="underText1">Already registered?</p>
         <Link className="underText2" to="/login">
