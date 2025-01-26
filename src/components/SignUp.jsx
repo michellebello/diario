@@ -54,9 +54,9 @@ function SignUp() {
       await network.post("/auth/register", registerData);
       setSuccessMessage("Registration sucessful");
     } catch (error) {
-      console.error("Error object:", error); // Log the entire error object
+      console.error("Error object:", error);
       if (error.response) {
-        console.error("Error response:", error.response); // Log the response if available
+        console.error("Error response:", error.response);
         setErrorMessage(error.response.data?.message || "Registration failed");
       } else {
         console.error("Network error or no response received");

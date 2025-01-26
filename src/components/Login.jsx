@@ -33,15 +33,23 @@ function Login() {
       const network = new Network();
       await network.post("/auth/login", credentials);
       setSuccessMessage("Logged in successfully");
+      setErrorMessage("");
     } catch (error) {
       console.error("Error object:", error);
-      if (error.response) {
-        console.error("Error response:", error.response);
-        setErrorMessage(error.response.data?.message || "Registration failed");
+
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data?.message || "Login failed";
+        if (errorMessage === "Password does not match") {
+          setErrorMessage("Incorrect password");
+        } else if (errorMessage === "Username not found") {
+          setErrorMessage("Username not found");
+        } else {
+          setErrorMessage(errorMessage || "Login failed");
+        }
       } else {
-        console.error("Network error or no response received");
         setErrorMessage("An error occurred, please try again");
       }
+      setSuccessMessage("");
     }
   };
 
