@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainPage from "./components/MainPage";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/Login";
+import CuentaView from "./components/CuentaView.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -17,6 +18,10 @@ function App() {
     {
       path: "/login",
       element: <SignIn />,
+    },
+    {
+      path: "/mycuenta",
+      element: <CuentaView />,
     },
   ]);
 

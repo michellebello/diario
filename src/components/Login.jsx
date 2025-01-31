@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Network from "../utils/network.js";
 import eye from "./pictures/eye.png";
 import logo from "./pictures/logo.png";
@@ -7,6 +7,7 @@ import LabelInputForm from "./reusables/LabelInputForm";
 import "./styles/signUp.css";
 
 function Login() {
+  const navigator = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -32,6 +33,7 @@ function Login() {
     try {
       const network = new Network();
       await network.post("/auth/login", credentials);
+      navigator("/mycuenta");
       setSuccessMessage("Logged in successfully");
       setErrorMessage("");
     } catch (error) {
