@@ -13,7 +13,7 @@ export default class Network {
     this.instance.interceptors.request.use(
       (config) => {
         const token = getToken();
-        if (token) {
+        if (token) { 
           config.headers["CONTADOR_TOKEN"] = token;
         }
         config.headers["Content-Type"] = "application/json";

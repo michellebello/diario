@@ -3,12 +3,12 @@ import logoView from "../pictures/logoView.png";
 
 function TopBar() {
   return (
-    <div>
-      <img src={logoView} alt="logoView" />
-      <div>
-        <p>Budgets</p>
-        <p>Transacation</p>
-        <p>Accounts</p>
+    <div className="totalTopBar">
+      <img src={logoView} className="cuentaLogo" alt="logoView" />
+      <div className="barTags">
+        <p className="barTag">Budgets</p>
+        <p className="barTag">Transaction</p>
+        <p className="barTag">Accounts</p>
       </div>
     </div>
   );
