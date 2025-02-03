@@ -13,9 +13,9 @@ function SideBar() {
       </div>
       <div className="viewMode">
         <p className="sideTitle">View Mode</p>
-        <p className="chart">Table</p>
-        <p className="chart">Barchart</p>
-        <p className="chart">Donut chart</p>
+        <p className="item">Table</p>
+        <p className="item">Barchart</p>
+        <p className="item">Donut chart</p>
       </div>
     </div>
   );

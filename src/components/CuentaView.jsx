@@ -5,7 +5,7 @@ import "./styles/cuentaview.css";
 
 function CuentaView() {
   return (
-    <div>
+    <div className="cuentaView">
       <TopBar></TopBar>
       <SideBar></SideBar>
     </div>

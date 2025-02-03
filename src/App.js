@@ -4,6 +4,9 @@ import MainPage from "./components/MainPage";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/Login";
 import CuentaView from "./components/CuentaView.jsx";
+import Transactions from "./components/Transactions.jsx";
+import Budgets from "./components/Budgets.jsx";
+import Accounts from "./components/Accounts.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,6 +25,18 @@ function App() {
     {
       path: "/mycuenta",
       element: <CuentaView />,
+    },
+    {
+      path: "/mycuenta/transactions",
+      element: <Transactions />,
+    },
+    {
+      path: "/mycuenta/budgets",
+      element: <Budgets />,
+    },
+    {
+      path: "/mycuenta/accounts",
+      element: <Accounts />,
     },
   ]);
 
