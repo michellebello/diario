@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import logoView from "../pictures/logoView.png";
+import user from "../pictures/user.png";
+import "../styles/cuentaview.css";
 
 function TopBar() {
   const TOPBAR_LINKS = [
@@ -29,6 +31,7 @@ function TopBar() {
             })}
           </ul>
         </li>
+        <img src={user} className="user" alt="user"></img>
       </div>
     </div>
   );

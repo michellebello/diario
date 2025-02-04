@@ -1,21 +1,53 @@
 import React from "react";
-import "../styles/cuentaview.css";
+import { NavLink } from "react-router-dom";
+import "../styles/sidebar.css";
 
 function SideBar() {
+  const ADD_ITEMS = [
+    {
+      path: "/",
+      label: "Expense",
+    },
+    {
+      path: "/",
+      label: "Deposit",
+    },
+    {
+      path: "/",
+      label: "Transfer",
+    },
+    {
+      path: "/",
+      label: "Budget",
+    },
+  ];
+  const VIEW_ITEMS = [
+    {
+      path: "/",
+      label: "Table",
+    },
+    {
+      path: "/",
+      label: "Barchart",
+    },
+    {
+      path: "/",
+      label: "Donut chart",
+    },
+  ];
   return (
     <div className="totalSideBar">
       <div className="addItem">
         <p className="sideTitle">Add a new item</p>
-        <p className="item">Expense</p>
-        <p className="item">Deposit</p>
-        <p className="item">Transfer</p>
-        <p className="item">Budget</p>
+        {ADD_ITEMS.map((item) => {
+          return <NavLink to={item.path}>{item.label}</NavLink>;
+        })}
       </div>
       <div className="viewMode">
-        <p className="sideTitle">View Mode</p>
-        <p className="item">Table</p>
-        <p className="item">Barchart</p>
-        <p className="item">Donut chart</p>
+        <p className="sideTitle">View mode</p>
+        {VIEW_ITEMS.map((item) => {
+          return <NavLink to={item.path}>{item.label}</NavLink>;
+        })}
       </div>
     </div>
   );

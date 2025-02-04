@@ -34,6 +34,10 @@ li {
   flex-direction: row;
 }
 
+ul {
+  margin-bottom: 20px;
+}
+
 a {
   list-style: none;
   color: #1e1e1e;
@@ -64,23 +68,12 @@ a:not(.active):hover {
   list-style: none;
 }
 
-.totalSideBar {
-  width: 15%;
-  height: calc(100vh);
-  border-right: 1px solid grey;
-  margin-top: 0px;
-}
-
-.addItem {
-  font-size: 15px;
-  margin-top: 0px;
-}
-
 .sideTitle {
   font-weight: 500;
   margin-top: 0px;
   padding: 20px;
 }
+
 .viewMode {
   font-size: 15px;
   margin-top: 30px;
@@ -91,4 +84,12 @@ a:not(.active):hover {
   margin-left: 20px;
   margin-bottom: 10px;
   font-weight: 200;
+}
+
+.user {
+  width: 5%;
+  align-items: end;
+  margin-left: 90%;
+  margin-right: 10px;
+  margin-top: 15px;
 }
