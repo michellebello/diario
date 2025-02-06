@@ -8,6 +8,7 @@ function Budgets() {
     <div className="budgets">
       <TopBar></TopBar>
       <SideBar></SideBar>
+      <p>My budgets:</p>
     </div>
   );
 }

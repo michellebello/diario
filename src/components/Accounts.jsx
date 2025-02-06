@@ -8,6 +8,7 @@ function Accounts() {
     <div className="accounts">
       <TopBar></TopBar>
       <SideBar></SideBar>
+      <p>My accounts:</p>
     </div>
   );
 }
