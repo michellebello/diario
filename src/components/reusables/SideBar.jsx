@@ -5,33 +5,29 @@ import "../styles/sidebar.css";
 function SideBar() {
   const ADD_ITEMS = [
     {
-      path: "/",
+      path: "/mycuenta/additem",
       label: "Expense",
     },
     {
-      path: "/",
+      path: "/mycuenta/additem",
       label: "Deposit",
     },
     {
-      path: "/",
+      path: "/mycuenta/additem",
       label: "Transfer",
     },
     {
-      path: "/",
+      path: "/mycuenta/additem",
       label: "Budget",
     },
   ];
   const VIEW_ITEMS = [
     {
-      path: "/",
-      label: "Table",
-    },
-    {
-      path: "/",
+      path: "/mycuenta/barchart",
       label: "Barchart",
     },
     {
-      path: "/",
+      path: "/mycuenta/donutchart",
       label: "Donut chart",
     },
   ];
@@ -40,13 +36,21 @@ function SideBar() {
       <div className="addItem">
         <p className="sideTitle">Add a new item</p>
         {ADD_ITEMS.map((item) => {
-          return <NavLink to={item.path}>{item.label}</NavLink>;
+          return (
+            <NavLink className="sideBarLinks" to={item.path}>
+              {item.label}
+            </NavLink>
+          );
         })}
       </div>
       <div className="viewMode">
         <p className="sideTitle">View mode</p>
         {VIEW_ITEMS.map((item) => {
-          return <NavLink to={item.path}>{item.label}</NavLink>;
+          return (
+            <NavLink className="sideBarLinks" to={item.path}>
+              {item.label}
+            </NavLink>
+          );
         })}
       </div>
     </div>

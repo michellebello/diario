@@ -38,7 +38,7 @@ ul {
   margin-bottom: 20px;
 }
 
-a {
+.topbarLinks {
   list-style: none;
   color: #1e1e1e;
   text-align: center;
@@ -46,26 +46,24 @@ a {
   font-size: 15px;
   padding: 10px;
   margin-right: 40px;
-}
-
-a:not(.active):hover {
-  list-style: none;
-  background-color: #eaeaf0;
-  color: #1e1e1e;
-  padding: 0.4rem;
+  margin: 0 0.5 rem;
   border-radius: 0.5rem;
 }
 
-.a {
+.topbarLinks:not(.active):hover {
   list-style: none;
-  display: block;
-  padding: 0.5rem;
-  margin: 0 0.5 rem;
+  background-color: #333578;
+  color: #ffffff;
+  padding: 0.4rem;
   border-radius: 0.5rem;
 }
 
 .active {
   list-style: none;
+  background-color: #eaeaf0;
+  color: #1e1e1e;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
 }
 
 .sideTitle {
