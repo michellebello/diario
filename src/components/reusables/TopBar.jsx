@@ -35,8 +35,8 @@ function TopBar() {
             })}
           </ul>
         </li>
-        <img src={user} className="user" alt="user"></img>
       </div>
+      <img src={user} className="user" alt="user"></img>
     </div>
   );
 }

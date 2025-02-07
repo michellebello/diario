@@ -5,25 +5,29 @@ import "../styles/sidebar.css";
 function SideBar() {
   const ADD_ITEMS = [
     {
-      path: "/mycuenta/additem",
+      path: "/mycuenta/transactions/",
       label: "Expense",
     },
     {
-      path: "/mycuenta/additem",
+      path: "/mycuenta/transactions/",
       label: "Deposit",
     },
     {
-      path: "/mycuenta/additem",
+      path: "/mycuenta/transactions/",
       label: "Transfer",
     },
   ];
   const VIEW_ITEMS = [
     {
-      path: "/mycuenta/barchart",
+      path: "/mycuenta/transactions/table",
+      label: "Table",
+    },
+    {
+      path: "/mycuenta/transactions/barchart",
       label: "Barchart",
     },
     {
-      path: "/mycuenta/donutchart",
+      path: "/mycuenta/transactions/donutchart",
       label: "Donut chart",
     },
   ];
@@ -32,7 +36,7 @@ function SideBar() {
   const navigate = useNavigate();
   const [formLabel, setFormLabel] = useState("");
 
-  const showForm = location.pathname === "/mycuenta/additem";
+  const showForm = location.pathname === "/mycuenta/transactions/";
 
   const handleClick = (label, path) => {
     setFormLabel(label);
@@ -74,8 +78,48 @@ function SideBar() {
       {showForm && formLabel && (
         <form className="addItemForm">
           <p className="itemType">{formLabel}</p>
-          <label>{formLabel}</label>
-          <input type="text" placeholder={`Ex. ${formLabel}`} />
+          <div className="entry">
+            <label className="entryLabel">Name</label>
+            <input
+              className="entryInput"
+              type="text"
+              placeholder="Ex. Shake Shack"
+            />
+          </div>
+          <div className="entry">
+            <label className="entryLabel">Spending account</label>
+            <input
+              className="entryInput"
+              type="text"
+              placeholder="Chase XXXXXXX1234"
+            />
+          </div>
+          <div className="entry">
+            <label className="entryLabel">Date</label>
+            <input
+              className="entryInput"
+              type="date"
+              placeholder="12/06/2019"
+            />
+          </div>
+          <div className="entry">
+            <label className="entryLabel">Category</label>
+            <input className="entryInput" type="text" placeholder="Eat Out" />
+          </div>
+          <div className="entry">
+            <label className="entryLabel">Amount</label>
+            <input
+              className="entryInput"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="$12.34"
+            />
+          </div>
+          <div className="buttons">
+            <button className="addButton">Add</button>
+            <button className="cancelButton">Cancel</button>
+          </div>
         </form>
       )}
     </div>

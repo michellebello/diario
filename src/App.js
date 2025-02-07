@@ -7,9 +7,9 @@ import CuentaView from "./components/CuentaView.jsx";
 import Transactions from "./components/Transactions.jsx";
 import Budgets from "./components/Budgets.jsx";
 import Accounts from "./components/Accounts.jsx";
+import Table from "./components/Table.jsx";
 import Barchart from "./components/Barchart.jsx";
 import DonutChart from "./components/DonutChart.jsx";
-import AddItem from "./components/AddItem.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -29,12 +29,17 @@ function App() {
       path: "/mycuenta",
       element: <CuentaView />,
       children: [
-        { path: "transactions", element: <Transactions /> },
         { path: "budgets", element: <Budgets /> },
         { path: "accounts", element: <Accounts /> },
-        { path: "barchart", element: <Barchart /> },
-        { path: "donutchart", element: <DonutChart /> },
-        { path: "additem", element: <AddItem /> },
+        {
+          path: "transactions",
+          element: <Transactions />,
+          children: [
+            { path: "table", element: <Table /> },
+            { path: "barchart", element: <Barchart /> },
+            { path: "donutchart", element: <DonutChart /> },
+          ],
+        },
       ],
     },
   ]);

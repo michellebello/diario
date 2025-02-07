@@ -11,14 +11,15 @@
 .totalTopBar {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   background-color: #fffffc;
   border-bottom: 1px solid grey;
   margin-bottom: 0px;
 }
 
 .cuentaLogo {
-  width: 95px;
-  height: 40px;
+  width: 90px;
+  height: 35px;
   margin-left: 15px;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -27,16 +28,18 @@
 .barTags {
   display: flex;
   flex-direction: row;
-  margin-left: 7%;
+  margin-left: 0px;
+}
+
+ul {
+  margin-bottom: 0px;
+  padding: 0px;
 }
 
 li {
   display: flex;
   flex-direction: row;
-}
-
-ul {
-  margin-bottom: 20px;
+  justify-content: left;
 }
 
 .topbarLinks {
@@ -45,9 +48,8 @@ ul {
   text-align: center;
   text-decoration: none;
   font-size: 15px;
+  margin-left: 60px;
   padding: 10px;
-  margin-right: 40px;
-  margin: 0 0.5 rem;
   border-radius: 0.5rem;
 }
 
@@ -67,28 +69,11 @@ ul {
   border-radius: 0.5rem;
 }
 
-.sideTitle {
-  font-weight: 500;
-  margin-top: 0px;
-  padding: 20px;
-}
-
-.viewMode {
-  font-size: 15px;
-  margin-top: 30px;
-  border-top: 1px solid grey;
-}
-
-.item {
-  margin-left: 20px;
-  margin-bottom: 10px;
-  font-weight: 200;
-}
-
 .user {
-  width: 5%;
-  align-items: end;
-  margin-left: 90%;
-  margin-right: 10px;
-  margin-top: 15px;
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-right: 20px;
 }
