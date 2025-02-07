@@ -1,12 +1,16 @@
 import React from "react";
-import TopBar from "./reusables/TopBar";
-import SideBar from "./reusables/SideBar";
+import { useSearchParams } from "react-router-dom";
 
 function AddItem() {
+  const [searchParams] = useSearchParams();
+  const itemType = searchParams.get("type");
+
   return (
-    <div>
-      <TopBar />
-      <SideBar />
+    <div className="formContainer">
+      <div className="addItemForm">
+        <label htmlFor="itemName">{itemType}:</label>
+        <input id="itemName" type="text" placeholder={`Ex. ${itemType}`} />
+      </div>
     </div>
   );
 }

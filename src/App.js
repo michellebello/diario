@@ -28,30 +28,14 @@ function App() {
     {
       path: "/mycuenta",
       element: <CuentaView />,
-    },
-    {
-      path: "/mycuenta/transactions",
-      element: <Transactions />,
-    },
-    {
-      path: "/mycuenta/budgets",
-      element: <Budgets />,
-    },
-    {
-      path: "/mycuenta/accounts",
-      element: <Accounts />,
-    },
-    {
-      path: "/mycuenta/barchart",
-      element: <Barchart />,
-    },
-    {
-      path: "/mycuenta/donutchart",
-      element: <DonutChart />,
-    },
-    {
-      path: "/mycuenta/additem",
-      element: <AddItem />,
+      children: [
+        { path: "transactions", element: <Transactions /> },
+        { path: "budgets", element: <Budgets /> },
+        { path: "accounts", element: <Accounts /> },
+        { path: "barchart", element: <Barchart /> },
+        { path: "donutchart", element: <DonutChart /> },
+        { path: "additem", element: <AddItem /> },
+      ],
     },
   ]);
 
