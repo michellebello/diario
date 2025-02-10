@@ -28,7 +28,11 @@ function TopBar() {
           <ul>
             {TOPBAR_LINKS.map((link) => {
               return (
-                <NavLink className="topbarLinks" to={link.path}>
+                <NavLink
+                  className="topbarLinks"
+                  to={link.path}
+                  key={link.label}
+                >
                   {link.label}
                 </NavLink>
               );

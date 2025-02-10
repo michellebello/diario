@@ -1,0 +1,14 @@
+.TopBar {
+  position: relative;
+}
+
+.SideBar {
+  position: relative;
+}
+.transactionView {
+  position: absolute;
+}
+
+h1 {
+  z-index: 10;
+}

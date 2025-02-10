@@ -53,6 +53,7 @@ function SideBar() {
               <NavLink
                 className="sideBarLinks"
                 to={item.path}
+                key={item.label}
                 onClick={(e) => {
                   e.preventDefault();
                   handleClick(item.label, item.path);
@@ -67,7 +68,7 @@ function SideBar() {
           <p className="sideTitle">View mode</p>
           {VIEW_ITEMS.map((item) => {
             return (
-              <NavLink className="sideBarLinks" to={item.path}>
+              <NavLink className="sideBarLinks" to={item.path} key={item.label}>
                 {item.label}
               </NavLink>
             );
