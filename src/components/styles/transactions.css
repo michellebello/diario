@@ -1,14 +1,14 @@
-.TopBar {
-  position: relative;
-}
-
-.SideBar {
-  position: relative;
-}
-.transactionView {
-  position: absolute;
+.transactions {
+  margin: 0;
+  background-color: #fffffc;
+  min-height: 100vh;
 }
 
 h1 {
-  z-index: 10;
+  color: red;
+  font-size: 32px;
+  position: absolute;
+  top: 8%;
+  left: 10%;
+  /* z-index: 9999; */
 }

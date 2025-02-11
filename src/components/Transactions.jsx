@@ -8,9 +8,7 @@ function Transactions() {
     <div className="transactions">
       <TopBar></TopBar>
       <SideBar></SideBar>
-      <div className="transactionView">
-        <h1>Transactions</h1>
-      </div>
+      <h1>Transactions</h1>
     </div>
   );
 }
