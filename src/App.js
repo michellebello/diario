@@ -3,51 +3,31 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainPage from "./components/MainPage";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/Login";
+import Layout from "./components/Layout";
 
-import Transactions from "./components/Transactions.jsx";
-import Accounts from "./components/Accounts.jsx";
-import Budgets from "./components/Budgets.jsx";
-import Table from "./components/Table.jsx";
-import Barchart from "./components/Barchart.jsx";
-import DonutChart from "./components/DonutChart.jsx";
+import Transactions from "./components/Transactions";
+import Accounts from "./components/Accounts";
+import Budgets from "./components/Budgets";
+import Table from "./components/Table";
+import Barchart from "./components/Barchart";
+import DonutChart from "./components/DonutChart";
 
 function App() {
   const router = createBrowserRouter([
+    { path: "/", element: <MainPage /> },
+    { path: "/signup", element: <SignUp /> },
+    { path: "/login", element: <SignIn /> },
     {
-      path: "/",
-      element: <MainPage />,
-    },
-    {
-      path: "/signup",
-      element: <SignUp />,
-    },
-    {
-      path: "/login",
-      element: <SignIn />,
-    },
-    {
-      path: "/mycuenta/transactions",
-      element: <Transactions />,
-    },
-    {
-      path: "/mycuenta/budgets",
-      element: <Budgets />,
-    },
-    {
-      path: "/mycuenta/accounts",
-      element: <Accounts />,
-    },
-    {
-      path: "/mycuenta/transactions/table",
-      element: <Table />,
-    },
-    {
-      path: "/mycuenta/transactions/barchart",
-      element: <Barchart />,
-    },
-    {
-      path: "/mycuenta/transactions/donutchart",
-      element: <DonutChart />,
+      path: "/mycuenta",
+      element: <Layout />,
+      children: [
+        { path: "transactions", element: <Transactions /> },
+        { path: "budgets", element: <Budgets /> },
+        { path: "accounts", element: <Accounts /> },
+        { path: "transactions/table", element: <Table /> },
+        { path: "transactions/barchart", element: <Barchart /> },
+        { path: "transactions/donutchart", element: <DonutChart /> },
+      ],
     },
   ]);
 

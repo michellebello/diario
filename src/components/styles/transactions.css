@@ -1,14 +1,34 @@
 .transactions {
-  margin: 0;
-  background-color: #fffffc;
   min-height: 100vh;
+  background-color: #fffffc;
 }
 
-h1 {
-  color: red;
-  font-size: 32px;
-  position: absolute;
-  top: 8%;
-  left: 10%;
-  /* z-index: 9999; */
+.topTransaction {
+  margin-top: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+}
+
+.title {
+  color: black;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: "Economica", sans-serif;
+  margin: 10px;
+}
+
+.fromTo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-right: 20px;
+}
+
+.from,
+.to {
+  color: black;
+  font-size: 14px;
+  font-weight: 400;
 }

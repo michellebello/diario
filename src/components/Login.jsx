@@ -33,7 +33,7 @@ function Login() {
     try {
       const network = new Network();
       await network.post("/auth/login", credentials);
-      navigator("/mycuenta");
+      navigator("/mycuenta/transactions");
       setSuccessMessage("Logged in successfully");
       setErrorMessage("");
     } catch (error) {
