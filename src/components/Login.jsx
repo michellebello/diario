@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { setToken } from "../contexts/Session.js";
 import Network from "../utils/network.js";
 import eye from "./pictures/eye.png";
 import logo from "./pictures/logo.png";
@@ -32,21 +33,25 @@ function Login() {
 
     try {
       const network = new Network();
-      await network.post("/auth/login", credentials);
+      const result = await network.post("/auth/login", credentials);
+      const token = result.data.token;
+
+      setToken(token);
       navigator("/mycuenta/transactions");
       setSuccessMessage("Logged in successfully");
       setErrorMessage("");
     } catch (error) {
-      console.error("Error object:", error);
+      console.error("Error during login:", error);
 
       if (error.response && error.response.data) {
         const errorMessage = error.response.data?.message || "Login failed";
+
         if (errorMessage === "Password does not match") {
           setErrorMessage("Incorrect password");
         } else if (errorMessage === "Username not found") {
           setErrorMessage("Username not found");
         } else {
-          setErrorMessage(errorMessage || "Login failed");
+          setErrorMessage(errorMessage);
         }
       } else {
         setErrorMessage("An error occurred, please try again");

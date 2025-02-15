@@ -25,6 +25,7 @@ export default class Network {
       }
     );
   }
+
   get(url, config) {
     return axios.get(this._buildUrl(url), config);
   }
