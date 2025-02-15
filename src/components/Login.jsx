@@ -6,6 +6,7 @@ import eye from "./pictures/eye.png";
 import logo from "./pictures/logo.png";
 import LabelInputForm from "./reusables/LabelInputForm";
 import "./styles/signUp.css";
+import axios from "axios";
 
 function Login() {
   const navigator = useNavigate();
@@ -34,7 +35,9 @@ function Login() {
     try {
       const network = new Network();
       const result = await network.post("/auth/login", credentials);
-      const token = result.data.token;
+      const token = result.data;
+
+      debugger;
 
       setToken(token);
       navigator("/mycuenta/transactions");

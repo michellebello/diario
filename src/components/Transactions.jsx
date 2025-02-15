@@ -1,23 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Network from "../utils/network.js";
 
 function Transactions() {
   const network = new Network();
   const [transactions, setTransactions] = useState([]);
 
-  const getTransactions = async () => {
-    try {
-      let result = await network.get("/transactions");
-      console.log(result.data);
-      setTransactions(result.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  if (transactions.length === 0) {
-    getTransactions();
-  }
+  useEffect(() => {
+    network
+      .get("/transactions")
+      .then((result) => {
+        setTransactions(result.data);
+      })
+      .catch((err) =>
+        console.error("Ohhrrr Nohhhrrr!! An errrorr ocurrred!: ", err)
+      );
+  }, []);
 
   return (
     <div className="transactions">
@@ -27,12 +24,18 @@ function Transactions() {
           <p className="from">FROM</p>
           <p className="to">TO</p>
           <div>
-            {transactions.map((transaction) => (
-              <div>
-                <p>{transaction.name}</p>
-                <p>{transaction.amount}</p>
-              </div>
-            ))}
+            {transactions.length > 0 ? (
+              transactions.map((transaction) => {
+                return (
+                  <div>
+                    <p>{transaction.name}</p>
+                    <p>{transaction.amount}</p>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No transactions</p>
+            )}
           </div>
         </div>
       </div>

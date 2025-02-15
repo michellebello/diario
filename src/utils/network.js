@@ -1,49 +1,33 @@
 import axios from "axios";
-import { getToken } from "../contexts/Session.js";
+import { getToken, getTokenHeader } from "../contexts/Session.js";
 
 const BASE_URL = "http://localhost:8080";
 
 export default class Network {
-  constructor() {
-    this.instance = axios.create({
-      baseURL: BASE_URL,
-      withCredentials: true,
-    });
+  get(url, additionalConfigs) {
+    return axios.get(this._buildUrl(url), this._getConfigs(additionalConfigs));
+  }
 
-    this.instance.interceptors.request.use(
-      (config) => {
-        const token = getToken();
-        if (token) {
-          config.headers["CONTADOR_TOKEN"] = token;
-        }
-        config.headers["Content-Type"] = "application/json";
-        config.headers["Accept"] = "application/json";
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
+  delete(url, additionalConfigs) {
+    return axios.delete(
+      this._buildUrl(url),
+      this._getConfigs(additionalConfigs)
     );
   }
 
-  get(url, config) {
-    return axios.get(this._buildUrl(url), config);
+  post(url, additionalConfigs) {
+    return axios.post(this._buildUrl(url), this._getConfigs(additionalConfigs));
   }
 
-  delete(url, config) {
-    return axios.delete(this._buildUrl(url), config);
+  patch(url, additionalConfigs) {
+    return axios.patch(
+      this._buildUrl(url),
+      this._getConfigs(additionalConfigs)
+    );
   }
 
-  post(url, config) {
-    return axios.post(this._buildUrl(url), config);
-  }
-
-  patch(url, config) {
-    return axios.patch(this._buildUrl(url), config);
-  }
-
-  put(url, config) {
-    return axios.put(this._buildUrl(url), config);
+  put(url, additionalConfigs) {
+    return axios.put(this._buildUrl(url), this._getConfigs(additionalConfigs));
   }
 
   /**
@@ -66,6 +50,10 @@ export default class Network {
     if (!url.startsWith("/")) {
       throw new InvalidURLError("Improperly formatted url provided");
     }
+  }
+
+  _getConfigs(externalConfigs) {
+    return { headers: { CONTADOR_TOKEN: getToken(), ...externalConfigs } };
   }
 }
 
