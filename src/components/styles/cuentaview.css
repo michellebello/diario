@@ -73,4 +73,22 @@ li {
   margin-top: 10px;
   margin-bottom: 0px;
   margin-right: 20px;
+  transform: translate(-50%, -50%);
+}
+
+.userButton {
+  background-color: #fffffc;
+  border-style: none;
+  width: 25px;
+  height: 25px;
+  margin-top: 10px;
+}
+
+.userTab {
+  position: absolute;
+  z-index: 10;
+}
+
+.logout {
+  z-index: 10;
 }

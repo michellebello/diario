@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import Network from "../utils/network.js";
 
@@ -11,9 +12,7 @@ function Transactions() {
       .then((result) => {
         setTransactions(result.data);
       })
-      .catch((err) =>
-        console.error("Ohhrrr Nohhhrrr!! An errrorr ocurrred!: ", err)
-      );
+      .catch((err) => console.error(err));
   }, []);
 
   return (

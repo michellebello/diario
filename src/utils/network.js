@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, getTokenHeader } from "../contexts/Session.js";
+import { getTokenHeader } from "../contexts/Session.js";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -15,8 +15,14 @@ export default class Network {
     );
   }
 
-  post(url, additionalConfigs) {
-    return axios.post(this._buildUrl(url), this._getConfigs(additionalConfigs));
+  post(url, body, additionalConfigs, isAuthenticated = true) {
+    return isAuthenticated
+      ? axios.post(
+          this._buildUrl(url),
+          body,
+          this._getConfigs(additionalConfigs)
+        )
+      : axios.post(this._buildUrl(url), body, additionalConfigs);
   }
 
   patch(url, additionalConfigs) {
@@ -53,7 +59,7 @@ export default class Network {
   }
 
   _getConfigs(externalConfigs) {
-    return { headers: { CONTADOR_TOKEN: getToken(), ...externalConfigs } };
+    return { headers: { ...getTokenHeader(), ...externalConfigs } };
   }
 }
 

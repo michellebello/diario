@@ -6,7 +6,6 @@ import eye from "./pictures/eye.png";
 import logo from "./pictures/logo.png";
 import LabelInputForm from "./reusables/LabelInputForm";
 import "./styles/signUp.css";
-import axios from "axios";
 
 function Login() {
   const navigator = useNavigate();
@@ -23,8 +22,8 @@ function Login() {
 
   const handleSubmit = async () => {
     const credentials = {
-      username: username,
-      password: password,
+      username,
+      password,
     };
 
     if (!username || !password) {
@@ -34,10 +33,8 @@ function Login() {
 
     try {
       const network = new Network();
-      const result = await network.post("/auth/login", credentials);
+      const result = await network.post("/auth/login", credentials, false);
       const token = result.data;
-
-      debugger;
 
       setToken(token);
       navigator("/mycuenta/transactions");
@@ -64,40 +61,42 @@ function Login() {
   };
 
   return (
-    <div className="signUpForm">
-      <img src={logo} alt="logo"></img>
-      <div className="entries">
-        <LabelInputForm
-          label="Username"
-          name="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        ></LabelInputForm>
-        <LabelInputForm
-          label="Password"
-          name="password"
-          type={passwordVisible ? "text" : "password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        >
-          <img
-            className="eye"
-            src={eye}
-            alt="eye"
-            onClick={toggleVisibility}
-          ></img>
-        </LabelInputForm>
-        {errorMessage && <p className="error">{errorMessage}</p>}
-        {successMessage && <p className="success">{successMessage}</p>}
-        <button className="loginButton" onClick={handleSubmit}>
-          Login
-        </button>
-        <div className="loginDiv">
-          <p className="underText1">Don't have an account?</p>
-          <Link className="underText2" to="/signup">
-            Register here
-          </Link>
+    <div className="totalPage">
+      <div className="signUpForm">
+        <img src={logo} alt="logo"></img>
+        <div className="entries">
+          <LabelInputForm
+            label="Username"
+            name="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          ></LabelInputForm>
+          <LabelInputForm
+            label="Password"
+            name="password"
+            type={passwordVisible ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          >
+            <img
+              className="eye"
+              src={eye}
+              alt="eye"
+              onClick={toggleVisibility}
+            ></img>
+          </LabelInputForm>
+          {errorMessage && <p className="error">{errorMessage}</p>}
+          {successMessage && <p className="success">{successMessage}</p>}
+          <button className="loginButton" onClick={handleSubmit}>
+            Login
+          </button>
+          <div className="loginDiv">
+            <p className="underText1">Don't have an account?</p>
+            <Link className="underText2" to="/signup">
+              Register here
+            </Link>
+          </div>
         </div>
       </div>
     </div>

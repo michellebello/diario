@@ -5,14 +5,16 @@ import "./styles/mainPage.css";
 
 function MainPage() {
   return (
-    <div className="mainPage">
-      <p className="title">Cuenta</p>
-      <p className="text">Finance management for everyone</p>
-      <div className="buttons">
-        <Buttons linkTo="/login">Login</Buttons>
-        <Buttons linkTo="/signup">Sign up</Buttons>
+    <div className="totalMainPage">
+      <div className="mainPage">
+        <p className="title">Cuenta</p>
+        <p className="text">Finance management for everyone</p>
+        <div className="buttons">
+          <Buttons linkTo="/login">Login</Buttons>
+          <Buttons linkTo="/signup">Sign up</Buttons>
+        </div>
+        <img className="pic" src={main} alt="main" />
       </div>
-      <img className="pic" src={main} alt="main" />
     </div>
   );
 }

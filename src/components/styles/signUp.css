@@ -1,16 +1,15 @@
-body {
+.body {
   margin: 0;
   min-height: 100vh;
   background-color: #a6a4c7;
-  background-blend-mode: multiply;
 }
+
 .signUpForm {
   background-color: #4842b8;
   width: 30%;
-  height: max-content;
+  margin-top: 5%;
   margin-left: 35%;
   margin-right: 35%;
-  margin-top: 5%;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
