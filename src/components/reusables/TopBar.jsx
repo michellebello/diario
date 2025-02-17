@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { clearToken } from "/Users/michelle/code/diario/src/contexts/Session.js";
+import {
+  getTokenHeader,
+  clearToken,
+} from "/Users/michelle/code/diario/src/contexts/Session.js";
+import Network from "../../utils/network";
 import logoView from "../pictures/logoView.png";
 import user from "../pictures/user.png";
 import "../styles/cuentaview.css";
@@ -28,10 +32,12 @@ function TopBar() {
     setIsVisible(!isVisible);
   };
 
-  const handleLogout = () => {
-    // add request to logout (POST)
+  const handleLogout = async () => {
+    const network = new Network();
+    const currSession = getTokenHeader();
+    await network.post("/auth/logout", currSession);
     clearToken();
-    console.log("Token removed:", localStorage.getItem("CONTADOR_KEY"));
+    console.log("Token removed:", currSession);
     navigate("/");
   };
 
