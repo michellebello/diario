@@ -117,13 +117,14 @@ ul {
 }
 
 .entryLabel {
-  margin-bottom: 5%;
+  margin-bottom: 8px;
   font-size: 14px;
   font-family: "Economica", sans-serif;
 }
 
 .entryInput {
   background-color: #f2e9e4;
+  margin-bottom: 5px;
   padding: 5px;
   border: 1px solid #f2e9e4;
   border-radius: 5px;

@@ -1,4 +1,7 @@
-.transactions {
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
   min-height: 100vh;
   background-color: #fffffc;
 }
@@ -31,4 +34,26 @@
   color: black;
   font-size: 14px;
   font-weight: 400;
+}
+
+table {
+  display: grid;
+  min-width: 100%;
+  grid-column: 1 / span 2;
+}
+
+.headers {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+}
+
+.transactionFlex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.transactionLabel {
+  font-size: 14px;
+  text-align: start;
 }
