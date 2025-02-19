@@ -1,3 +1,7 @@
+html {
+  background-color: #fffffc;
+}
+
 .formContainer {
   display: flex;
   margin: 0;

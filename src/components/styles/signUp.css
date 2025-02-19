@@ -1,11 +1,8 @@
-.body {
-  margin: 0;
+.totalPage {
   min-height: 100vh;
-  background-color: #a6a4c7;
 }
-
 .signUpForm {
-  background-color: #4842b8;
+  background-color: #a6a4c7;
   width: 30%;
   margin-top: 5%;
   margin-left: 35%;
@@ -15,11 +12,15 @@
   flex-direction: column;
   align-items: center;
 }
+/* dark : #4842b8
+light a6a4c7 */
 
-img {
+.logo {
   margin-top: 10%;
   margin-bottom: 5%;
   width: 10%;
+  background-color: #4842b8;
+  padding: 5px;
   align-items: center;
 }
 
@@ -33,8 +34,9 @@ img {
   margin-top: 2%;
   width: 80%;
   padding: 5px;
-  background-color: #b2b4ed;
-  color: #000000;
+  background-color: #4843ae;
+  border-style: none;
+  color: #ffffff;
   font-size: 15px;
   font-family: "Economica", sans-serif;
   border-radius: 5px;
@@ -43,9 +45,10 @@ img {
 .loginButton {
   margin-top: 3%;
   width: 100%;
-  padding: 5px;
-  background-color: #b2b4ed;
-  color: #000000;
+  padding: 7px;
+  background-color: #4843ae;
+  border-style: none;
+  color: #ffffff;
   font-size: 15px;
   font-family: "Economica", sans-serif;
   border-radius: 5px;
@@ -63,14 +66,15 @@ img {
 .underText1 {
   font-size: 15px;
   font-family: "Economica", sans-serif;
-  color: white;
+  color: black;
   margin-right: 10px;
+  font-weight: 3500;
 }
 
 .underText2 {
   font-size: 15px;
   font-family: "Economica", sans-serif;
-  color: #a6a4c7;
+  color: black;
   float: right;
   right: 0;
 }

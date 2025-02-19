@@ -7,7 +7,7 @@ function MainPage() {
   return (
     <div className="totalMainPage">
       <div className="mainPage">
-        <p className="title">Cuenta</p>
+        <p className="mptitle">Cuenta</p>
         <p className="text">Finance management for everyone</p>
         <div className="buttons">
           <Buttons linkTo="/login">Login</Buttons>

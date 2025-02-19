@@ -7,9 +7,9 @@
 
 .labelForm {
   margin-bottom: 5px;
-  color: white;
+  color: black;
   font-size: 15px;
-  font-family: "Economica", sans-serif;
+  font-weight: 300;
 }
 
 .inputContainer {
@@ -23,6 +23,7 @@
   padding-right: 2.5rem;
   border-radius: 5px;
   box-sizing: border-box;
+  font-weight: 400;
 }
 
 .inputAddon {

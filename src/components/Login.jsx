@@ -63,7 +63,7 @@ function Login() {
   return (
     <div className="totalPage">
       <div className="signUpForm">
-        <img src={logo} alt="logo"></img>
+        <img className="logo" src={logo} alt="logo"></img>
         <div className="entries">
           <LabelInputForm
             label="Username"
