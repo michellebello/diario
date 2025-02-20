@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import FormComponent from "./FormComponent.jsx";
 import "../styles/sidebar.css";
 
@@ -33,15 +33,16 @@ function SideBar() {
     },
   ];
 
-  const location = useLocation();
-  const navigate = useNavigate();
   const [formLabel, setFormLabel] = useState("");
+  const [formVisibility, setFormVisibility] = useState(false);
 
-  const showForm = location.pathname === "/mycuenta/transactions/";
-
-  const handleClick = (label, path) => {
+  const handleClick = (label) => {
     setFormLabel(label);
-    navigate(path);
+    setFormVisibility(true);
+  };
+
+  const handleCancel = () => {
+    setFormVisibility(false);
   };
 
   return (
@@ -56,7 +57,7 @@ function SideBar() {
               key={item.label}
               onClick={(e) => {
                 e.preventDefault();
-                handleClick(item.label, item.path);
+                handleClick(item.label);
               }}
             >
               {item.label}
@@ -66,15 +67,17 @@ function SideBar() {
       </div>
       <div className="viewMode">
         <p className="sideTitle">View mode</p>
-        {VIEW_ITEMS.map((item) => {
+        {VIEW_ITEMS.map((link) => {
           return (
-            <NavLink className="sideBarLinks" to={item.path} key={item.label}>
-              {item.label}
+            <NavLink className="sideBarLinks" to={link.path} key={link.label}>
+              {link.label}
             </NavLink>
           );
         })}
       </div>
-      {showForm && <FormComponent formLabel={formLabel} />}
+      {formVisibility && (
+        <FormComponent formLabel={formLabel} onCancel={handleCancel} />
+      )}
     </div>
   );
 }

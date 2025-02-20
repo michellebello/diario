@@ -126,12 +126,17 @@ ul {
   font-family: "Economica", sans-serif;
 }
 
-.entryInput {
+.entryInput,
+.categorySelect {
   background-color: #f2e9e4;
   margin-bottom: 5px;
   padding: 5px;
   border: 1px solid #f2e9e4;
   border-radius: 5px;
+}
+
+.options {
+  font-size: 14px;
 }
 
 .buttons {

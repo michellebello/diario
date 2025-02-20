@@ -1,10 +1,11 @@
-// import { useNavigate } from "react-router-dom";
 import "../styles/sidebar.css";
 
-function FormComponent({ formLabel }) {
-  const CancelAction = () => {
-    // showForm = false
+function FormComponent({ formLabel, onCancel }) {
+  const cancelAction = (e) => {
+    e.preventDefault();
+    onCancel();
   };
+
   return (
     <form className="addItemForm">
       <p className="itemType">{formLabel}</p>
@@ -30,7 +31,16 @@ function FormComponent({ formLabel }) {
       </div>
       <div className="entry">
         <label className="entryLabel">Category</label>
-        <input className="entryInput" type="text" placeholder="Eat Out" />
+        <select className="entryInput">
+          <option className="options">Eat Out</option>
+          <option className="options">Transportation</option>
+          <option className="options">Groceries</option>
+          <option className="options">Shopping</option>
+          <option className="options">Entertainment</option>
+          <option className="options">Pet</option>
+          <option className="options">Education</option>
+          <option className="options">Miscellaneous</option>
+        </select>
       </div>
       <div className="entry">
         <label className="entryLabel">Amount</label>
@@ -44,7 +54,7 @@ function FormComponent({ formLabel }) {
       </div>
       <div className="buttons">
         <button className="addButton">Add</button>
-        <button className="cancelButton" onClick={CancelAction}>
+        <button className="cancelButton" onClick={cancelAction}>
           Cancel
         </button>
       </div>

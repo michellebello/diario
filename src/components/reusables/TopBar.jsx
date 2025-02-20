@@ -16,7 +16,7 @@ function TopBar() {
       label: "Budgets",
     },
     {
-      path: "/mycuenta/transactions",
+      path: "/mycuenta/transactions/table",
       label: "Transactions",
     },
     {

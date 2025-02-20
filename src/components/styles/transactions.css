@@ -7,19 +7,18 @@
 }
 
 .topTransaction {
-  margin-top: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: white;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .title {
   color: black;
   font-size: 20px;
   font-weight: 500;
-  font-family: "Economica", sans-serif;
-  margin: 10px;
 }
 
 .fromTo {
@@ -36,24 +35,51 @@
   font-weight: 400;
 }
 
-table {
-  display: grid;
-  min-width: 100%;
-  grid-column: 1 / span 2;
+.allTransactions {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.headers {
-  display: flex;
-  justify-content: space-between;
+.allTransactions thead {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.allTransactions th {
+  background-color: white;
+}
+
+.allTransactions th,
+.allTransactions td {
   padding: 12px;
-}
-
-.transactionFlex {
-  display: flex;
-  justify-content: space-between;
-}
-
-.transactionLabel {
+  text-align: left;
   font-size: 14px;
-  text-align: start;
+  font-weight: 400;
+  color: #333;
+}
+
+.even-row {
+  background-color: #f8f8f8;
+}
+
+.odd-row {
+  background-color: #fff;
+}
+
+.noTransactions {
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+  font-weight: bold;
+  color: #666;
+}
+
+.categoryIcon {
+  object-fit: contain;
+  width: 24px;
+  height: 24px;
 }
