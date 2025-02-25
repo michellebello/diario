@@ -51,7 +51,9 @@ function Transactions() {
         <p className="title">Tracked expenses</p>
         <div className="fromTo">
           <p className="from">FROM</p>
+          <input type="date"></input>
           <p className="to">TO</p>
+          <input type="date"></input>
         </div>
       </div>
       <table className="allTransactions">
@@ -89,6 +91,7 @@ function Transactions() {
               <td colSpan="3" className="noTransactions">
                 No transactions
               </td>
+              <td>Try again later</td>
             </tr>
           )}
         </tbody>
