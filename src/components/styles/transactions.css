@@ -53,12 +53,18 @@
   background-color: white;
 }
 
-.allTransactions th,
+.allTransactions th {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
 .allTransactions td {
   padding: 12px;
   text-align: left;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 300;
   color: #333;
 }
 

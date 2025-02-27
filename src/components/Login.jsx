@@ -37,7 +37,7 @@ function Login() {
       const token = result.data;
 
       setToken(token);
-      navigator("/mycuenta/transactions");
+      navigator("/mycuenta/transactions/table");
       setSuccessMessage("Logged in successfully");
       setErrorMessage("");
     } catch (error) {
