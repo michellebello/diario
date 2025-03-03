@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import deposit from "./pictures/deposit.png";
 import eatOut from "./pictures/eatout.png";
@@ -15,6 +14,15 @@ import "./styles/transactions.css";
 function Transactions() {
   const network = new Network();
   const [transactions, setTransactions] = useState([]);
+  const [showForm, setShowForm] = useState(false); // Control form visibility
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    amount: "",
+    accountId: "",
+    date: "",
+  });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const categoryToIcon = {
     Deposit: deposit,
@@ -29,26 +37,58 @@ function Transactions() {
   };
 
   useEffect(() => {
+    fetchTransactions();
+  }, []);
+
+  const fetchTransactions = () => {
     network
       .get("/transactions")
       .then((result) => {
         setTransactions(result.data);
       })
       .catch((err) => console.error(err));
-  }, []);
+  };
 
   const formatDate = (transaction) => {
-    let dateArray = transaction.createdOn;
-    const year = dateArray[0].toString();
-    const month = dateArray[1].toString();
-    const day = dateArray[3].toString();
-    return month + "/" + day + "/" + year;
+    if (!transaction.createdOn) return "N/A";
+    const [year, month, day] = transaction.createdOn;
+    return `${month}/${day}/${year}`;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setErrorMessage("");
+
+    try {
+      const response = await network.post("/transactions", formData);
+      console.log("Response from backend:", response);
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("Transaction added successfully!");
+        setFormData({
+          name: "",
+          type: "",
+          amount: "",
+          accountId: "",
+          date: "",
+        });
+        setShowForm(false);
+        fetchTransactions();
+        return;
+      }
+
+      setErrorMessage("Something went wrong. Please try again.");
+    } catch (error) {
+      console.error("Failed to add transaction:", error);
+      setErrorMessage("Failed to add transaction. Please try again.");
+    }
   };
 
   return (
     <div className="main-content">
       <div className="topTransaction">
         <p className="title">Tracked expenses</p>
+
         <div className="fromTo">
           <p className="from">FROM</p>
           <input type="date"></input>
@@ -56,6 +96,54 @@ function Transactions() {
           <input type="date"></input>
         </div>
       </div>
+
+      {/* ✅ Show error message only when needed */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+      {showForm && (
+        <form onSubmit={handleSubmit} className="transaction-form">
+          <input
+            type="text"
+            placeholder="Name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Category"
+            value={formData.type}
+            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Amount"
+            value={formData.amount}
+            onChange={(e) =>
+              setFormData({ ...formData, amount: e.target.value })
+            }
+            required
+          />
+          <input
+            type="text"
+            placeholder="Account ID"
+            value={formData.accountId}
+            onChange={(e) =>
+              setFormData({ ...formData, accountId: e.target.value })
+            }
+            required
+          />
+          <input
+            type="date"
+            value={formData.date}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            required
+          />
+          <button type="submit">Add Transaction</button>
+        </form>
+      )}
+
       <table className="allTransactions">
         <thead>
           <tr>
@@ -78,20 +166,19 @@ function Transactions() {
                     alt="icon"
                     className="categoryIcon"
                     src={categoryToIcon[transaction.type] || misc}
-                  ></img>
+                  />
                 </td>
                 <td>{transaction.name}</td>
-                <td>{transaction.amount.toFixed(2)}</td>
+                <td>${transaction.amount.toFixed(2)}</td>
                 <td>{transaction.type}</td>
                 <td>{formatDate(transaction)}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="3" className="noTransactions">
+              <td colSpan="5" className="noTransactions">
                 No transactions
               </td>
-              <td>Try again later</td>
             </tr>
           )}
         </tbody>

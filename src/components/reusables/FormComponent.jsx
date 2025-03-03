@@ -1,47 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
 import "../styles/sidebar.css";
-import { typeImplementation } from "@testing-library/user-event/dist/type/typeImplementation";
 
-function FormComponent({ formLabel, onCancel }) {
+function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [selectedAccountId, setSelectedAccountId] = useState("");
+  const [accounts, setAccounts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const addTransaction = async () => {
-    const transactionData = {
-      name: name,
-      type: type,
-      amount: amount,
-      date: date,
+  const network = new Network();
+
+  useEffect(() => {
+    const fetchAccountNumbers = async () => {
+      try {
+        const response = await network.get("/accounts/numbers");
+        setAccounts(response.data);
+      } catch (error) {
+        console.error("Error fetching accounts:", error);
+      }
     };
-    if (!name || !type || !amount || !date) {
+    fetchAccountNumbers();
+  }, []);
+
+  const addTransaction = async () => {
+    if (!name || !type || !amount || !date || !selectedAccountId) {
       setErrorMessage("All fields must be complete");
       return;
     }
+
+    const transactionData = {
+      name,
+      type,
+      amount: parseFloat(amount),
+      accountId: Number(selectedAccountId),
+      createdOn: new Date(date).toISOString(),
+    };
+
     try {
-      const network = new Network();
       await network.post("/transactions", transactionData);
-      setSuccessMessage("Transaction successfully added");
       setErrorMessage("");
+      onTransactionAdded();
+      onCancel();
     } catch (error) {
-      const errorMessage = error.response.data?.message;
-      setErrorMessage(errorMessage);
-      setSuccessMessage("");
+      setErrorMessage(error.response?.data?.message);
     }
   };
-
-  const cancelAction = (e) => {
-    e.preventDefault();
-    onCancel();
-  };
-
   return (
     <form className="addItemForm">
       <p className="itemType">{formLabel}</p>
+
       <div className="entry">
         <label className="entryLabel">Name</label>
         <input
@@ -52,24 +62,33 @@ function FormComponent({ formLabel, onCancel }) {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
+
       <div className="entry">
-        <label className="entryLabel">Spending account</label>
-        <input
+        <label className="entryLabel">Spending Account</label>
+        <select
           className="entryInput"
-          type="text"
-          placeholder="Chase XXXXXXX1234"
-        />
+          value={selectedAccountId}
+          onChange={(e) => setSelectedAccountId(e.target.value)}
+        >
+          <option value="">Select an Account</option>
+          {accounts.map((account) => (
+            <option key={account.id} value={account.id}>
+              {account.number}
+            </option>
+          ))}
+        </select>
       </div>
+
       <div className="entry">
         <label className="entryLabel">Date</label>
         <input
           className="entryInput"
           type="date"
           value={date}
-          onChange={(e) => setDate(e.value.target)}
-          // need to add function to send date properly
+          onChange={(e) => setDate(e.target.value)}
         />
       </div>
+
       <div className="entry">
         <label className="entryLabel">Category</label>
         <select
@@ -77,16 +96,18 @@ function FormComponent({ formLabel, onCancel }) {
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
-          <option className="options">Eat Out</option>
-          <option className="options">Transportation</option>
-          <option className="options">Groceries</option>
-          <option className="options">Shopping</option>
-          <option className="options">Entertainment</option>
-          <option className="options">Pet</option>
-          <option className="options">Education</option>
-          <option className="options">Miscellaneous</option>
+          <option value="">Select a Category</option>
+          <option value="Eat Out">Eat Out</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Groceries">Groceries</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Pet">Pet</option>
+          <option value="Education">Education</option>
+          <option value="Miscellaneous">Miscellaneous</option>
         </select>
       </div>
+
       <div className="entry">
         <label className="entryLabel">Amount</label>
         <input
@@ -96,17 +117,20 @@ function FormComponent({ formLabel, onCancel }) {
           step="0.01"
           placeholder="$12.34"
           value={amount}
-          onChange={(e) => setAmount(e.value.target)}
+          onChange={(e) => setAmount(e.target.value)}
         />
       </div>
+
       <div className="buttons">
-        <button className="addButton" onClick={addTransaction}>
+        <button type="button" className="addButton" onClick={addTransaction}>
           Add
         </button>
-        <button className="cancelButton" onClick={cancelAction}>
+        <button type="button" className="cancelButton" onClick={onCancel}>
           Cancel
         </button>
       </div>
+
+      {errorMessage && <p className="error">{errorMessage}</p>}
     </form>
   );
 }
