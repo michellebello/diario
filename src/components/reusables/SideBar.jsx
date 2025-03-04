@@ -41,6 +41,10 @@ function SideBar() {
     setFormVisibility(true);
   };
 
+  const handleTransactionAdded = () => {
+    setFormVisibility(false);
+  };
+
   const handleCancel = () => {
     setFormVisibility(false);
   };
@@ -76,7 +80,11 @@ function SideBar() {
         })}
       </div>
       {formVisibility && (
-        <FormComponent formLabel={formLabel} onCancel={handleCancel} />
+        <FormComponent
+          formLabel={formLabel}
+          onCancel={handleCancel}
+          onTransactionAdded={handleTransactionAdded}
+        />
       )}
     </div>
   );

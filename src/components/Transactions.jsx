@@ -38,6 +38,7 @@ function Transactions() {
 
   useEffect(() => {
     fetchTransactions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchTransactions = () => {
@@ -61,7 +62,6 @@ function Transactions() {
 
     try {
       const response = await network.post("/transactions", formData);
-      console.log("Response from backend:", response);
 
       if (response.status >= 200 && response.status < 300) {
         console.log("Transaction added successfully!");
@@ -97,7 +97,6 @@ function Transactions() {
         </div>
       </div>
 
-      {/* ✅ Show error message only when needed */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       {showForm && (

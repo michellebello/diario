@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
 import "../styles/sidebar.css";
@@ -30,7 +31,6 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       setErrorMessage("All fields must be complete");
       return;
     }
-
     const transactionData = {
       name,
       type,
