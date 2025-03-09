@@ -94,6 +94,7 @@ function Transactions() {
           <input type="date" className="inputDate"></input>
           <p className="to">TO</p>
           <input type="date" className="inputDate"></input>
+          <button className="filterButton">Go</button>
         </div>
       </div>
 
