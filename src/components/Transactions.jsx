@@ -91,9 +91,9 @@ function Transactions() {
 
         <div className="fromTo">
           <p className="from">FROM</p>
-          <input type="date"></input>
+          <input type="date" className="inputDate"></input>
           <p className="to">TO</p>
-          <input type="date"></input>
+          <input type="date" className="inputDate"></input>
         </div>
       </div>
 

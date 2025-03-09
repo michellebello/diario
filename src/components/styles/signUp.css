@@ -2,7 +2,7 @@
   min-height: 100vh;
 }
 .signUpForm {
-  background-color: #a6a4c7;
+  background-color: #c1bfde;
   width: 30%;
   margin-top: 5%;
   margin-left: 35%;
@@ -12,8 +12,6 @@
   flex-direction: column;
   align-items: center;
 }
-/* dark : #4842b8
-light a6a4c7 */
 
 .logo {
   margin-top: 10%;

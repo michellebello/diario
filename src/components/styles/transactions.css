@@ -89,3 +89,11 @@
   width: 24px;
   height: 24px;
 }
+
+.inputDate {
+  padding: 2px;
+  background-color: #cdccee;
+  border-radius: 5px;
+  border-color: #383671;
+  border-width: 1px;
+}
