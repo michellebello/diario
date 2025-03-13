@@ -14,7 +14,7 @@ import "./styles/transactions.css";
 function Transactions() {
   const network = new Network();
   const [transactions, setTransactions] = useState([]);
-  const [showForm, setShowForm] = useState(false); // Control form visibility
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -84,6 +84,19 @@ function Transactions() {
     }
   };
 
+  const [afterDate, setAfterDate] = useState("");
+  const [beforeDate, setBeforeDate] = useState("");
+  const showFilteredTransactions = async () => {
+    await network
+      .get("/transactions?after=" + afterDate + "&before=" + beforeDate)
+      .then((result) => {
+        setTransactions(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="main-content">
       <div className="topTransaction">
@@ -91,10 +104,22 @@ function Transactions() {
 
         <div className="fromTo">
           <p className="from">FROM</p>
-          <input type="date" className="inputDate"></input>
+          <input
+            type="date"
+            className="inputDate"
+            value={afterDate}
+            onChange={(e) => setAfterDate(e.target.value)}
+          ></input>
           <p className="to">TO</p>
-          <input type="date" className="inputDate"></input>
-          <button className="filterButton">Go</button>
+          <input
+            type="date"
+            className="inputDate"
+            value={beforeDate}
+            onChange={(e) => setBeforeDate(e.target.value)}
+          ></input>
+          <button className="filterButton" onClick={showFilteredTransactions}>
+            Go
+          </button>
         </div>
       </div>
 
