@@ -65,17 +65,11 @@ function DonutChart() {
         "#B594B6",
       ]);
     svg
-      .selectAll("whatever")
+      .selectAll("donutChart")
       .data(data_ready)
       .enter()
       .append("path")
-      .attr(
-        "d",
-        d3
-          .arc()
-          .innerRadius(radius * 0, 5)
-          .outerRadius(radius)
-      )
+      .attr("d", d3.arc().innerRadius(100).outerRadius(radius))
       .attr("fill", function (d) {
         return color(d.data[0]);
       })

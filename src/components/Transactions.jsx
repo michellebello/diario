@@ -117,9 +117,12 @@ function Transactions() {
             value={beforeDate}
             onChange={(e) => setBeforeDate(e.target.value)}
           ></input>
-          <button className="filterButton" onClick={showFilteredTransactions}>
-            Go
-          </button>
+          <span
+            className="apply-filter-button"
+            onClick={showFilteredTransactions}
+          >
+            &rarr;
+          </span>
         </div>
       </div>
 
