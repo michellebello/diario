@@ -24,6 +24,7 @@ function DonutChart() {
       }
     }
     setTransactionMap(totalPerCategory);
+    console.log(totalPerCategory);
   };
 
   useEffect(() => {
@@ -50,37 +51,42 @@ function DonutChart() {
     });
     const data_ready = pie(Array.from(transactionMap.entries()));
 
-    const color = d3
-      .scaleOrdinal()
-      .domain(transactionMap.keys())
-      .range([
-        "#98abc5",
-        "#8a89a6",
-        "#7b6888",
-        "#6b486b",
-        "#a05d56",
-        "#F8333C",
-        "#087CA7",
-        "#BD897E",
-        "#B594B6",
-      ]);
+    const color = d3.scaleOrdinal().domain(transactionMap.keys()).range([
+      "#C1666B", // shopping
+      "#D4B483", // groceries
+      "#E4DFDA", // transportation
+      "#48A9A6", // eat out
+      "#4281A4", // entertainment
+      "#D4C5E2", // pet
+      "#FCB97D", // miscellaneous
+      "#EF6F6C", // deposit
+      "#775B59", // food
+    ]);
     svg
-      .selectAll("donutChart")
+      .selectAll("donut_chart")
       .data(data_ready)
       .enter()
       .append("path")
-      .attr("d", d3.arc().innerRadius(100).outerRadius(radius))
+      .attr(
+        "d",
+        d3
+          .arc()
+          .innerRadius(radius * 0, 5)
+          .outerRadius(radius)
+      )
       .attr("fill", function (d) {
         return color(d.data[0]);
       })
       .attr("stroke", "black")
       .style("stroke-width", "2px")
       .style("opacity", 0.7);
+
+    // svg add lines and labels
   }, [transactionMap]);
 
   return (
     <div className="main-content">
-      <p>Transaction Breakdown </p>
+      <p>Transaction Breakdown</p>
       <div className="donut-chart-container">
         <svg ref={svgReference}></svg>
       </div>
