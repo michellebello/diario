@@ -2,7 +2,7 @@ import React from "react";
 
 function Barchart() {
   return (
-    <div>
+    <div className="main-content">
       <p>Barchart</p>
     </div>
   );
