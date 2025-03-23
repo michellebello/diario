@@ -100,7 +100,7 @@ function Transactions() {
   return (
     <div className="main-content">
       <div className="topTransaction">
-        <p className="title">Tracked expenses</p>
+        <p className="title">Transactions Table View </p>
 
         <div className="fromTo">
           <p className="from">FROM</p>

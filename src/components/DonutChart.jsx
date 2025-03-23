@@ -86,7 +86,7 @@ function DonutChart() {
 
   return (
     <div className="main-content">
-      <p className="content-title">Transaction Breakdown</p>
+      <p className="content-title">Transactions Donut Chart View</p>
       <div className="flex-content">
         <div className="donut-chart-container">
           <svg ref={svgReference}></svg>
