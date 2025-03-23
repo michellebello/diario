@@ -1,42 +1,38 @@
-// import React, { useState, useEffect } from "react";
-// import "../styles/donutchart.css";
-// import Network from "/Users/michelle/code/diario/src/utils/network.js";
+import React from "react";
+import "../styles/donutchart.css";
+import * as d3 from "d3";
 
-// function TransactionsBreakdown() {
-//   const network = new Network();
-//   const [transactionMap, setTransactionMap] = useState(new Map());
+function TransactionsBreakdown({ transactionMap }) {
+  return (
+    <div className="total-legend">
+      {Array.from(transactionMap.entries()).map(([category, total]) => (
+        <div key={category} className="legend-item">
+          <span
+            className="legend-color"
+            style={{
+              backgroundColor: d3
+                .scaleOrdinal()
+                .domain(Array.from(transactionMap.keys()))
+                .range([
+                  "#8B5E83",
+                  "#6A944D",
+                  "#DD5896",
+                  "#48A9A6",
+                  "#4281A4",
+                  "#D4C5E2",
+                  "#FCB97D",
+                  "#EF6F6C",
+                  "#775B59",
+                ])(category),
+            }}
+          ></span>
+          <span>
+            {category}: {total}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-//   const getTransactionBreakdown = async () => {
-//     const result = await network.get("/transactions");
-//     const transactionData = result.data;
-//     const totalPerCategory = new Map();
-//     for (let transaction of transactionData) {
-//       const category = transaction.type;
-//       if (totalPerCategory.has(category)) {
-//         let total = totalPerCategory.get(category);
-//         total = total + transaction.amount;
-//         totalPerCategory.set(category, total);
-//       } else {
-//         totalPerCategory.set(category, transaction.amount);
-//       }
-//     }
-//     setTransactionMap(transactionData);
-//   };
-
-//   useEffect(() => {
-//     getTransactionBreakdown();
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
-
-//   return (
-//     <div className="total-legend">
-//       {transactionMap.forEach((key, value) => {
-//         <div className="legend-row">
-//           return (<p> {transactionMap.key}</p>)
-//         </div>;
-//       })}
-//     </div>
-//   );
-// }
-
-// export default TransactionsBreakdown;
+export default TransactionsBreakdown;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Network from "../utils/network.js";
+import TransactionsBreakdown from "./reusables/TransactionBreakdown.jsx";
 import * as d3 from "d3";
 import "./styles/donutchart.css";
 
@@ -91,34 +92,9 @@ function DonutChart() {
         <div className="donut-chart-container">
           <svg ref={svgReference}></svg>
         </div>
-        <div className="total-legend">
-          {Array.from(transactionMap.entries()).map(([category, total]) => (
-            <div key={category} className="legend-item">
-              <span
-                className="legend-color"
-                style={{
-                  backgroundColor: d3
-                    .scaleOrdinal()
-                    .domain(Array.from(transactionMap.keys()))
-                    .range([
-                      "#8B5E83",
-                      "#6A944D",
-                      "#DD5896",
-                      "#48A9A6",
-                      "#4281A4",
-                      "#D4C5E2",
-                      "#FCB97D",
-                      "#EF6F6C",
-                      "#775B59",
-                    ])(category),
-                }}
-              ></span>
-              <span>
-                {category}: {total}
-              </span>
-            </div>
-          ))}
-        </div>
+        <TransactionsBreakdown
+          transactionMap={transactionMap}
+        ></TransactionsBreakdown>
       </div>
     </div>
   );

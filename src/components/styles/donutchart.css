@@ -1,5 +1,6 @@
 .main-content {
   overflow-y: auto;
+  padding: 20px;
   min-height: 100vh;
   background-color: #fffffc;
   display: flex;
@@ -7,6 +8,7 @@
 }
 
 .content-title {
+  padding: 10px;
   color: black;
   font-size: 20px;
   font-weight: 500;
