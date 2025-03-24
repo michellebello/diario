@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Network from "../utils/network.js";
-import TransactionsBreakdown from "./reusables/TransactionBreakdown.jsx";
+// import TransactionsBreakdown from "./reusables/TransactionBreakdown.jsx";
 import * as d3 from "d3";
 import "./styles/donutchart.css";
 
@@ -63,24 +63,64 @@ function DonutChart() {
       "#EF6F6C", // deposit
       "#775B59", // food
     ]);
-    svg
-      .selectAll("donut_chart")
+
+    const arc = d3
+      .arc()
+      .innerRadius(radius * 0.5)
+      .outerRadius(radius);
+
+    const slices = svg
+      .selectAll("path")
       .data(data_ready)
       .enter()
       .append("path")
-      .attr(
-        "d",
-        d3
-          .arc()
-          .innerRadius(radius * 0.5)
-          .outerRadius(radius)
-      )
+      .attr("d", arc)
       .attr("fill", function (d) {
         return color(d.data[0]);
       })
-      .attr("stroke", "black")
-      .style("stroke-width", "0.5px")
-      .style("opacity", 1);
+      .attr("stroke", "white")
+      .style("stroke-width", "2px");
+
+    slices
+      .on("mouseover", function (e, d) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("transform", "scale(1.1)");
+      })
+      .on("mouseout", function (e, d) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("transform", "scale(1)");
+      });
+    // svg
+    //   .selectAll("donut_chart")
+    //   .data(data_ready)
+    //   .enter()
+    //   .append("path")
+    //   .attr(
+    //     "d",
+    //     d3
+    //       .arc()
+    //       .innerRadius(radius * 0.5)
+    //       .outerRadius(radius)
+    //   )
+    //   .attr("fill", function (d) {
+    //     return color(d.data[0]);
+    //   })
+    //   .attr("stroke", "black")
+    //   .style("stroke-width", "0.5px")
+    //   .style("opacity", 1);
+    svg
+      .selectAll("path")
+      .data(data_ready)
+      .enter()
+      .append("text")
+      .attr("transform", (d) => `translate(${arc.centroid})`)
+      .text((d) => d.data.category)
+      .style("font-size", "10px")
+      .style("fill", "white");
 
     // svg add lines and labels
   }, [transactionMap]);
@@ -92,9 +132,6 @@ function DonutChart() {
         <div className="donut-chart-container">
           <svg ref={svgReference}></svg>
         </div>
-        <TransactionsBreakdown
-          transactionMap={transactionMap}
-        ></TransactionsBreakdown>
       </div>
     </div>
   );
