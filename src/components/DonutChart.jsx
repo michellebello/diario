@@ -81,19 +81,32 @@ function DonutChart() {
       .attr("stroke", "white")
       .style("stroke-width", "2px");
 
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
     slices
       .on("mouseover", function (e, d) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr("transform", "scale(1.1)");
+        tooltip.transition().duration(200).style("opacity", 1);
+        tooltip
+          .html(`Category: ${d.data.category} <br />Value: ${d.data.value}`)
+          .style("left", e.pageX + 10 + "px")
+          .style("top", e.pageY - 20 + "px");
+        // d3.select(this)
+        //   .transition()
+        //   .duration(200)
+        //   .attr("transform", "scale(1.1)");
       })
       .on("mouseout", function (e, d) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr("transform", "scale(1)");
+        tooltip.transition().duration(200).style("opacity", 0);
+        // d3.select(this)
+        //   .transition()
+        //   .duration(200)
+        //   .attr("transform", "scale(1)");
       });
+
     // svg
     //   .selectAll("donut_chart")
     //   .data(data_ready)
