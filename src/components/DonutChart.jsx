@@ -94,48 +94,28 @@ function DonutChart() {
           .html(`Category: ${d.data.category} <br />Value: ${d.data.value}`)
           .style("left", e.pageX + 10 + "px")
           .style("top", e.pageY - 20 + "px");
-        // d3.select(this)
-        //   .transition()
-        //   .duration(200)
-        //   .attr("transform", "scale(1.1)");
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("transform", "scale(1.1)");
       })
       .on("mouseout", function (e, d) {
         tooltip.transition().duration(200).style("opacity", 0);
-        // d3.select(this)
-        //   .transition()
-        //   .duration(200)
-        //   .attr("transform", "scale(1)");
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("transform", "scale(1)");
       });
 
-    // svg
-    //   .selectAll("donut_chart")
-    //   .data(data_ready)
-    //   .enter()
-    //   .append("path")
-    //   .attr(
-    //     "d",
-    //     d3
-    //       .arc()
-    //       .innerRadius(radius * 0.5)
-    //       .outerRadius(radius)
-    //   )
-    //   .attr("fill", function (d) {
-    //     return color(d.data[0]);
-    //   })
-    //   .attr("stroke", "black")
-    //   .style("stroke-width", "0.5px")
-    //   .style("opacity", 1);
     svg
       .selectAll("path")
       .data(data_ready)
       .enter()
-      .append("text")
+      .append("path")
       .attr("transform", (d) => `translate(${arc.centroid})`)
       .text((d) => d.data.category)
       .style("font-size", "10px")
       .style("fill", "white");
-
-    // svg add lines and labels
   }, [transactionMap]);
 
   return (
