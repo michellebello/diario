@@ -6,12 +6,17 @@ import "./styles/donutchart.css";
 
 function DonutChart() {
   const [transactionMap, setTransactionMap] = useState(new Map());
+
+  const [afterDate, setAfterDate] = useState("");
+  const [beforeDate, setBeforeDate] = useState("");
+
   const svgReference = useRef(null);
 
   const network = new Network();
-
-  const transactionsBreakdown = async () => {
-    const result = await network.get("/transactions");
+  const transactionsBreakdown = async (beforeDate, afterDate) => {
+    const result = await network.get(
+      "/transactions?after=" + afterDate + "&before=" + beforeDate
+    );
     const transactionData = result.data;
     const totalPerCategory = new Map();
     for (let transaction of transactionData) {
@@ -29,7 +34,7 @@ function DonutChart() {
   };
 
   useEffect(() => {
-    transactionsBreakdown();
+    transactionsBreakdown(beforeDate, afterDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -120,7 +125,31 @@ function DonutChart() {
 
   return (
     <div className="main-content">
-      <p className="content-title">Transactions Donut Chart View</p>
+      <div className="topTransaction">
+        <p className="content-title">Transactions Donut Chart View</p>
+        <div className="fromTo">
+          <p className="from">FROM</p>
+          <input
+            type="date"
+            className="inputDate"
+            value={afterDate}
+            onChange={(e) => setAfterDate(e.target.value)}
+          ></input>
+          <p className="to">TO</p>
+          <input
+            type="date"
+            className="inputDate"
+            value={beforeDate}
+            onChange={(e) => setBeforeDate(e.target.value)}
+          ></input>
+          <span
+            className="apply-filter-button"
+            // onClick = {}
+          >
+            &rarr;
+          </span>
+        </div>
+      </div>
       <div className="flex-content">
         <div className="donut-chart-container">
           <svg ref={svgReference}></svg>
