@@ -5,6 +5,16 @@ export default function DateRange({
   setBeforeDate,
   apply,
 }) {
+  const checkDateRange = (e) => {
+    const currBeforeDate = e.target.value;
+    const beforeDateComp = new Date(currBeforeDate);
+    const afterDateComp = new Date(afterDate);
+    if (beforeDateComp < afterDateComp) {
+      alert("Incorrect date range. Please try again");
+    } else {
+      setBeforeDate(currBeforeDate);
+    }
+  };
   return (
     <div className="fromTo">
       <p className="from">FROM</p>
@@ -19,10 +29,7 @@ export default function DateRange({
         type="date"
         className="inputDate"
         value={beforeDate}
-        // add validation if(beforeDate > afterDate) { set else { alert ("")}}
-        onChange={(e) => {
-          setBeforeDate(e.target.value);
-        }}
+        onChange={checkDateRange}
       ></input>
       <span className="apply-filter-button" onClick={apply}>
         &rarr;

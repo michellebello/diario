@@ -105,7 +105,8 @@ function Transactions() {
         <DateRange
           afterDate={afterDate}
           setAfterDate={setAfterDate}
-          beforeDate={setBeforeDate}
+          beforeDate={beforeDate}
+          setBeforeDate={setBeforeDate}
           apply={showFilteredTransactions}
         />
       </div>
