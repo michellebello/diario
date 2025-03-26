@@ -3,20 +3,16 @@ import Network from "../utils/network.js";
 // import TransactionsBreakdown from "./reusables/TransactionBreakdown.jsx";
 import * as d3 from "d3";
 import "./styles/donutchart.css";
+import DateRange from "./reusables/DateRange.jsx";
 
 function DonutChart() {
   const [transactionMap, setTransactionMap] = useState(new Map());
 
-  const [afterDate, setAfterDate] = useState("");
-  const [beforeDate, setBeforeDate] = useState("");
-
   const svgReference = useRef(null);
 
   const network = new Network();
-  const transactionsBreakdown = async (beforeDate, afterDate) => {
-    const result = await network.get(
-      "/transactions?after=" + afterDate + "&before=" + beforeDate
-    );
+  const transactionsBreakdown = async () => {
+    const result = await network.get("/transactions");
     const transactionData = result.data;
     const totalPerCategory = new Map();
     for (let transaction of transactionData) {
@@ -34,7 +30,7 @@ function DonutChart() {
   };
 
   useEffect(() => {
-    transactionsBreakdown(beforeDate, afterDate);
+    transactionsBreakdown();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -123,32 +119,22 @@ function DonutChart() {
       .style("fill", "white");
   }, [transactionMap]);
 
+  const [afterDate, setAfterDate] = useState("");
+  const [beforeDate, setBeforeDate] = useState("");
+
   return (
     <div className="main-content">
       <div className="topTransaction">
         <p className="content-title">Transactions Donut Chart View</p>
-        <div className="fromTo">
-          <p className="from">FROM</p>
-          <input
-            type="date"
-            className="inputDate"
-            value={afterDate}
-            onChange={(e) => setAfterDate(e.target.value)}
-          ></input>
-          <p className="to">TO</p>
-          <input
-            type="date"
-            className="inputDate"
-            value={beforeDate}
-            onChange={(e) => setBeforeDate(e.target.value)}
-          ></input>
-          <span
-            className="apply-filter-button"
-            // onClick = {}
-          >
-            &rarr;
-          </span>
-        </div>
+        <DateRange
+          afterDate={afterDate}
+          setAfterDate={setAfterDate}
+          beforeDate={beforeDate}
+          setBeforeDate={setBeforeDate}
+          apply={() =>
+            alert(`${afterDate} ${setAfterDate} ${beforeDate} ${setBeforeDate}`)
+          }
+        />
       </div>
       <div className="flex-content">
         <div className="donut-chart-container">

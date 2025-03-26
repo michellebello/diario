@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DateRange from "./reusables/DateRange";
 import deposit from "./pictures/deposit.png";
 import eatOut from "./pictures/eatout.png";
 import transport from "./pictures/transportation.png";
@@ -101,29 +102,12 @@ function Transactions() {
     <div className="main-content">
       <div className="topTransaction">
         <p className="title">Transactions Table View </p>
-
-        <div className="fromTo">
-          <p className="from">FROM</p>
-          <input
-            type="date"
-            className="inputDate"
-            value={afterDate}
-            onChange={(e) => setAfterDate(e.target.value)}
-          ></input>
-          <p className="to">TO</p>
-          <input
-            type="date"
-            className="inputDate"
-            value={beforeDate}
-            onChange={(e) => setBeforeDate(e.target.value)}
-          ></input>
-          <span
-            className="apply-filter-button"
-            onClick={showFilteredTransactions}
-          >
-            &rarr;
-          </span>
-        </div>
+        <DateRange
+          afterDate={afterDate}
+          setAfterDate={setAfterDate}
+          beforeDate={setBeforeDate}
+          apply={showFilteredTransactions}
+        />
       </div>
 
       {errorMessage && <p className="error-message">{errorMessage}</p>}
