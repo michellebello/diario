@@ -12,7 +12,14 @@ function DonutChart() {
 
   const network = new Network();
   const transactionsBreakdown = async () => {
-    const result = await network.get("/transactions");
+    let result = "";
+    if (beforeDate && afterDate) {
+      result = await network.get(
+        "/transactions?after=" + afterDate + "&before=" + beforeDate
+      );
+    } else {
+      result = await network.get("/transactions");
+    }
     const transactionData = result.data;
     const totalPerCategory = new Map();
     for (let transaction of transactionData) {
@@ -131,9 +138,7 @@ function DonutChart() {
           setAfterDate={setAfterDate}
           beforeDate={beforeDate}
           setBeforeDate={setBeforeDate}
-          apply={() =>
-            alert(`${afterDate} ${setAfterDate} ${beforeDate} ${setBeforeDate}`)
-          }
+          apply={transactionsBreakdown}
         />
       </div>
       <div className="flex-content">
