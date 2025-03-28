@@ -99,7 +99,7 @@ function DonutChart() {
       .on("mouseover", function (e, d) {
         tooltip.transition().duration(200).style("opacity", 1);
         tooltip
-          .html(`Category: ${d.data[0]} <br />Value: ${d.data[1]}`)
+          .html(`Category: ${d.data[0]} <br />Value: $${d.data[1]}`)
           .style("left", e.pageX + 10 + "px")
           .style("top", e.pageY - 20 + "px");
         d3.select(this)
@@ -112,6 +112,7 @@ function DonutChart() {
 
         svg
           .append("text")
+          .attr("class", "hover-label")
           .attr(
             "transform",
             `translate(${arc.centroid(d)[0]}, ${
@@ -120,8 +121,8 @@ function DonutChart() {
           )
           .style("text-anchor", "middle")
           .style("font-size", "12px")
-          .style("fill", "bl")
-          .text(`${d.data[0]}: ${d.data[1]}`);
+          .style("fill", "black")
+          .text(`${d.data[0]}: $${d.data[1]}`);
       })
       .on("mouseout", function (e, d) {
         tooltip.transition().duration(200).style("opacity", 0);
@@ -131,20 +132,6 @@ function DonutChart() {
           .attr("transform", "scale(1)");
         svg.selectAll("text").remove();
       });
-
-    svg
-      .selectAll("text")
-      .data(data_ready)
-      .enter()
-      .append("text")
-      .attr(
-        "transform",
-        (d) => `translate(${arc.centroid(d)[0]}, ${arc.centroid(d)[1]})`
-      )
-      .style("text-anchor", "middle")
-      .style("font-size", "10px")
-      .style("fill", "black")
-      .text((d) => `${d.data[0]}: ${d.data[1]}`);
   }, [transactionMap]);
 
   const [afterDate, setAfterDate] = useState("");
