@@ -124,7 +124,8 @@ function DonutChart() {
             } + ${yOffset})`
           )
           .style("text-anchor", "middle")
-          .style("font-size", "12px")
+          .style("font-size", "14px")
+          .style("font-weight", 300)
           .style("fill", "black")
           .text(`${d.data[0]}: $${d.data[1]}`);
       })
