@@ -99,7 +99,11 @@ function DonutChart() {
       .on("mouseover", function (e, d) {
         tooltip.transition().duration(200).style("opacity", 1);
         tooltip
-          .html(`Category: ${d.data[0]} <br />Value: $${d.data[1]}`)
+          .html(
+            `Category: ${d.data[0]} <br />Value: $${
+              Math.round(d.data[1] * 100) / 100
+            }`
+          )
           .style("left", e.pageX + 10 + "px")
           .style("top", e.pageY - 20 + "px");
         d3.select(this)
