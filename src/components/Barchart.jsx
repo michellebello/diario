@@ -45,11 +45,55 @@ function Barchart() {
 
   useEffect(() => {
     if (transactionMap.size === 0) return;
+    const svgElement = d3.select(svgReference.current);
+    const w = svgElement.node().parentElement.getBoundingClientRect().width;
+    const h = w;
+    svgElement.selectAll("*").remove();
+    const svg = svgElement
+      .attr("viewBox", `0 0 ${w} ${h}`)
+      .append("g")
+      .attr("transform", `translate(${w / 2}, ${h / 2})`);
+    const sortedTransactionMap = new Map(
+      [...transactionMap.entries()].sort((a, b) => b[1] - a[1])
+    );
 
-    // const svgElement = d3.select(svgReference.current);
-    // const w = svgElement.node().parentElement.getBoundingClientRect().width;
-    // const h = w;
-    // const margin = 40;
+    const x = d3
+      .scaleBand()
+      .range([0, w])
+      .domain([...sortedTransactionMap.keys()])
+      .padding(0.2);
+
+    svg
+      .append("g")
+      .attr("transform", `translate(0, ${h})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+
+    const y = d3
+      .scaleLinear()
+      .domain([0, d3.max([...sortedTransactionMap.values()])])
+      .range([h, 0]);
+
+    svg.append("g").call(d3.axisLeft(y));
+
+    svg
+      .selectAll("rect")
+      .data([...sortedTransactionMap.entries()])
+      .enter()
+      .append("rect")
+      .attr("x", function (d) {
+        return x(d[0]);
+      })
+      .attr("y", function (d) {
+        return y(d[1]);
+      })
+      .attr("width", x.bandwidth())
+      .attr("height", function (d) {
+        return h - y(d[1]);
+      })
+      .attr("fill", "#69b3a2");
   }, [transactionMap]);
 
   return (
@@ -62,6 +106,11 @@ function Barchart() {
         setAfterDate={setAfterDate}
         apply={transactionsBreakdown}
       />
+      <div className="flex-content">
+        <div className="donut-chart-container">
+          <svg ref={svgReference}></svg>
+        </div>
+      </div>
     </div>
   );
 }
