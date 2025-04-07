@@ -1,0 +1,26 @@
+.main-content {
+  overflow-y: auto;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #fffffc;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-title {
+  color: black;
+  font-size: 20px;
+  font-weight: 500;
+}
+.flex-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.barchart-container svg {
+  margin-top: 0;
+  width: 20%;
+  height: auto;
+}

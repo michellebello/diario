@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import * as d3 from "d3";
 import Network from "../utils/network.js";
 import DateRange from "./reusables/DateRange.jsx";
-import "./styles/donutchart.css";
+import "./styles/barchart.css";
 
 function Barchart() {
   const [transactionMap, setTransactionMap] = useState(new Map());
@@ -107,7 +107,7 @@ function Barchart() {
         apply={transactionsBreakdown}
       />
       <div className="flex-content">
-        <div className="donut-chart-container">
+        <div className="barchart-container">
           <svg ref={svgReference}></svg>
         </div>
       </div>
