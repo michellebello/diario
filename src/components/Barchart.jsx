@@ -81,6 +81,21 @@ function Barchart() {
       .attr("transform", "translate(-10,0)rotate(-45)")
       .style("text-anchor", "end");
 
+    const color = d3
+      .scaleOrdinal()
+      .domain([...sortedTransactionMap.keys()])
+      .range([
+        "#8B5E83", // shopping
+        "#6A944D", // groceries
+        "#DD5896", // transportation
+        "#48A9A6", // eat out
+        "#4281A4", // entertainment
+        "#D4C5E2", // pet
+        "#FCB97D", // miscellaneous
+        "#EF6F6C", // deposit
+        "#775B59", // food
+      ]);
+
     const y = d3
       .scaleLinear()
       .domain([0, d3.max([...sortedTransactionMap.values()])])
@@ -97,7 +112,7 @@ function Barchart() {
       .attr("y", (d) => y(d[1]))
       .attr("width", x.bandwidth())
       .attr("height", (d) => height - y(d[1]))
-      .attr("fill", "#69b3a2");
+      .attr("fill", (d) => color(d[0]));
   }, [transactionMap]);
 
   return (
