@@ -100,9 +100,9 @@ function DonutChart() {
         tooltip.transition().duration(200).style("opacity", 1);
         tooltip
           .html(
-            `Category: ${d.data[0]} <br />Value: $${
-              Math.round(d.data[1] * 100) / 100
-            }`
+            `Category: ${d.data[0]} <br />Value: $${Math.round(
+              d.data[1] * 0.01
+            )}`
           )
           .style("left", e.pageX + 10 + "px")
           .style("top", e.pageY - 20 + "px");

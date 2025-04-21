@@ -45,27 +45,37 @@ function Barchart() {
 
   useEffect(() => {
     if (transactionMap.size === 0) return;
+
     const svgElement = d3.select(svgReference.current);
-    const w = svgElement.node().parentElement.getBoundingClientRect().width;
-    const h = w;
+    const container = svgElement.node().parentElement;
+    const w = container.getBoundingClientRect().width;
+    const h = 400; // fixed height for clarity
+
+    const margin = { top: 30, right: 30, bottom: 70, left: 60 };
+    const width = w - margin.left - margin.right;
+    const height = h - margin.top - margin.bottom;
+
     svgElement.selectAll("*").remove();
+
     const svg = svgElement
-      .attr("viewBox", `0 0 ${w} ${h}`)
+      .attr("width", w)
+      .attr("height", h)
       .append("g")
-      .attr("transform", `translate(${w / 2}, ${h / 2})`);
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
     const sortedTransactionMap = new Map(
       [...transactionMap.entries()].sort((a, b) => b[1] - a[1])
     );
 
     const x = d3
       .scaleBand()
-      .range([0, w])
+      .range([0, width])
       .domain([...sortedTransactionMap.keys()])
       .padding(0.2);
 
     svg
       .append("g")
-      .attr("transform", `translate(0, ${h})`)
+      .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x))
       .selectAll("text")
       .attr("transform", "translate(-10,0)rotate(-45)")
@@ -74,7 +84,7 @@ function Barchart() {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max([...sortedTransactionMap.values()])])
-      .range([h, 0]);
+      .range([height, 0]);
 
     svg.append("g").call(d3.axisLeft(y));
 
@@ -83,29 +93,25 @@ function Barchart() {
       .data([...sortedTransactionMap.entries()])
       .enter()
       .append("rect")
-      .attr("x", function (d) {
-        return x(d[0]);
-      })
-      .attr("y", function (d) {
-        return y(d[1]);
-      })
+      .attr("x", (d) => x(d[0]))
+      .attr("y", (d) => y(d[1]))
       .attr("width", x.bandwidth())
-      .attr("height", function (d) {
-        return h - y(d[1]);
-      })
+      .attr("height", (d) => height - y(d[1]))
       .attr("fill", "#69b3a2");
   }, [transactionMap]);
 
   return (
     <div className="main-content">
-      <p className="content-title">Transactions Barchart View</p>
-      <DateRange
-        beforeDate={beforeDate}
-        setBeforeDate={setBeforeDate}
-        afterDate={afterDate}
-        setAfterDate={setAfterDate}
-        apply={transactionsBreakdown}
-      />
+      <div className="topTransaction">
+        <p className="content-title">Transactions Barchart View</p>
+        <DateRange
+          beforeDate={beforeDate}
+          setBeforeDate={setBeforeDate}
+          afterDate={afterDate}
+          setAfterDate={setAfterDate}
+          apply={transactionsBreakdown}
+        />
+      </div>
       <div className="flex-content">
         <div className="barchart-container">
           <svg ref={svgReference}></svg>
