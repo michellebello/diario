@@ -22,12 +22,13 @@
 
 .barchart-container {
   margin-top: 0;
+  margin-left: 0;
   width: 65%;
   height: 80%;
 }
 
 .barchart-container svg {
   display: block;
-  width: 100%;
+  width: 100;
   height: auto;
 }

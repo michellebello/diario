@@ -49,7 +49,7 @@ function Barchart() {
     const svgElement = d3.select(svgReference.current);
     const container = svgElement.node().parentElement;
     const w = container.getBoundingClientRect().width;
-    const h = 400; // fixed height for clarity
+    const h = w / 1.5; // fixed height for clarity
 
     const margin = { top: 30, right: 30, bottom: 70, left: 60 };
     const width = w - margin.left - margin.right;
