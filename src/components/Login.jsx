@@ -64,6 +64,7 @@ function Login() {
     <div className="totalPage">
       <div className="signUpForm">
         <img className="logo" src={logo} alt="logo"></img>
+        <p className="form-title">Login</p>
         <div className="entries">
           <LabelInputForm
             label="Username"
