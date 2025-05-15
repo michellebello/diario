@@ -15,11 +15,11 @@
 }
 
 .cuentaLogo {
-  width: 90px;
-  height: 35px;
-  margin-left: 15px;
+  width: 5.8rem;
+  height: 2.5rem;
+  margin-left: 1.2rem;
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
 .barTags {
@@ -44,8 +44,8 @@ li {
   color: #1e1e1e;
   text-align: center;
   text-decoration: none;
-  font-size: 15px;
-  margin-left: 60px;
+  font-size: 1rem;
+  margin-left: 5rem;
   padding: 10px;
   border-radius: 0.5rem;
 }
@@ -70,18 +70,18 @@ li {
   width: 25px;
   height: 25px;
   object-fit: cover;
-  margin-top: 10px;
+  margin-top: 0.5rem;
   margin-bottom: 0px;
-  margin-right: 20px;
+  margin-right: 1.5rem;
   transform: translate(-50%, -50%);
 }
 
 .userButton {
   background-color: #fffffc;
   border-style: none;
-  width: 25px;
-  height: 25px;
-  margin-top: 10px;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 1rem;
 }
 
 .userTab {
@@ -101,8 +101,8 @@ li {
   border-color: #000000;
   background-color: #f2e9e4;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 300;
-  margin-top: 16px;
-  margin-right: 20px;
+  margin-top: 1rem;
+  margin-right: 1.5rem;
 }

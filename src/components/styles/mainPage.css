@@ -7,17 +7,17 @@
 
 .mptitle {
   margin-bottom: 0px;
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
 }
 
 .text {
-  margin-top: 20px;
-  font-size: 30px;
+  margin-top: 1.5rem;
+  font-size: 2rem;
 }
 
 .buttons {
-  margin-top: 4%;
+  gap: 2rem;
   display: flex;
   flex-direction: row;
   align-items: center;
