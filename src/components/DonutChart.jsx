@@ -33,7 +33,6 @@ function DonutChart() {
       }
     }
     setTransactionMap(totalPerCategory);
-    console.log(totalPerCategory);
   };
 
   useEffect(() => {
@@ -55,12 +54,16 @@ function DonutChart() {
       .append("g")
       .attr("transform", `translate(${w / 2}, ${h / 2})`);
 
+    const sortedTransactionMap = new Map(
+      [...transactionMap.entries()].sort((a, b) => b[1] - a[1])
+    );
+
     const pie = d3.pie().value(function (d) {
       return d[1];
     });
-    const data_ready = pie(Array.from(transactionMap.entries()));
+    const data_ready = pie(Array.from(sortedTransactionMap.entries()));
 
-    const color = d3.scaleOrdinal().domain(transactionMap.keys()).range([
+    const color = d3.scaleOrdinal().domain(sortedTransactionMap.keys()).range([
       "#8B5E83", // shopping
       "#6A944D", // groceries
       "#DD5896", // transportation
@@ -97,44 +100,39 @@ function DonutChart() {
 
     slices
       .on("mouseover", function (e, d) {
-        tooltip.transition().duration(200).style("opacity", 1);
-        tooltip
-          .html(
-            `Category: ${d.data[0]} <br />Value: $${Math.round(
-              d.data[1] * 0.01
-            )}`
-          )
-          .style("left", e.pageX + 10 + "px")
-          .style("top", e.pageY - 20 + "px");
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr("transform", "scale(1.1)");
-
-        const yOffset = 5;
-        svg.selectAll(".hover-label").remove();
+        const category = d.data[0];
+        const val = d.data[1];
+        const formattedCat =
+          category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 
         svg
           .append("text")
           .attr("class", "hover-label")
-          .attr(
-            "transform",
-            `translate(${arc.centroid(d)[0]}, ${
-              arc.centroid(d)[1]
-            } + ${yOffset})`
-          )
-          .style("text-anchor", "middle")
-          .style("font-size", "14px")
-          .style("font-weight", 300)
-          .style("fill", "black")
-          .text(`${d.data[0]}: $${d.data[1]}`);
+          .attr("text-anchor", "middle")
+          .selectAll("tspan")
+          .data([formattedCat, `$${val}`])
+          .enter()
+          .append("tspan")
+          .attr("x", 0)
+          .attr("dy", (d, i) => (i === 0 ? 0 : "1.5em"))
+          .text((d) => d);
+
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr("fill", d3.color(color(d.data[0])).darker(0.5));
       })
+
       .on("mouseout", function (e, d) {
         tooltip.transition().duration(200).style("opacity", 0);
         d3.select(this)
           .transition()
           .duration(200)
           .attr("transform", "scale(1)");
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr("fill", color(d.data[0]));
         svg.selectAll("text").remove();
       });
   }, [transactionMap]);
@@ -156,7 +154,7 @@ function DonutChart() {
       </div>
       <div className="flex-content">
         <div className="donut-chart-container">
-          <svg ref={svgReference}></svg>
+          <svg className="donut-chart" ref={svgReference}></svg>
         </div>
       </div>
     </div>

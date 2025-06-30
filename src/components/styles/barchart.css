@@ -32,3 +32,10 @@
   width: 100;
   height: auto;
 }
+
+text {
+  color: black;
+  font-family: "Economica", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+}

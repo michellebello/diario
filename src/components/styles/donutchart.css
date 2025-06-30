@@ -53,3 +53,10 @@
   margin-right: 10px;
   border-radius: 50%;
 }
+
+.donut-chart text {
+  color: black;
+  font-family: "Economica", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+}
