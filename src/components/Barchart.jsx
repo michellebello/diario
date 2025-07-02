@@ -6,6 +6,7 @@ import "./styles/barchart.css";
 
 function Barchart() {
   const [transactionMap, setTransactionMap] = useState(new Map());
+  const [grandTotal, setGrandTotal] = useState(0);
 
   const svgReference = useRef(null);
 
@@ -21,6 +22,7 @@ function Barchart() {
     }
     const transactionData = result.data;
     const totalPerCategory = new Map();
+    let totalExpense = 0;
     for (let transaction of transactionData) {
       const category = transaction.type;
       if (totalPerCategory.has(category)) {
@@ -30,8 +32,10 @@ function Barchart() {
       } else {
         totalPerCategory.set(category, transaction.amount);
       }
+      totalExpense += transaction.amount;
     }
     setTransactionMap(totalPerCategory);
+    setGrandTotal(totalExpense);
   };
 
   useEffect(() => {
@@ -48,9 +52,9 @@ function Barchart() {
     const svgElement = d3.select(svgReference.current);
     const container = svgElement.node().parentElement;
     const w = container.getBoundingClientRect().width;
-    const h = w / 1.5; // fixed height for clarity
+    const h = w / 1.5;
 
-    const margin = { top: 30, right: 30, bottom: 70, left: 60 };
+    const margin = { top: 30, right: 30, bottom: 90, left: 50 };
     const width = w - margin.left - margin.right;
     const height = h - margin.top - margin.bottom;
 
@@ -70,7 +74,7 @@ function Barchart() {
       .scaleBand()
       .range([0, width])
       .domain([...sortedTransactionMap.keys()])
-      .padding(0.2);
+      .padding(0.4);
     svg
       .append("g")
       .attr("transform", `translate(0, ${height})`)
@@ -100,7 +104,7 @@ function Barchart() {
 
     svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
 
-    const bars = svg
+    svg
       .selectAll("rect")
       .data([...sortedTransactionMap.entries()])
       .enter()
@@ -111,47 +115,32 @@ function Barchart() {
       .attr("height", (d) => height - y(d[1]))
       .attr("fill", (d) => color(d[0]));
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
-
-    bars
-      .on("mouseover", function (e, d) {
-        const group = svg.append("g").attr("class", "hover-label-group");
-        const category = d[0];
-        const value = d[1];
-        const formattedCategory =
-          category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
-        const barCenter = x(category) + x.bandwidth() / 2;
-        const labelY = height + 30;
-
-        const text = group
-          .append("text")
-          .attr("x", barCenter)
-          .attr("y", labelY)
-          .attr("text-anchor", "middle")
-          .attr("class", "hover-label");
-
-        text
-          .selectAll("tspan")
-          .data([formattedCategory, `$${value}`])
-          .enter()
-          .append("tspan")
-          .attr("x", barCenter)
-          .attr("dy", (d, i) => (i === 0 ? 0 : "1.5em"))
-          .text((d) => d);
+    // Add fixed labels under bars
+    svg
+      .selectAll(".bar-label")
+      .data([...sortedTransactionMap.entries()])
+      .enter()
+      .append("text")
+      .attr("class", "bar-label")
+      .attr("x", (d) => x(d[0]) + x.bandwidth() / 2)
+      .attr("y", height + 20)
+      .attr("text-anchor", "middle")
+      .each(function (d) {
+        const category =
+          d[0].charAt(0).toUpperCase() + d[0].slice(1).toLowerCase();
+        const value = `$${d[1]}`;
 
         d3.select(this)
-          .transition()
-          .duration(100)
-          .attr("fill", d3.color(color(category)).darker(0.5));
-      })
-      .on("mouseout", function (e, d) {
-        tooltip.transition().duration(200).style("opacity", 0);
-        d3.select(this).transition().duration(100).attr("fill", color(d[0]));
-        svg.selectAll(".hover-label-group").remove();
+          .append("tspan")
+          .attr("x", x(d[0]) + x.bandwidth() / 2)
+          .attr("dy", 0)
+          .text(category);
+
+        d3.select(this)
+          .append("tspan")
+          .attr("x", x(d[0]) + x.bandwidth() / 2)
+          .attr("dy", "1.2em")
+          .text(value);
       });
   }, [transactionMap]);
 
@@ -170,6 +159,9 @@ function Barchart() {
       <div className="flex-content">
         <div className="barchart-container">
           <svg ref={svgReference}></svg>
+          <p className="barchart-total-expense">
+            Total expenses: ${grandTotal.toFixed(2)}
+          </p>
         </div>
       </div>
     </div>

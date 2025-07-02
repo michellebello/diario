@@ -7,6 +7,7 @@ import DateRange from "./reusables/DateRange.jsx";
 
 function DonutChart() {
   const [transactionMap, setTransactionMap] = useState(new Map());
+  const [grandTotal, setGrandTotal] = useState(0);
 
   const svgReference = useRef(null);
 
@@ -22,6 +23,8 @@ function DonutChart() {
     }
     const transactionData = result.data;
     const totalPerCategory = new Map();
+    let totalExpense = 0;
+
     for (let transaction of transactionData) {
       const category = transaction.type;
       if (totalPerCategory.has(category)) {
@@ -31,8 +34,10 @@ function DonutChart() {
       } else {
         totalPerCategory.set(category, transaction.amount);
       }
+      totalExpense += transaction.amount;
     }
     setTransactionMap(totalPerCategory);
+    setGrandTotal(totalExpense);
   };
 
   useEffect(() => {
@@ -92,11 +97,19 @@ function DonutChart() {
       .attr("stroke", "white")
       .style("stroke-width", "2px");
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
+    const centerText = svg
+      .append("text")
+      .attr("class", "center-text")
+      .attr("text-anchor", "middle");
+
+    centerText
+      .selectAll("tspan")
+      .data(["Total Expenses", `$${grandTotal.toFixed(2)}`])
+      .enter()
+      .append("tspan")
+      .attr("x", 0)
+      .attr("dy", (d, i) => (i === 0 ? 0 : "1.2em"))
+      .text((d) => d);
 
     slices
       .on("mouseover", function (e, d) {
@@ -105,37 +118,38 @@ function DonutChart() {
         const formattedCat =
           category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 
-        svg
-          .append("text")
-          .attr("class", "hover-label")
-          .attr("text-anchor", "middle")
+        centerText.selectAll("tspan").remove();
+        centerText
           .selectAll("tspan")
           .data([formattedCat, `$${val}`])
           .enter()
           .append("tspan")
           .attr("x", 0)
-          .attr("dy", (d, i) => (i === 0 ? 0 : "1.5em"))
+          .attr("dy", (d, i) => (i === 0 ? 0 : "1.2em"))
           .text((d) => d);
 
         d3.select(this)
           .transition()
           .duration(100)
-          .attr("fill", d3.color(color(d.data[0])).darker(0.5));
+          .attr("fill", d3.color(color(category)).darker(0.5));
       })
-
       .on("mouseout", function (e, d) {
-        tooltip.transition().duration(200).style("opacity", 0);
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr("transform", "scale(1)");
+        centerText.selectAll("tspan").remove();
+        centerText
+          .selectAll("tspan")
+          .data(["Total Expenses", `$${grandTotal.toFixed(2)}`])
+          .enter()
+          .append("tspan")
+          .attr("x", 0)
+          .attr("dy", (d, i) => (i === 0 ? 0 : "1.2em"))
+          .text((d) => d);
+
         d3.select(this)
           .transition()
           .duration(100)
           .attr("fill", color(d.data[0]));
-        svg.selectAll("text").remove();
       });
-  }, [transactionMap]);
+  }, [transactionMap, grandTotal]);
 
   const [afterDate, setAfterDate] = useState("");
   const [beforeDate, setBeforeDate] = useState("");

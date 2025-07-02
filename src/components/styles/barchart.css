@@ -36,6 +36,17 @@
 text {
   color: black;
   font-family: "Economica", sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 300;
+}
+
+.barchart-total-expense {
+  color: black;
+  font-family: "Economica", sans-serif;
+  font-weight: 300;
+  font-size: 0.9rem;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  align-items: center;
+  justify-self: center;
 }
