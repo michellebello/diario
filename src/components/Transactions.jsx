@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RotatingLines } from "react-loader-spinner";
 import DateRange from "./reusables/DateRange";
 import deposit from "./pictures/deposit.png";
 import eatOut from "./pictures/eatout.png";
@@ -14,6 +15,8 @@ import "./styles/transactions.css";
 
 function Transactions() {
   const network = new Network();
+  const [loadingState, setLoadingState] = useState(false);
+
   const [transactions, setTransactions] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -43,12 +46,16 @@ function Transactions() {
   }, []);
 
   const fetchTransactions = () => {
-    network
-      .get("/transactions")
-      .then((result) => {
+    setLoadingState(true);
+    try {
+      network.get("/transactions").then((result) => {
         setTransactions(result.data);
-      })
-      .catch((err) => console.error(err));
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingState(false);
+    }
   };
 
   const formatDate = (transaction) => {
@@ -156,46 +163,53 @@ function Transactions() {
           <button type="submit">Add Transaction</button>
         </form>
       )}
-
-      <table className="allTransactions">
-        <thead>
-          <tr>
-            <th>{}</th>
-            <th>Expense</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.length > 0 ? (
-            transactions.map((transaction, index) => (
-              <tr
-                key={index}
-                className={index % 2 === 0 ? "even-row" : "odd-row"}
-              >
-                <td>
-                  <img
-                    alt="icon"
-                    className="categoryIcon"
-                    src={categoryToIcon[transaction.type] || misc}
-                  />
-                </td>
-                <td>{transaction.name}</td>
-                <td>${transaction.amount.toFixed(2)}</td>
-                <td>{transaction.type}</td>
-                <td>{formatDate(transaction)}</td>
-              </tr>
-            ))
-          ) : (
+      {loadingState ? (
+        <RotatingLines
+          strokeColor="grey"
+          animationDuration="2.75"
+          visible={true}
+        />
+      ) : (
+        <table className="allTransactions">
+          <thead>
             <tr>
-              <td colSpan="5" className="noTransactions">
-                No transactions
-              </td>
+              <th>{}</th>
+              <th>Expense</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Date</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {transactions.length > 0 ? (
+              transactions.map((transaction, index) => (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "even-row" : "odd-row"}
+                >
+                  <td>
+                    <img
+                      alt="icon"
+                      className="categoryIcon"
+                      src={categoryToIcon[transaction.type] || misc}
+                    />
+                  </td>
+                  <td>{transaction.name}</td>
+                  <td>${transaction.amount.toFixed(2)}</td>
+                  <td>{transaction.type}</td>
+                  <td>{formatDate(transaction)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="noTransactions">
+                  No transactions
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

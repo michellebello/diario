@@ -1,41 +1,52 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import * as d3 from "d3";
+import { RotatingLines } from "react-loader-spinner";
 import Network from "../utils/network.js";
 import DateRange from "./reusables/DateRange.jsx";
 import "./styles/barchart.css";
 
 function Barchart() {
   const [transactionMap, setTransactionMap] = useState(new Map());
+  const [afterDate, setAfterDate] = useState("");
+  const [beforeDate, setBeforeDate] = useState("");
   const [grandTotal, setGrandTotal] = useState(0);
+  const [loadingState, setLoadingState] = useState(false);
 
   const svgReference = useRef(null);
 
   const network = new Network();
   const transactionsBreakdown = async () => {
-    let result = "";
-    if (beforeDate && afterDate) {
-      result = await network.get(
-        "/transactions?after=" + afterDate + "&before=" + beforeDate
-      );
-    } else {
-      result = await network.get("/transactions");
-    }
-    const transactionData = result.data;
-    const totalPerCategory = new Map();
-    let totalExpense = 0;
-    for (let transaction of transactionData) {
-      const category = transaction.type;
-      if (totalPerCategory.has(category)) {
-        let total = totalPerCategory.get(category);
-        total = total + transaction.amount;
-        totalPerCategory.set(category, total);
+    setLoadingState(true);
+    try {
+      let result = "";
+      if (beforeDate && afterDate) {
+        result = await network.get(
+          "/transactions?after=" + afterDate + "&before=" + beforeDate
+        );
       } else {
-        totalPerCategory.set(category, transaction.amount);
+        result = await network.get("/transactions");
       }
-      totalExpense += transaction.amount;
+      const transactionData = result.data;
+      const totalPerCategory = new Map();
+      let totalExpense = 0;
+      for (let transaction of transactionData) {
+        const category = transaction.type;
+        if (totalPerCategory.has(category)) {
+          let total = totalPerCategory.get(category);
+          total = total + transaction.amount;
+          totalPerCategory.set(category, total);
+        } else {
+          totalPerCategory.set(category, transaction.amount);
+        }
+        totalExpense += transaction.amount;
+      }
+      setTransactionMap(totalPerCategory);
+      setGrandTotal(totalExpense);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoadingState(false);
     }
-    setTransactionMap(totalPerCategory);
-    setGrandTotal(totalExpense);
   };
 
   useEffect(() => {
@@ -43,14 +54,14 @@ function Barchart() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [afterDate, setAfterDate] = useState("");
-  const [beforeDate, setBeforeDate] = useState("");
-
   useEffect(() => {
-    if (transactionMap.size === 0) return;
+    if (transactionMap.size === 0 || !svgReference.current) return;
 
     const svgElement = d3.select(svgReference.current);
-    const container = svgElement.node().parentElement;
+    const node = svgElement.node();
+    if (!node || !node.parentElement) return;
+
+    const container = node.parentElement;
     const w = container.getBoundingClientRect().width;
     const h = w / 1.5;
 
@@ -157,12 +168,20 @@ function Barchart() {
         />
       </div>
       <div className="flex-content">
-        <div className="barchart-container">
-          <svg ref={svgReference}></svg>
-          <p className="barchart-total-expense">
-            Total expenses: ${grandTotal.toFixed(2)}
-          </p>
-        </div>
+        {loadingState ? (
+          <RotatingLines
+            strokeColor="grey"
+            animationDuration="2.75"
+            visible={true}
+          />
+        ) : (
+          <div className="barchart-container">
+            <svg ref={svgReference}></svg>
+            <p className="barchart-total-expense">
+              Total expenses: ${grandTotal.toFixed(2)}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
