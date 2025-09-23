@@ -45,20 +45,8 @@
   width: 80%;
 }
 
-.signUpButton,
-.loginButton {
-  margin-top: 2%;
-  width: 80%;
-  padding: 5px;
-  background-color: #4843ae;
-  border-style: none;
-  color: #ffffff;
-  font-size: 1rem;
-  font-family: "Economica", sans-serif;
-  border-radius: 5px;
-}
-
-.loginButton {
+.loginButton,
+.signUpButton {
   margin-top: 3%;
   width: 100%;
   padding: 7px;

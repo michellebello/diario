@@ -37,8 +37,9 @@ function TopBar() {
     const currSession = getTokenHeader();
     await network.post("/auth/logout", currSession);
     clearToken();
-    console.log("Token removed:", currSession);
     navigate("/");
+
+    console.log("Token removed:", currSession);
   };
 
   return (

@@ -26,7 +26,9 @@ function SignUp() {
     setConfirmPasswordVisible((prev) => !prev);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     setErrorMessage("");
     setSuccessMessage("");
 
@@ -70,12 +72,13 @@ function SignUp() {
       <div className="signUpForm">
         <img className="logo" src={logo} alt="logo" />
         <p className="form-title">Sign up</p>
-        <div className="entries">
+        <form className="entries" onSubmit={handleSubmit}>
           <LabelInputForm
             label="First Name"
             name="firstName"
             type="text"
             value={firstName}
+            autocomplete="Jane"
             onChange={(e) => setFirstName(e.target.value)}
           />
           <LabelInputForm
@@ -83,6 +86,7 @@ function SignUp() {
             name="lastName"
             type="text"
             value={lastName}
+            autocomplete="Doe"
             onChange={(e) => setLastName(e.target.value)}
           />
           <LabelInputForm
@@ -90,6 +94,7 @@ function SignUp() {
             name="username"
             type="text"
             value={username}
+            autocomplete="janedoe"
             onChange={(e) => setUsername(e.target.value)}
           />
           <LabelInputForm
@@ -97,6 +102,7 @@ function SignUp() {
             name="password"
             type={passwordVisible ? "text" : "password"}
             value={password}
+            autocomplete="********"
             onChange={(e) => setPassword(e.target.value)}
           >
             <img
@@ -111,6 +117,7 @@ function SignUp() {
             name="confirmPassword"
             type={confirmPasswordVisible ? "text" : "password"}
             value={confirmPassword}
+            autocomplete="********"
             onChange={(e) => setConfirmPassword(e.target.value)}
           >
             <img
@@ -120,12 +127,13 @@ function SignUp() {
               onClick={toggleConfirmPasswordVisibility}
             />
           </LabelInputForm>
-        </div>
-        {errorMessage && <p className="error">{errorMessage}</p>}
-        {successMessage && <p className="success">{successMessage}</p>}
-        <button className="signUpButton" onClick={handleSubmit}>
-          Register
-        </button>
+
+          {errorMessage && <p className="error">{errorMessage}</p>}
+          {successMessage && <p className="success">{successMessage}</p>}
+          <button className="signUpButton" type="submit">
+            Register
+          </button>
+        </form>
         <div className="loginDiv">
           <p className="underText1">Already registered?</p>
           <Link className="underText2" to="/login">

@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Network from "../utils/network.js";
 // import TransactionsBreakdown from "./reusables/TransactionBreakdown.jsx";
+import { RotatingLines } from "react-loader-spinner";
 import * as d3 from "d3";
 import "./styles/donutchart.css";
 import DateRange from "./reusables/DateRange.jsx";
 
 function DonutChart() {
+  const [loadingState, setLoadingState] = useState(false);
   const [transactionMap, setTransactionMap] = useState(new Map());
   const [grandTotal, setGrandTotal] = useState(0);
 
@@ -13,31 +15,39 @@ function DonutChart() {
 
   const network = new Network();
   const transactionsBreakdown = async () => {
-    let result = "";
-    if (beforeDate && afterDate) {
-      result = await network.get(
-        "/transactions?after=" + afterDate + "&before=" + beforeDate
-      );
-    } else {
-      result = await network.get("/transactions");
-    }
-    const transactionData = result.data;
-    const totalPerCategory = new Map();
-    let totalExpense = 0;
-
-    for (let transaction of transactionData) {
-      const category = transaction.type;
-      if (totalPerCategory.has(category)) {
-        let total = totalPerCategory.get(category);
-        total = total + transaction.amount;
-        totalPerCategory.set(category, total);
+    setLoadingState(true);
+    try {
+      let result = "";
+      if (beforeDate && afterDate) {
+        result = await network.get(
+          "/transactions?after=" + afterDate + "&before=" + beforeDate
+        );
+        console.log(result);
       } else {
-        totalPerCategory.set(category, transaction.amount);
+        result = await network.get("/transactions");
       }
-      totalExpense += transaction.amount;
+      const transactionData = result.data;
+      const totalPerCategory = new Map();
+      let totalExpense = 0;
+
+      for (let transaction of transactionData) {
+        const category = transaction.type;
+        if (totalPerCategory.has(category)) {
+          let total = totalPerCategory.get(category);
+          total = total + transaction.amount;
+          totalPerCategory.set(category, total);
+        } else {
+          totalPerCategory.set(category, transaction.amount);
+        }
+        totalExpense += transaction.amount;
+      }
+      setTransactionMap(totalPerCategory);
+      setGrandTotal(totalExpense);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoadingState(false);
     }
-    setTransactionMap(totalPerCategory);
-    setGrandTotal(totalExpense);
   };
 
   useEffect(() => {
@@ -47,8 +57,10 @@ function DonutChart() {
 
   useEffect(() => {
     if (transactionMap.size === 0) return;
-
     const svgElement = d3.select(svgReference.current);
+    const node = svgElement.node();
+    if (!node || !node.parentElement) return;
+
     const w = svgElement.node().parentElement.getBoundingClientRect().width;
     const h = w;
     const margin = 40;
@@ -167,9 +179,21 @@ function DonutChart() {
         />
       </div>
       <div className="flex-content">
-        <div className="donut-chart-container">
-          <svg className="donut-chart" ref={svgReference}></svg>
-        </div>
+        {loadingState ? (
+          <RotatingLines
+            strokeColor="grey"
+            animationDuration="2.75"
+            visible={true}
+          />
+        ) : (
+          <div className="donut-chart-container">
+            {transactionMap.length > 0 ? (
+              <svg className="donut-chart" ref={svgReference}></svg>
+            ) : (
+              <p className="no-transactions"> No transactions found.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

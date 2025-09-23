@@ -1,5 +1,5 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ProtectedRoute from "./components/styles/ProtectedRoute";
 import MainPage from "./components/MainPage";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/Login";
@@ -16,14 +16,19 @@ function App() {
     { path: "/signup", element: <SignUp /> },
     { path: "/login", element: <SignIn /> },
     {
-      path: "/mycuenta",
-      element: <Layout />,
+      element: <ProtectedRoute />,
       children: [
-        { path: "transactions/table", element: <Transactions /> },
-        { path: "transactions/barchart", element: <Barchart /> },
-        { path: "transactions/donutchart", element: <DonutChart /> },
-        { path: "budgets", element: <Budgets /> },
-        { path: "accounts", element: <Accounts /> },
+        {
+          path: "/mycuenta",
+          element: <Layout />,
+          children: [
+            { path: "transactions/table", element: <Transactions /> },
+            { path: "transactions/barchart", element: <Barchart /> },
+            { path: "transactions/donutchart", element: <DonutChart /> },
+            { path: "budgets", element: <Budgets /> },
+            { path: "accounts", element: <Accounts /> },
+          ],
+        },
       ],
     },
   ]);

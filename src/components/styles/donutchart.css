@@ -60,3 +60,10 @@
   font-size: 1.3rem;
   font-weight: 300;
 }
+
+.no-transactions {
+  text-align: center;
+  padding: 10%;
+  font-size: 0.95rem;
+  font-weight: 300;
+}

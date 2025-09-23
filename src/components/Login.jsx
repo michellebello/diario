@@ -20,7 +20,8 @@ function Login() {
     setPasswordVisible(passwordVisible ? false : true);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const credentials = {
       username,
       password,
@@ -35,6 +36,7 @@ function Login() {
       const network = new Network();
       const result = await network.post("/auth/login", credentials, false);
       const token = result.data;
+      console.log("result from login: " + result.data);
 
       setToken(token);
       navigator("/mycuenta/transactions/table");
@@ -65,20 +67,26 @@ function Login() {
       <div className="signUpForm">
         <img className="logo" src={logo} alt="logo"></img>
         <p className="form-title">Login</p>
-        <div className="entries">
+        <form className="entries" onSubmit={handleSubmit}>
           <LabelInputForm
             label="Username"
             name="username"
             type="text"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            autocomplete="username"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
           ></LabelInputForm>
           <LabelInputForm
             label="Password"
             name="password"
             type={passwordVisible ? "text" : "password"}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            autocomplete="*******"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           >
             <img
               className="eye"
@@ -89,7 +97,7 @@ function Login() {
           </LabelInputForm>
           {errorMessage && <p className="error">{errorMessage}</p>}
           {successMessage && <p className="success">{successMessage}</p>}
-          <button className="loginButton" onClick={handleSubmit}>
+          <button className="loginButton" type="submit">
             Login
           </button>
           <div className="loginDiv">
@@ -98,7 +106,7 @@ function Login() {
               Register here
             </Link>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

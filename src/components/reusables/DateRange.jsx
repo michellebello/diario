@@ -19,6 +19,7 @@ export default function DateRange({
     <div className="fromTo">
       <p className="from">FROM</p>
       <input
+        id="input-date-from"
         type="date"
         className="inputDate"
         value={afterDate}
@@ -26,6 +27,7 @@ export default function DateRange({
       ></input>
       <p className="to">TO</p>
       <input
+        id="input-date-to"
         type="date"
         className="inputDate"
         value={beforeDate}

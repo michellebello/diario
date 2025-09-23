@@ -49,12 +49,15 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
     }
   };
   return (
-    <form className="addItemForm">
+    <form className="addItemForm" id="add-item-form">
       <p className="itemType">{formLabel}</p>
 
       <div className="entry">
-        <label className="entryLabel">Name</label>
+        <label className="entryLabel" for="entry-name">
+          Name
+        </label>
         <input
+          id="entry-name"
           className="entryInput"
           type="text"
           placeholder="Ex. Shake Shack"
@@ -64,8 +67,11 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       </div>
 
       <div className="entry">
-        <label className="entryLabel">Spending Account</label>
+        <label className="entryLabel" for="entry-account">
+          Spending Account
+        </label>
         <select
+          id="entry-account"
           className="entryInput"
           value={selectedAccountId}
           onChange={(e) => setSelectedAccountId(e.target.value)}
@@ -80,8 +86,11 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       </div>
 
       <div className="entry">
-        <label className="entryLabel">Date</label>
+        <label className="entryLabel" for="entry-date">
+          Date
+        </label>
         <input
+          id="entry-date"
           className="entryInput"
           type="date"
           value={date}
@@ -90,8 +99,11 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       </div>
 
       <div className="entry">
-        <label className="entryLabel">Category</label>
+        <label className="entryLabel" for="entry-type">
+          Category
+        </label>
         <select
+          id="entry-type"
           className="entryInput"
           value={type}
           onChange={(e) => setType(e.target.value)}
@@ -109,8 +121,11 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       </div>
 
       <div className="entry">
-        <label className="entryLabel">Amount</label>
+        <label className="entryLabel" htmlFor="entry-amount">
+          Amount
+        </label>
         <input
+          id="entry-amount"
           className="entryInput"
           type="number"
           min="0"

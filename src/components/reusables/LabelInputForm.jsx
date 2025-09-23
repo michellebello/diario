@@ -6,6 +6,7 @@ function LabelInputForm({
   name,
   type,
   value,
+  autocomplete,
   onChange,
   children,
   ...rest
@@ -17,10 +18,12 @@ function LabelInputForm({
       </label>
       <div className="inputContainer">
         <input
+          id={name}
           className="inputForm"
           name={name}
           type={type}
           value={value}
+          autoComplete={autocomplete}
           onChange={onChange}
           {...rest}
         />

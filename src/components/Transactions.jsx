@@ -11,6 +11,7 @@ import pet from "./pictures/pet.png";
 import education from "./pictures/school.svg";
 import misc from "./pictures/misc.png";
 import Network from "../utils/network.js";
+import { Pen, X } from "lucide-react";
 import "./styles/transactions.css";
 
 function Transactions() {
@@ -121,7 +122,11 @@ function Transactions() {
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="transaction-form">
+        <form
+          onSubmit={handleSubmit}
+          id="transaction-form"
+          className="transaction-form"
+        >
           <input
             type="text"
             placeholder="Name"
@@ -198,6 +203,16 @@ function Transactions() {
                   <td>${transaction.amount.toFixed(2)}</td>
                   <td>{transaction.type}</td>
                   <td>{formatDate(transaction)}</td>
+                  <td className="transaction-modify-buttons">
+                    <div className="transaction-modify-buttons-div">
+                      <button className="transaction-button-edit">
+                        <Pen className="transaction-button-symbol"></Pen>
+                      </button>
+                      <button className="transaction-button-delete">
+                        <X className="transaction-button-symbol"></X>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             ) : (
