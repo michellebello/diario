@@ -1,4 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import FormComponent from "./reusables/FormComponent.jsx";
 import { RotatingLines } from "react-loader-spinner";
 import DateRange from "./reusables/DateRange";
 import deposit from "./pictures/deposit.png";
@@ -17,16 +20,16 @@ import "./styles/transactions.css";
 function Transactions() {
   const network = new Network();
   const [loadingState, setLoadingState] = useState(false);
-
   const [transactions, setTransactions] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    amount: "",
-    accountId: "",
-    date: "",
-  });
+  const { formVisibility, formLabel, closeForm } = useOutletContext();
+
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   type: "",
+  //   amount: "",
+  //   accountId: "",
+  //   date: "",
+  // });
   const [errorMessage, setErrorMessage] = useState("");
 
   const categoryToIcon = {
@@ -46,18 +49,21 @@ function Transactions() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchTransactions = () => {
+  const fetchTransactions = async () => {
     setLoadingState(true);
     try {
-      network.get("/transactions").then((result) => {
-        setTransactions(result.data);
-      });
-    } catch (err) {
-      console.error(err);
+      const response = await network.get("/transactions");
+      setTransactions(response.data);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
     } finally {
       setLoadingState(false);
     }
   };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
   const formatDate = (transaction) => {
     if (!transaction.createdOn) return "N/A";
@@ -65,32 +71,9 @@ function Transactions() {
     return `${month}/${day}/${year}`;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setErrorMessage("");
-
-    try {
-      const response = await network.post("/transactions", formData);
-
-      if (response.status >= 200 && response.status < 300) {
-        console.log("Transaction added successfully!");
-        setFormData({
-          name: "",
-          type: "",
-          amount: "",
-          accountId: "",
-          date: "",
-        });
-        setShowForm(false);
-        fetchTransactions();
-        return;
-      }
-
-      setErrorMessage("Something went wrong. Please try again.");
-    } catch (error) {
-      console.error("Failed to add transaction:", error);
-      setErrorMessage("Failed to add transaction. Please try again.");
-    }
+  const handleTransactionAdded = () => {
+    closeForm();
+    fetchTransactions();
   };
 
   const [afterDate, setAfterDate] = useState("");
@@ -106,6 +89,21 @@ function Transactions() {
       });
   };
 
+  const editTransaction = async () => {};
+
+  const deleteTransaction = async (transactionId) => {
+    const response = await network.delete(`/transactions/${transactionId}`);
+    console.log(response);
+    if (response.data === "Successfully deleted transaction") {
+      setTransactions((prev) => {
+        prev.filter((transaction) => transaction.id !== transactionId);
+      });
+      window.location.reload();
+    } else {
+      alert("Could not delete transaction");
+    }
+  };
+
   return (
     <div className="main-content">
       <div className="topTransaction">
@@ -118,55 +116,13 @@ function Transactions() {
           apply={showFilteredTransactions}
         />
       </div>
-
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-      {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          id="transaction-form"
-          className="transaction-form"
-        >
-          <input
-            type="text"
-            placeholder="Name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Category"
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-            required
-          />
-          <input
-            type="number"
-            placeholder="Amount"
-            value={formData.amount}
-            onChange={(e) =>
-              setFormData({ ...formData, amount: e.target.value })
-            }
-            required
-          />
-          <input
-            type="text"
-            placeholder="Account ID"
-            value={formData.accountId}
-            onChange={(e) =>
-              setFormData({ ...formData, accountId: e.target.value })
-            }
-            required
-          />
-          <input
-            type="date"
-            value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            required
-          />
-          <button type="submit">Add Transaction</button>
-        </form>
+      {formVisibility && (
+        <FormComponent
+          formLabel={formLabel}
+          onCancel={closeForm}
+          onTransactionAdded={handleTransactionAdded}
+        />
       )}
       {loadingState ? (
         <RotatingLines
@@ -205,10 +161,16 @@ function Transactions() {
                   <td>{formatDate(transaction)}</td>
                   <td className="transaction-modify-buttons">
                     <div className="transaction-modify-buttons-div">
-                      <button className="transaction-button-edit">
+                      <button
+                        className="transaction-button-edit"
+                        onClick={() => editTransaction(transaction.id)}
+                      >
                         <Pen className="transaction-button-symbol"></Pen>
                       </button>
-                      <button className="transaction-button-delete">
+                      <button
+                        className="transaction-button-delete"
+                        onClick={() => deleteTransaction(transaction.id)}
+                      >
                         <X className="transaction-button-symbol"></X>
                       </button>
                     </div>

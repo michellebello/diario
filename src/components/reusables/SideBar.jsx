@@ -1,23 +1,9 @@
-import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import FormComponent from "./FormComponent.jsx";
 import "../styles/sidebar.css";
 
-function SideBar() {
-  const ADD_ITEMS = [
-    {
-      path: "/mycuenta/transactions/",
-      label: "Expense",
-    },
-    {
-      path: "/mycuenta/transactions/",
-      label: "Deposit",
-    },
-    {
-      path: "/mycuenta/transactions/",
-      label: "Transfer",
-    },
-  ];
+function SideBar({ openForm, activeLabel, setActiveLabel }) {
+  const ADD_ITEMS = ["Expense", "Deposit", "Transfer"];
+
   const VIEW_ITEMS = [
     {
       path: "/mycuenta/transactions/table",
@@ -33,39 +19,28 @@ function SideBar() {
     },
   ];
 
-  const [formLabel, setFormLabel] = useState("");
-  const [formVisibility, setFormVisibility] = useState(false);
-
-  const handleClick = (label) => {
-    setFormLabel(label);
-    setFormVisibility(true);
-  };
-
-  const handleTransactionAdded = () => {
-    setFormVisibility(false);
-  };
-
-  const handleCancel = () => {
-    setFormVisibility(false);
-  };
-
   return (
     <div className="totalSideBar">
       <div className="addItem">
         <p className="sideTitle">Add a new item</p>
+
         {ADD_ITEMS.map((item) => {
+          console.log("rendering item:", item, "activeLabel:", activeLabel);
+
           return (
-            <NavLink
-              className="sideBarLinks"
-              to={item.path}
-              key={item.label}
+            <button
+              key={item}
+              className={
+                "sideBarButtons" + (activeLabel === item ? " active" : "")
+              }
               onClick={(e) => {
                 e.preventDefault();
-                handleClick(item.label);
+                setActiveLabel(item);
+                openForm(item);
               }}
             >
-              {item.label}
-            </NavLink>
+              {item}
+            </button>
           );
         })}
       </div>
@@ -79,13 +54,6 @@ function SideBar() {
           );
         })}
       </div>
-      {formVisibility && (
-        <FormComponent
-          formLabel={formLabel}
-          onCancel={handleCancel}
-          onTransactionAdded={handleTransactionAdded}
-        />
-      )}
     </div>
   );
 }
