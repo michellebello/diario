@@ -14,6 +14,7 @@ import pet from "./pictures/pet.png";
 import education from "./pictures/school.svg";
 import misc from "./pictures/misc.png";
 import Network from "../utils/network.js";
+
 import { Pen, X } from "lucide-react";
 import "./styles/transactions.css";
 
@@ -22,15 +23,6 @@ function Transactions() {
   const [loadingState, setLoadingState] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const { formVisibility, formLabel, closeForm } = useOutletContext();
-
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   type: "",
-  //   amount: "",
-  //   accountId: "",
-  //   date: "",
-  // });
-  const [errorMessage, setErrorMessage] = useState("");
 
   const categoryToIcon = {
     Deposit: deposit,
@@ -67,8 +59,22 @@ function Transactions() {
 
   const formatDate = (transaction) => {
     if (!transaction.createdOn) return "N/A";
-    const [year, month, day] = transaction.createdOn;
-    return `${month}/${day}/${year}`;
+
+    let year, month, day;
+
+    if (Array.isArray(transaction.createdOn)) {
+      // backend returns array
+      [year, month, day] = transaction.createdOn;
+    } else if (typeof transaction.createdOn === "string") {
+      // backend returns string ("YYYY-MM-DDTHH:mm:ss")
+      const [datePart] = transaction.createdOn.split("T"); // taking "YYYY-MM-DD"
+      [year, month, day] = datePart.split("-").map(Number);
+    }
+
+    return `${String(month).padStart(2, "0")}/${String(day).padStart(
+      2,
+      "0"
+    )}/${year}`;
   };
 
   const handleTransactionAdded = () => {
@@ -89,7 +95,96 @@ function Transactions() {
       });
   };
 
-  const editTransaction = async () => {};
+  const [editingRowId, setEditingRowId] = useState("");
+  const [editFormData, setEditFormData] = useState({
+    name: "",
+    type: "",
+    amount: "",
+    createdOn: "",
+  });
+
+  const startEdit = (transaction) => {
+    setEditingRowId(transaction.id);
+    let formattedDate = "";
+
+    if (Array.isArray(transaction.createdOn)) {
+      const [year, month, day] = transaction.createdOn;
+      formattedDate = `${year}-${String(month).padStart(2, "0")}-${String(
+        day
+      ).padStart(2, "0")}`;
+    } else {
+      formattedDate = transaction.createdOn.split("T")[0];
+    }
+
+    if (isNaN(parseFloat(transaction.amount))) {
+      alert("Amount entered is not a number");
+    }
+
+    setEditFormData({
+      name: transaction.name ?? "",
+      type: transaction.type ?? "",
+      amount: transaction.amount != null ? transaction.amount.toString() : "",
+      createdOn: formattedDate,
+    });
+  };
+
+  const cancelEdit = () => {
+    setEditingRowId("");
+    setEditFormData({
+      name: "",
+      type: "",
+      amount: "",
+      createdOn: "",
+    });
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const submitEdit = async (transactionId) => {
+    const parsedAmount = parseFloat(editFormData.amount);
+    if (isNaN(parsedAmount)) {
+      alert("Amount entered is not a number");
+      return;
+    }
+
+    try {
+      const payload = {
+        name: editFormData.name,
+        type: editFormData.type,
+        amount: parseFloat(editFormData.amount),
+        createdOn: editFormData.createdOn + "T00:00:00",
+      };
+      console.log("payload sent was " + JSON.stringify(payload));
+
+      const response = await network.patch(
+        `/transactions/${transactionId}`,
+        payload
+      );
+      console.log("save button response " + JSON.stringify(response));
+      if (response.data === "Transaction successfully updated.") {
+        setTransactions((prev) => {
+          const newTransactionArr = prev.map((t) =>
+            t.id === transactionId ? { ...t, ...payload } : t
+          );
+          console.log(
+            "updated transactions is " + JSON.stringify(newTransactionArr)
+          );
+          return newTransactionArr;
+        });
+        setEditingRowId(null);
+      } else {
+        alert(`An error occured: ${JSON.stringify(response.data)}`);
+      }
+    } catch (err) {
+      alert("Error updating transaction, try again");
+    }
+  };
 
   const deleteTransaction = async (transactionId) => {
     const response = await network.delete(`/transactions/${transactionId}`);
@@ -116,7 +211,6 @@ function Transactions() {
           apply={showFilteredTransactions}
         />
       </div>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
       {formVisibility && (
         <FormComponent
           formLabel={formLabel}
@@ -142,41 +236,107 @@ function Transactions() {
             </tr>
           </thead>
           <tbody>
-            {transactions.length > 0 ? (
-              transactions.map((transaction, index) => (
-                <tr
-                  key={index}
-                  className={index % 2 === 0 ? "even-row" : "odd-row"}
-                >
-                  <td>
-                    <img
-                      alt="icon"
-                      className="categoryIcon"
-                      src={categoryToIcon[transaction.type] || misc}
-                    />
-                  </td>
-                  <td>{transaction.name}</td>
-                  <td>${transaction.amount.toFixed(2)}</td>
-                  <td>{transaction.type}</td>
-                  <td>{formatDate(transaction)}</td>
-                  <td className="transaction-modify-buttons">
-                    <div className="transaction-modify-buttons-div">
-                      <button
-                        className="transaction-button-edit"
-                        onClick={() => editTransaction(transaction.id)}
-                      >
-                        <Pen className="transaction-button-symbol"></Pen>
-                      </button>
-                      <button
-                        className="transaction-button-delete"
-                        onClick={() => deleteTransaction(transaction.id)}
-                      >
-                        <X className="transaction-button-symbol"></X>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+            {transactions && transactions?.length > 0 ? (
+              transactions.map((transaction, index) => {
+                const isEditing = transaction.id === editingRowId;
+                return (
+                  <tr
+                    key={index}
+                    className={index % 2 === 0 ? "even-row" : "odd-row"}
+                  >
+                    <td>
+                      <img
+                        alt="icon"
+                        className="categoryIcon"
+                        src={categoryToIcon[transaction.type] || misc}
+                      />
+                    </td>
+                    <td>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          name="name"
+                          value={editFormData.name || ""}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        transaction.name
+                      )}
+                    </td>
+                    <td>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          name="amount"
+                          value={editFormData.amount || ""}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        `$${transaction.amount.toFixed(2)}`
+                      )}
+                    </td>
+                    <td>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          name="type"
+                          value={editFormData.type || ""}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        transaction.type
+                      )}
+                    </td>
+                    <td>
+                      {isEditing ? (
+                        <input
+                          type="date"
+                          name="createdOn"
+                          value={editFormData.createdOn}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        formatDate(transaction)
+                      )}
+                    </td>
+                    <td className="transaction-modify-buttons">
+                      <div className="transaction-modify-buttons-div">
+                        {isEditing ? (
+                          <>
+                            <button
+                              className="transaction-button-edit-save"
+                              onClick={() => submitEdit(transaction.id)}
+                            >
+                              Save
+                            </button>
+                            <button
+                              className="transaction-button-edit-cancel"
+                              onClick={() => cancelEdit()}
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              className="transaction-button-edit"
+                              onClick={() => startEdit(transaction)}
+                            >
+                              <Pen className="transaction-button-symbol"></Pen>
+                            </button>
+                            <button
+                              className="transaction-button-delete"
+                              onClick={() => deleteTransaction(transaction.id)}
+                            >
+                              <X className="transaction-button-symbol"></X>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan="5" className="noTransactions">

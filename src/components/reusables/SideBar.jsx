@@ -25,8 +25,6 @@ function SideBar({ openForm, activeLabel, setActiveLabel }) {
         <p className="sideTitle">Add a new item</p>
 
         {ADD_ITEMS.map((item) => {
-          console.log("rendering item:", item, "activeLabel:", activeLabel);
-
           return (
             <button
               key={item}

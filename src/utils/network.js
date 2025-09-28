@@ -25,11 +25,10 @@ export default class Network {
       : axios.post(this._buildUrl(url), body, additionalConfigs);
   }
 
-  patch(url, additionalConfigs) {
-    return axios.patch(
-      this._buildUrl(url),
-      this._getConfigs(additionalConfigs)
-    );
+  patch(url, data, additionalConfigs) {
+    const config = this._getConfigs(additionalConfigs);
+    console.log("Patch config headers:", this._getConfigs(config.headers));
+    return axios.patch(this._buildUrl(url), data, config);
   }
 
   put(url, additionalConfigs) {
