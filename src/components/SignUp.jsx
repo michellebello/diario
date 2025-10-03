@@ -133,13 +133,14 @@ function SignUp() {
           <button className="signUpButton" type="submit">
             Register
           </button>
+
+          <div className="loginDiv">
+            <p className="underText1">Already registered?</p>
+            <Link className="underText2" to="/login">
+              Login here
+            </Link>
+          </div>
         </form>
-        <div className="loginDiv">
-          <p className="underText1">Already registered?</p>
-          <Link className="underText2" to="/login">
-            Login here
-          </Link>
-        </div>
       </div>
     </div>
   );

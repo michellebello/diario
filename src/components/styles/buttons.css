@@ -22,7 +22,7 @@
 
 .label {
   margin-left: 0.7rem;
-  font-size: 1.2rem;
+  font-size: clamp(1.2rem 1.5vw, 1.5rem);
   font-family: "Economica", sans-serif;
 }
 
@@ -30,4 +30,28 @@
   font-size: 1.2rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .totalbutton {
+    width: 5.5rem;
+    height: 2rem;
+  }
+
+  .smallbutton {
+    background-color: #6c63ff;
+    height: 2rem;
+  }
+
+  .label {
+    margin-left: 0.4rem;
+    font-size: 0.85rem;
+    font-family: "Economica", sans-serif;
+  }
+
+  .arrow {
+    font-size: 0.85rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+  }
 }

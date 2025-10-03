@@ -8,7 +8,7 @@
 .labelForm {
   margin-bottom: 0.2rem;
   color: black;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 0.8vw, 0.9rem);
   font-weight: 300;
 }
 
@@ -38,4 +38,14 @@
 .inputContainer .eye {
   width: 1.5rem;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .inputContainer .eye {
+    width: 1rem;
+    cursor: pointer;
+  }
+  .labelForm {
+    font-size: 0.8rem;
+  }
 }

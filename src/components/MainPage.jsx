@@ -1,12 +1,14 @@
 import React from "react";
 import main from "./pictures/main.svg";
 import Buttons from "./reusables/Buttons.jsx";
+import logo from "../components/pictures/logo.png";
 import "./styles/mainPage.css";
 
 function MainPage() {
   return (
     <div className="totalMainPage">
       <div className="mainPage">
+        <img src={logo} alt="'logo" className="main-page-logo" />
         <p className="mptitle">Cuenta</p>
         <p className="text">Finance management for everyone</p>
         <div className="buttons">

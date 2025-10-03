@@ -1,19 +1,39 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.totalMainPage {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
 .mainPage {
-  margin-top: 5%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
+.main-page-logo {
+  width: clamp(2rem, 1.5vw, 2.5rem);
+  padding: 0.1rem;
+}
+
 .mptitle {
-  margin-bottom: 0px;
-  font-size: 2.5rem;
+  font-size: clamp(1.7rem, 2.5vw, 2.5rem);
   font-weight: bold;
 }
 
 .text {
-  margin-top: 1.5rem;
-  font-size: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
 }
 
 .buttons {
@@ -27,4 +47,17 @@
 .pic {
   margin-top: 10%;
   width: 40%;
+}
+
+@media (max-width: 768px) {
+  .mainPage {
+    margin-bottom: 30%;
+  }
+  .main-page-logo {
+    width: 1.5rem;
+  }
+
+  .pic {
+    width: 45%;
+  }
 }
