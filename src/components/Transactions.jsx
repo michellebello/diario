@@ -200,10 +200,11 @@ function Transactions() {
   };
 
   return (
-    <div className="main-content">
+    <div className="transaction-content">
       <div className="topTransaction">
-        <p className="title">Transactions Table View </p>
+        <p className="title">Transactions Table View</p>
         <DateRange
+          className="date-range"
           afterDate={afterDate}
           setAfterDate={setAfterDate}
           beforeDate={beforeDate}
@@ -211,6 +212,7 @@ function Transactions() {
           apply={showFilteredTransactions}
         />
       </div>
+
       {formVisibility && (
         <FormComponent
           formLabel={formLabel}
@@ -218,26 +220,27 @@ function Transactions() {
           onTransactionAdded={handleTransactionAdded}
         />
       )}
+
       {loadingState ? (
         <RotatingLines
           strokeColor="grey"
           animationDuration="2.75"
           visible={true}
         />
-      ) : (
-        <table className="allTransactions">
-          <thead>
-            <tr>
-              <th>{}</th>
-              <th>Expense</th>
-              <th>Amount</th>
-              <th>Category</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions && transactions?.length > 0 ? (
-              transactions.map((transaction, index) => {
+      ) : transactions && transactions.length > 0 ? (
+        <div className="allTransactions-div">
+          <table className="allTransactions">
+            <thead>
+              <tr>
+                <th>{}</th>
+                <th>Expense</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((transaction, index) => {
                 const isEditing = transaction.id === editingRowId;
                 return (
                   <tr
@@ -311,7 +314,7 @@ function Transactions() {
                             </button>
                             <button
                               className="transaction-button-edit-cancel"
-                              onClick={() => cancelEdit()}
+                              onClick={cancelEdit}
                             >
                               Cancel
                             </button>
@@ -322,13 +325,13 @@ function Transactions() {
                               className="transaction-button-edit"
                               onClick={() => startEdit(transaction)}
                             >
-                              <Pen className="transaction-button-symbol"></Pen>
+                              <Pen className="transaction-button-symbol" />
                             </button>
                             <button
                               className="transaction-button-delete"
                               onClick={() => deleteTransaction(transaction.id)}
                             >
-                              <X className="transaction-button-symbol"></X>
+                              <X className="transaction-button-symbol" />
                             </button>
                           </>
                         )}
@@ -336,16 +339,12 @@ function Transactions() {
                     </td>
                   </tr>
                 );
-              })
-            ) : (
-              <tr>
-                <td colSpan="5" className="noTransactions">
-                  No transactions
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="no-transactions">No transactions found</p>
       )}
     </div>
   );

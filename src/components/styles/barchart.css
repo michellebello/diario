@@ -1,52 +1,109 @@
 .main-content {
   overflow-y: auto;
-  padding: 20px;
   min-height: 100vh;
+  width: 100%;
   background-color: #fffffc;
   display: flex;
   flex-direction: column;
 }
 
+.topTransaction {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .content-title {
   color: black;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 400;
+  margin-left: 0.2rem;
+  margin-right: 0.4em;
 }
+
 .flex-content {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 100%;
   height: 100%;
 }
 
+.total-barchart {
+  width: 100%;
+  margin: 0 auto;
+}
+
 .barchart-container {
-  margin-top: 0;
-  margin-left: 0;
-  width: 65%;
-  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
 }
 
-.barchart-container svg {
-  display: block;
-  width: 100;
+.barchart-svg {
+  width: 80%;
   height: auto;
+  aspect-ratio: 3 / 2;
+  overflow: visible;
+  display: block;
 }
 
-text {
+.barchart-svg text {
   color: black;
   font-family: "Economica", sans-serif;
-  font-size: 0.75rem;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
   font-weight: 300;
+  padding: 0.1rem;
 }
 
 .barchart-total-expense {
   color: black;
+  background-color: rgb(211, 206, 199);
   font-family: "Economica", sans-serif;
   font-weight: 300;
-  font-size: 0.9rem;
-  margin-top: 0%;
-  margin-bottom: 0%;
-  align-items: center;
-  justify-self: center;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  padding: 0.3rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.no-transactions {
+  text-align: center;
+  padding: 10%;
+  font-size: clamp(1rem, 1vw, 1.2rem);
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .topTransaction {
+    padding: 0;
+    margin: 0;
+  }
+  .content-title {
+    font-size: clamp(0.95rem, 1vw, 1rem);
+    margin-left: 0.05rem;
+  }
+
+  .barchart-container {
+    width: 100%;
+  }
+  .barchart-svg {
+    margin-left: 0.7rem;
+    width: 98%;
+    height: auto;
+    aspect-ratio: 2/1.6;
+  }
+
+  .barchart-svg text {
+    font-size: clamp(0.55rem, 1.5vw, 1rem);
+  }
+
+  .no-transactions {
+    padding: 7%;
+    font-size: clamp(0.9rem, 1vw, 1rem);
+  }
 }

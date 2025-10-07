@@ -1,69 +1,91 @@
 .main-content {
-  overflow-y: auto;
-  padding: 20px;
-  min-height: 100vh;
-  background-color: #fffffc;
   display: flex;
   flex-direction: column;
 }
 
+.topTransaction {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .content-title {
   color: black;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 400;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
 }
+
 .flex-content {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: auto;
   width: 100%;
-  height: 100%;
 }
 
 .donut-chart-container {
-  /* flex: 2; */
-  margin-top: 0;
-  width: 65%;
-  height: 80%;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .donut-chart-container svg {
-  margin-top: 0;
-  width: 70%;
-  height: auto;
-}
-
-.total-legend {
-  margin-top: 5%;
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  width: 20%;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 1rem;
-}
-
-.legend-color {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  border-radius: 50%;
+  width: 55%;
+  max-height: 30rem;
+  aspect-ratio: 1 / 1;
+  overflow: visible;
 }
 
 .donut-chart text {
   color: black;
   font-family: "Economica", sans-serif;
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 2vw, 3rem);
   font-weight: 300;
 }
 
 .no-transactions {
   text-align: center;
   padding: 10%;
-  font-size: 0.95rem;
+  font-size: clamp(1rem, 1vw, 1.2rem);
   font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .topTransaction {
+    padding: 0;
+    margin: 0;
+  }
+
+  .content-title {
+    font-size: clamp(0.95rem, 1vw, 1rem);
+    margin-left: 0rem;
+  }
+
+  .donut-chart-container {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .donut-chart-container svg {
+    width: 70%;
+    aspect-ratio: 1 / 1;
+    overflow: visible;
+  }
+
+  .donut-chart text {
+    color: black;
+    font-family: "Economica", sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+  .no-transactions {
+    padding: 7%;
+    font-size: clamp(0.9rem, 1vw, 1rem);
+  }
 }

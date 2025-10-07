@@ -1,3 +1,5 @@
+import "../styles/transactions.css";
+
 export default function DateRange({
   afterDate,
   setAfterDate,
@@ -16,26 +18,34 @@ export default function DateRange({
     }
   };
   return (
-    <div className="fromTo">
-      <p className="from">FROM</p>
-      <input
-        id="input-date-from"
-        type="date"
-        className="inputDate"
-        value={afterDate}
-        onChange={(e) => setAfterDate(e.target.value)}
-      ></input>
-      <p className="to">TO</p>
-      <input
-        id="input-date-to"
-        type="date"
-        className="inputDate"
-        value={beforeDate}
-        onChange={checkDateRange}
-      ></input>
-      <span className="apply-filter-button" onClick={apply}>
-        &rarr;
-      </span>
+    <div className="total-date-range">
+      <div className="date-selectors">
+        <div className="fromTo">
+          <div className="from-to-div">
+            <p className="from">FROM</p>
+            <input
+              id="input-date-from"
+              type="date"
+              className="inputDate"
+              value={afterDate}
+              onChange={(e) => setAfterDate(e.target.value)}
+            ></input>
+          </div>
+          <div className="from-to-div">
+            <p className="to">TO</p>
+            <input
+              id="input-date-to"
+              type="date"
+              className="inputDate"
+              value={beforeDate}
+              onChange={checkDateRange}
+            ></input>
+          </div>
+        </div>
+        <span className="apply-filter-button" onClick={apply}>
+          &rarr;
+        </span>
+      </div>
     </div>
   );
 }

@@ -18,22 +18,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
 
 .main-page-logo {
-  width: clamp(2rem, 1.5vw, 2.5rem);
-  padding: 0.1rem;
+  width: 2rem;
+  padding: 0rem;
 }
 
 .mptitle {
-  font-size: clamp(1.7rem, 2.5vw, 2.5rem);
+  font-size: clamp(2.25rem, 2.5vw, 2.75rem);
   font-weight: bold;
+  padding: 0.5rem;
 }
 
 .text {
   margin-top: 1rem;
-  margin-bottom: 1rem;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
 }
 
 .buttons {
@@ -45,19 +47,26 @@
 }
 
 .pic {
-  margin-top: 10%;
-  width: 40%;
+  margin-top: 5%;
+  width: 55%;
 }
 
 @media (max-width: 768px) {
   .mainPage {
-    margin-bottom: 30%;
+    margin-bottom: 5%;
   }
-  .main-page-logo {
-    width: 1.5rem;
+
+  .mptitle {
+    font-size: clamp(1.7rem, 1.5vw, 2rem);
+    margin-bottom: 0.25rem;
+  }
+
+  .text {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: 0.4rem;
   }
 
   .pic {
-    width: 45%;
+    width: 60%;
   }
 }

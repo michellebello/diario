@@ -55,27 +55,32 @@ function Barchart() {
   }, []);
 
   useEffect(() => {
-    if (transactionMap.size === 0 || !svgReference.current) return;
+    if (!svgReference.current) return;
 
+    const observer = new ResizeObserver(() => {
+      drawChart();
+    });
+
+    observer.observe(svgReference.current.parentElement);
+
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionMap]);
+
+  const drawChart = () => {
     const svgElement = d3.select(svgReference.current);
     const node = svgElement.node();
-    if (!node || !node.parentElement) return;
+    if (!node || !node.parentElement || transactionMap.size === 0) return;
 
     const container = node.parentElement;
     const w = container.getBoundingClientRect().width;
-    const h = w / 1.5;
-
-    const margin = { top: 30, right: 30, bottom: 90, left: 50 };
-    const width = w - margin.left - margin.right;
-    const height = h - margin.top - margin.bottom;
+    const h = w / 1.8;
 
     svgElement.selectAll("*").remove();
 
     const svg = svgElement
-      .attr("width", w)
-      .attr("height", h)
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("viewBox", `0 0 ${w} ${h}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
 
     const sortedTransactionMap = new Map(
       [...transactionMap.entries()].sort((a, b) => b[1] - a[1])
@@ -83,12 +88,12 @@ function Barchart() {
 
     const x = d3
       .scaleBand()
-      .range([0, width])
+      .range([0, w])
       .domain([...sortedTransactionMap.keys()])
       .padding(0.4);
     svg
       .append("g")
-      .attr("transform", `translate(0, ${height})`)
+      .attr("transform", `translate(0, ${h})`)
       .call(d3.axisBottom(x))
       .selectAll("text")
       .remove();
@@ -111,7 +116,7 @@ function Barchart() {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max([...sortedTransactionMap.values()])])
-      .range([height, 0]);
+      .range([h, 0]);
 
     svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
 
@@ -123,7 +128,7 @@ function Barchart() {
       .attr("x", (d) => x(d[0]))
       .attr("y", (d) => y(d[1]))
       .attr("width", x.bandwidth())
-      .attr("height", (d) => height - y(d[1]))
+      .attr("height", (d) => h - y(d[1]))
       .attr("fill", (d) => color(d[0]));
 
     // Add fixed labels under bars
@@ -134,26 +139,26 @@ function Barchart() {
       .append("text")
       .attr("class", "bar-label")
       .attr("x", (d) => x(d[0]) + x.bandwidth() / 2)
-      .attr("y", height + 20)
+      .attr("y", h + 20)
       .attr("text-anchor", "middle")
       .each(function (d) {
         const category =
           d[0].charAt(0).toUpperCase() + d[0].slice(1).toLowerCase();
-        const value = `$${d[1]}`;
+        const value = `$${Number(d[1]).toFixed(2)}`;
 
         d3.select(this)
           .append("tspan")
           .attr("x", x(d[0]) + x.bandwidth() / 2)
           .attr("dy", 0)
-          .text(category);
+          .text(category.slice(0, 9));
 
         d3.select(this)
           .append("tspan")
           .attr("x", x(d[0]) + x.bandwidth() / 2)
-          .attr("dy", "1.2em")
+          .attr("dy", "1em")
           .text(value);
       });
-  }, [transactionMap]);
+  };
 
   return (
     <div className="main-content">
@@ -175,11 +180,17 @@ function Barchart() {
             visible={true}
           />
         ) : (
-          <div className="barchart-container">
-            <svg ref={svgReference}></svg>
-            <p className="barchart-total-expense">
-              Total expenses: ${grandTotal.toFixed(2)}
-            </p>
+          <div className="total-barchart">
+            {transactionMap.size > 0 ? (
+              <div className="barchart-container">
+                <svg className="barchart-svg" ref={svgReference}></svg>
+                <p className="barchart-total-expense">
+                  Total expenses: ${grandTotal.toFixed(2)}
+                </p>
+              </div>
+            ) : (
+              <p className="no-transactions">No transactions found.</p>
+            )}
           </div>
         )}
       </div>

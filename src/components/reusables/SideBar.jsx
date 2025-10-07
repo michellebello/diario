@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "../styles/sidebar.css";
 
-function SideBar({ openForm, activeLabel, setActiveLabel }) {
+function SideBar({ open, openForm, activeLabel, setActiveLabel }) {
   const ADD_ITEMS = ["Expense", "Deposit", "Transfer"];
 
   const VIEW_ITEMS = [
@@ -20,7 +20,7 @@ function SideBar({ openForm, activeLabel, setActiveLabel }) {
   ];
 
   return (
-    <div className="totalSideBar">
+    <div className={`totalSideBar ${open ? "show" : ""}`}>
       <div className="addItem">
         <p className="sideTitle">Add a new item</p>
 

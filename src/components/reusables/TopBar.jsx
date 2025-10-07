@@ -9,7 +9,7 @@ import logoView from "../pictures/logoView.png";
 import user from "../pictures/user.png";
 import "../styles/cuentaview.css";
 
-function TopBar() {
+function TopBar({ onLogoClick }) {
   const TOPBAR_LINKS = [
     {
       path: "/mycuenta/budgets",
@@ -44,7 +44,13 @@ function TopBar() {
 
   return (
     <div className="totalTopBar">
-      <img src={logoView} className="cuentaLogo" alt="logoView" />
+      <img
+        src={logoView}
+        className="cuentaLogo"
+        alt="logoView"
+        onClick={onLogoClick}
+      />
+
       <div className="barTags">
         <li>
           <ul>
@@ -62,16 +68,18 @@ function TopBar() {
           </ul>
         </li>
       </div>
-      <a className="userButton" href={user} onClick={showUserForm}>
-        <img src={user} className="user" alt="user" />
-        {isVisible && (
-          <div className="userTab">
-            <button className="logout" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
-        )}
-      </a>
+      <div className="user-button-div">
+        <a className="userButton" href={user} onClick={showUserForm}>
+          <img src={user} className="user" alt="user" />
+          {isVisible && (
+            <div className="userTab">
+              <button className="logout" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          )}
+        </a>
+      </div>
     </div>
   );
 }

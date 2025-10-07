@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import Network from "../utils/network.js";
-// import TransactionsBreakdown from "./reusables/TransactionBreakdown.jsx";
 import { RotatingLines } from "react-loader-spinner";
 import * as d3 from "d3";
 import "./styles/donutchart.css";
@@ -22,14 +21,12 @@ function DonutChart() {
         result = await network.get(
           "/transactions?after=" + afterDate + "&before=" + beforeDate
         );
-        console.log(result);
       } else {
         result = await network.get("/transactions");
       }
       const transactionData = result.data;
       const totalPerCategory = new Map();
       let totalExpense = 0;
-
       for (let transaction of transactionData) {
         const category = transaction.type;
         if (totalPerCategory.has(category)) {
@@ -56,18 +53,40 @@ function DonutChart() {
   }, []);
 
   useEffect(() => {
-    if (transactionMap.size === 0) return;
+    if (!svgReference.current) return;
+
+    let timer;
+    const observer = new ResizeObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => drawChart(), 150);
+      drawChart();
+    });
+
+    observer.observe(svgReference.current.parentElement);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionMap]);
+
+  const drawChart = () => {
     const svgElement = d3.select(svgReference.current);
     const node = svgElement.node();
-    if (!node || !node.parentElement) return;
+    if (!node || !node.parentElement || transactionMap.size === 0) return;
 
-    const w = svgElement.node().parentElement.getBoundingClientRect().width;
+    const container = node.parentElement;
+    const w = container.getBoundingClientRect().width;
     const h = w;
-    const margin = 40;
-    const radius = Math.min(w, h) / 2 - margin;
+    const radius = Math.min(w, h) / 2;
     svgElement.selectAll("*").remove();
+
     const svg = svgElement
       .attr("viewBox", `0 0 ${w} ${h}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const g = svg
       .append("g")
       .attr("transform", `translate(${w / 2}, ${h / 2})`);
 
@@ -97,7 +116,7 @@ function DonutChart() {
       .innerRadius(radius * 0.5)
       .outerRadius(radius);
 
-    const slices = svg
+    const slices = g
       .selectAll("path")
       .data(data_ready)
       .enter()
@@ -109,7 +128,7 @@ function DonutChart() {
       .attr("stroke", "white")
       .style("stroke-width", "2px");
 
-    const centerText = svg
+    const centerText = g
       .append("text")
       .attr("class", "center-text")
       .attr("text-anchor", "middle");
@@ -126,7 +145,7 @@ function DonutChart() {
     slices
       .on("mouseover", function (e, d) {
         const category = d.data[0];
-        const val = d.data[1];
+        const val = Number(d.data[1]).toFixed(2);
         const formattedCat =
           category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 
@@ -161,7 +180,7 @@ function DonutChart() {
           .duration(100)
           .attr("fill", color(d.data[0]));
       });
-  }, [transactionMap, grandTotal]);
+  };
 
   const [afterDate, setAfterDate] = useState("");
   const [beforeDate, setBeforeDate] = useState("");
@@ -187,7 +206,7 @@ function DonutChart() {
           />
         ) : (
           <div className="donut-chart-container">
-            {transactionMap.length > 0 ? (
+            {transactionMap.size > 0 ? (
               <svg className="donut-chart" ref={svgReference}></svg>
             ) : (
               <p className="no-transactions"> No transactions found.</p>

@@ -9,6 +9,11 @@ function Layout() {
   const [formLabel, setFormLabel] = useState("");
   const [activeLabel, setActiveLabel] = useState(null);
 
+  const [sideBarVisible, setSideBarVisible] = useState(false);
+  const showSideBar = () => {
+    setSideBarVisible(!sideBarVisible);
+  };
+
   const openForm = (label) => {
     setFormVisibility(true);
     setFormLabel(label);
@@ -23,9 +28,10 @@ function Layout() {
 
   return (
     <div className="layout">
-      <TopBar />
+      <TopBar onLogoClick={showSideBar} />
       <div className="content-container">
         <SideBar
+          open={sideBarVisible}
           openForm={openForm}
           activeLabel={activeLabel}
           setActiveLabel={setActiveLabel}
