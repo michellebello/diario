@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
 import "../styles/sidebar.css";
+import { CATEGORY_LIST } from "../../data/CategoryList";
 
 function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   const [name, setName] = useState("");
@@ -108,15 +109,11 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
-          <option value="">Select a Category</option>
-          <option value="Eat Out">Eat Out</option>
-          <option value="Transportation">Transportation</option>
-          <option value="Groceries">Groceries</option>
-          <option value="Shopping">Shopping</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Pet">Pet</option>
-          <option value="Education">Education</option>
-          <option value="Miscellaneous">Miscellaneous</option>
+          {CATEGORY_LIST.map((cat, idx) => (
+            <option id={idx} value={cat}>
+              {cat}
+            </option>
+          ))}
         </select>
       </div>
 

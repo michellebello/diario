@@ -1,0 +1,11 @@
+.edit-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}

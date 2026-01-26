@@ -36,7 +36,6 @@ function Login() {
       const network = new Network();
       const result = await network.post("/auth/login", credentials, false);
       const token = result.data;
-      console.log("result from login: " + result.data);
 
       setToken(token);
       navigator("/mycuenta/transactions/table");

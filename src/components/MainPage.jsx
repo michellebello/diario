@@ -1,6 +1,5 @@
-import React from "react";
 import main from "./pictures/main.svg";
-import Buttons from "./reusables/Buttons.jsx";
+import Buttons from "./reusables/buttons/Buttons.jsx";
 import logo from "../components/pictures/logo.png";
 import "./styles/mainPage.css";
 

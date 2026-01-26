@@ -4,18 +4,30 @@ import { useOutletContext } from "react-router-dom";
 import FormComponent from "./reusables/FormComponent.jsx";
 import { RotatingLines } from "react-loader-spinner";
 import DateRange from "./reusables/DateRange";
-import deposit from "./pictures/deposit.png";
-import eatOut from "./pictures/eatout.png";
-import transport from "./pictures/transportation.png";
-import groceries from "./pictures/groceries.png";
-import shopping from "./pictures/shopping.png";
-import entertainment from "./pictures/entertainment.webp";
-import pet from "./pictures/pet.png";
-import education from "./pictures/school.svg";
-import misc from "./pictures/misc.png";
+import IconButton from "./reusables/buttons/IconButton.jsx";
+import TextButton from "./reusables/buttons/TextButton.jsx";
+import EditInput from "./reusables/input/EditInput.jsx";
+import OptionInput from "./reusables/input/OptionInput.jsx";
 import Network from "../utils/network.js";
 
-import { Pen, X } from "lucide-react";
+import {
+  ShoppingBasket,
+  Utensils,
+  PiggyBank,
+  Wrench,
+  House,
+  Fuel,
+  TramFront,
+  ShoppingCart,
+  HeartPlus,
+  Dog,
+  GraduationCap,
+  Drama,
+  TvMinimalPlay,
+  Rows3,
+  Plus,
+} from "lucide-react";
+
 import "./styles/transactions.css";
 
 function Transactions() {
@@ -25,15 +37,21 @@ function Transactions() {
   const { formVisibility, formLabel, closeForm } = useOutletContext();
 
   const categoryToIcon = {
-    Deposit: deposit,
-    Food: eatOut,
-    Transportation: transport,
-    Groceries: groceries,
-    Shopping: shopping,
-    Entertainment: entertainment,
-    Pet: pet,
-    Education: education,
-    Miscellaneous: misc,
+    Groceries: ShoppingBasket,
+    "Eat Out": Utensils,
+    Income: PiggyBank,
+    Utilities: Wrench,
+    Rent: House,
+    Car: Fuel,
+    Transportation: TramFront,
+    Shopping: ShoppingCart,
+    Health: HeartPlus,
+    Pet: Dog,
+    Education: GraduationCap,
+    Entertainment: Drama,
+    Streaming: TvMinimalPlay,
+    Miscenallenous: Rows3,
+    Other: Plus,
   };
 
   useEffect(() => {
@@ -73,7 +91,7 @@ function Transactions() {
 
     return `${String(month).padStart(2, "0")}/${String(day).padStart(
       2,
-      "0"
+      "0",
     )}/${year}`;
   };
 
@@ -110,7 +128,7 @@ function Transactions() {
     if (Array.isArray(transaction.createdOn)) {
       const [year, month, day] = transaction.createdOn;
       formattedDate = `${year}-${String(month).padStart(2, "0")}-${String(
-        day
+        day,
       ).padStart(2, "0")}`;
     } else {
       formattedDate = transaction.createdOn.split("T")[0];
@@ -139,6 +157,7 @@ function Transactions() {
   };
 
   const handleEditChange = (e) => {
+    e.preventDefault();
     const { name, value } = e.target;
     setEditFormData((prev) => ({
       ...prev,
@@ -164,16 +183,16 @@ function Transactions() {
 
       const response = await network.patch(
         `/transactions/${transactionId}`,
-        payload
+        payload,
       );
       console.log("save button response " + JSON.stringify(response));
       if (response.data === "Transaction successfully updated.") {
         setTransactions((prev) => {
           const newTransactionArr = prev.map((t) =>
-            t.id === transactionId ? { ...t, ...payload } : t
+            t.id === transactionId ? { ...t, ...payload } : t,
           );
           console.log(
-            "updated transactions is " + JSON.stringify(newTransactionArr)
+            "updated transactions is " + JSON.stringify(newTransactionArr),
           );
           return newTransactionArr;
         });
@@ -201,6 +220,16 @@ function Transactions() {
 
   return (
     <div className="transaction-content">
+      {formVisibility && (
+        <div className="addItemForm-container">
+          <FormComponent
+            formLabel={formLabel}
+            onCancel={closeForm}
+            onTransactionAdded={handleTransactionAdded}
+          />
+        </div>
+      )}
+
       <div className="topTransaction">
         <p className="title">Transactions Table View</p>
         <DateRange
@@ -212,14 +241,6 @@ function Transactions() {
           apply={showFilteredTransactions}
         />
       </div>
-
-      {formVisibility && (
-        <FormComponent
-          formLabel={formLabel}
-          onCancel={closeForm}
-          onTransactionAdded={handleTransactionAdded}
-        />
-      )}
 
       {loadingState ? (
         <RotatingLines
@@ -242,24 +263,25 @@ function Transactions() {
             <tbody>
               {transactions.map((transaction, index) => {
                 const isEditing = transaction.id === editingRowId;
+                const Icon = categoryToIcon[transaction.type] || Plus;
                 return (
                   <tr
                     key={index}
                     className={index % 2 === 0 ? "even-row" : "odd-row"}
                   >
                     <td>
-                      <img
-                        alt="icon"
-                        className="categoryIcon"
-                        src={categoryToIcon[transaction.type] || misc}
-                      />
+                      <Icon
+                        strokeWidth={2}
+                        size={30}
+                        className="transaction-type-icon"
+                      />{" "}
                     </td>
                     <td>
                       {isEditing ? (
-                        <input
-                          type="text"
-                          name="name"
+                        <EditInput
                           value={editFormData.name || ""}
+                          inputName="name"
+                          inputType="text"
                           onChange={handleEditChange}
                         />
                       ) : (
@@ -268,10 +290,10 @@ function Transactions() {
                     </td>
                     <td>
                       {isEditing ? (
-                        <input
-                          type="text"
-                          name="amount"
+                        <EditInput
                           value={editFormData.amount || ""}
+                          inputName="amount"
+                          inputType="text"
                           onChange={handleEditChange}
                         />
                       ) : (
@@ -280,22 +302,24 @@ function Transactions() {
                     </td>
                     <td>
                       {isEditing ? (
-                        <input
-                          type="text"
-                          name="type"
+                        <OptionInput
                           value={editFormData.type || ""}
                           onChange={handleEditChange}
                         />
                       ) : (
-                        transaction.type
+                        <div className="transaction-type-container">
+                          <p className="transaction-type-cat">
+                            {transaction.type}
+                          </p>
+                        </div>
                       )}
                     </td>
                     <td>
                       {isEditing ? (
-                        <input
-                          type="date"
-                          name="createdOn"
+                        <EditInput
                           value={editFormData.createdOn}
+                          inputName="createdOn"
+                          inputType="date"
                           onChange={handleEditChange}
                         />
                       ) : (
@@ -306,33 +330,31 @@ function Transactions() {
                       <div className="transaction-modify-buttons-div">
                         {isEditing ? (
                           <>
-                            <button
-                              className="transaction-button-edit-save"
+                            <TextButton
+                              text="Save"
+                              bgColor="#ffffff"
+                              fontColor="#4e4c4c"
                               onClick={() => submitEdit(transaction.id)}
-                            >
-                              Save
-                            </button>
-                            <button
-                              className="transaction-button-edit-cancel"
+                            />
+                            <TextButton
+                              text="Cancel"
+                              bgColor="#ffffff"
+                              fontColor="#ba6e6eff"
                               onClick={cancelEdit}
-                            >
-                              Cancel
-                            </button>
+                            />
                           </>
                         ) : (
                           <>
-                            <button
-                              className="transaction-button-edit"
+                            <IconButton
+                              type="edit"
+                              color="#797575"
                               onClick={() => startEdit(transaction)}
-                            >
-                              <Pen className="transaction-button-symbol" />
-                            </button>
-                            <button
-                              className="transaction-button-delete"
+                            />
+                            <IconButton
+                              type="delete"
+                              color="#797575"
                               onClick={() => deleteTransaction(transaction.id)}
-                            >
-                              <X className="transaction-button-symbol" />
-                            </button>
+                            />
                           </>
                         )}
                       </div>

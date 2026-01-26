@@ -1,18 +1,18 @@
 .layout {
-  display: flex;
-  flex-direction: column;
   height: 100vh;
-  margin: 0;
   background-color: #fffffc;
 }
 
 .content-container {
   display: flex;
-  flex: 1;
+  height: calc(100vh - var(--topbar-height));
 }
 
 .main-content {
+  position: relative;
   flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
+  padding-inline: 1.5rem;
+  padding-block: 1.5rem;
+
+  box-sizing: border-box;
 }

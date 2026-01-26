@@ -1,0 +1,17 @@
+export const CATEGORY_LIST = [
+  "Groceries",
+  "Eat Out",
+  "Income",
+  "Utilities",
+  "Rent",
+  "Car",
+  "Transportation",
+  "Shopping",
+  "Health",
+  "Pet",
+  "Education",
+  "Entertainment",
+  "Streaming",
+  "Miscenallenous",
+  "Other",
+];

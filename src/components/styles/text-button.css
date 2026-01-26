@@ -1,0 +1,20 @@
+.text-button-container {
+  width: 100;
+  display: flex;
+  align-items: center;
+}
+
+.text-button {
+  padding: 7px 10px;
+  border-radius: 5px;
+  border: none;
+  font-family: "Economica", sans-serif;
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  font-weight: 200;
+  transition: box-shadow 0.5s ease-in-out;
+}
+
+.text-button:hover {
+  box-shadow: 0 0 5px 2px rgba(221, 219, 219, 0.5);
+  cursor: pointer;
+}

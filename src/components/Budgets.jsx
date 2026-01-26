@@ -1,9 +1,12 @@
 import React from "react";
+import "../components/styles/budgets.css";
 
 function Budgets() {
   return (
-    <div className="budgets">
-      <p>My budgets:</p>
+    <div className="budgets-content">
+      <div className="budgets-top">
+        <p className="title">My budgets</p>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,23 @@
+.edit-input-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.edit-input-tag {
+  font-weight: 300;
+  font-family: "Economica", sans-serif;
+  background-color: #ffffff;
+  color: #625d5d;
+  border-radius: 5px;
+  padding: 5px 7px;
+  border: none;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+}
+
+.edit-input-tag:focus {
+  cursor: pointer;
+  outline: 2px solid #e3e3f6c1;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 2px #adacac80;
+}
