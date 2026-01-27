@@ -5,12 +5,14 @@ import Network from "../utils/network.js";
 import AccountCard from "./reusables/AccountCard.jsx";
 import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
 import "./styles/accounts.css";
+import { useAppContext } from "../contexts/context.jsx";
 
 const accountType = ["Credit", "Checking", "Savings", "Investment"];
 
 function Accounts() {
   const network = new Network();
-  const [myAccounts, setMyAccounts] = useState([]);
+  const { userInfo, setUserInfo } = useAppContext();
+  const accounts = userInfo.accounts;
   const [showAddAccount, setShowAddAccount] = useState(false);
   const [newAccount, setNewAccount] = useState({
     name: "",
@@ -22,15 +24,6 @@ function Accounts() {
   const [deleteMessageVisibility, setDeleteMessageVisibility] = useState(false);
   const [accountToDelete, setAccountToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const getAccounts = async () => {
-    const response = await network.get("/accounts");
-    setMyAccounts(response.data);
-  };
-
-  useEffect(() => {
-    getAccounts();
-  }, []);
 
   const addAccount = async (e) => {
     e.preventDefault();
@@ -51,7 +44,10 @@ function Accounts() {
         setErrorMessage("");
         setShowAddAccount(false);
         setNewAccount({ name: "", number: "", type: "", balance: "" });
-        getAccounts();
+        setUserInfo((prev) => ({
+          ...prev,
+          accounts: [...prev.accounts, newAccount],
+        }));
       } else {
         setErrorMessage("Failed to add account");
       }
@@ -62,7 +58,6 @@ function Accounts() {
       }
       setErrorMessage(error.message || "Failed to add account");
     }
-    getAccounts();
   };
 
   const [accountTypeTotal, setAccountTypeTotal] = useState({});
@@ -80,7 +75,10 @@ function Accounts() {
     const response = await network.delete(`/accounts/${accountId}`);
     if (response.data === "account deleted") {
       setDeleteMessageVisibility(false);
-      window.location.reload();
+      setUserInfo((prev) => ({
+        ...prev,
+        accounts: prev.accounts.filter((a) => a.id !== accountId),
+      }));
     } else {
       alert("Error deleting account, please try again");
     }
@@ -91,14 +89,12 @@ function Accounts() {
       {/* top part (title and add account button) */}
       <div className="account-top">
         <p className="title">My accounts</p>
-        <button className="add-button" onClick={() => setShowAddAccount(true)}>
-          <TextButton
-            text="Add acount"
-            bgColor="#4843ae"
-            fontColor="#ffffff"
-            onClick={() => addAccount}
-          />
-        </button>
+        <TextButton
+          text="Add acount"
+          bgColor="#4843ae"
+          fontColor="#ffffff"
+          onClick={() => setShowAddAccount(true)}
+        />
       </div>
 
       {/* total balances per account type */}
@@ -107,8 +103,8 @@ function Accounts() {
       </div>
       {/* account cards */}
       <div className="accounts-body">
-        {myAccounts.length > 0 ? (
-          myAccounts.map((acc) => (
+        {accounts.length > 0 ? (
+          accounts.map((acc) => (
             <AccountCard
               key={acc.id}
               className="account-grid"

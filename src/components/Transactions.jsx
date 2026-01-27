@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { useAppContext } from "../contexts/context.jsx";
 import FormComponent from "./reusables/FormComponent.jsx";
 import { RotatingLines } from "react-loader-spinner";
 import DateRange from "./reusables/DateRange";
@@ -32,8 +33,9 @@ import "./styles/transactions.css";
 
 function Transactions() {
   const network = new Network();
-  const [loadingState, setLoadingState] = useState(false);
-  const [transactions, setTransactions] = useState([]);
+  const { userInfo, setUserInfo } = useAppContext();
+  const transactions = userInfo.transactions;
+  const loadingState = userInfo.loading.transactions;
   const { formVisibility, formLabel, closeForm } = useOutletContext();
 
   const categoryToIcon = {
@@ -53,27 +55,6 @@ function Transactions() {
     Miscenallenous: Rows3,
     Other: Plus,
   };
-
-  useEffect(() => {
-    fetchTransactions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchTransactions = async () => {
-    setLoadingState(true);
-    try {
-      const response = await network.get("/transactions");
-      setTransactions(response.data);
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-    } finally {
-      setLoadingState(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTransactions();
-  }, []);
 
   const formatDate = (transaction) => {
     if (!transaction.createdOn) return "N/A";
@@ -97,7 +78,6 @@ function Transactions() {
 
   const handleTransactionAdded = () => {
     closeForm();
-    fetchTransactions();
   };
 
   const [afterDate, setAfterDate] = useState("");
@@ -106,7 +86,10 @@ function Transactions() {
     await network
       .get("/transactions?after=" + afterDate + "&before=" + beforeDate)
       .then((result) => {
-        setTransactions(result.data);
+        setUserInfo((prev) => ({
+          ...prev,
+          transactions: result.data,
+        }));
       })
       .catch((err) => {
         console.log(err);
@@ -179,23 +162,18 @@ function Transactions() {
         amount: parseFloat(editFormData.amount),
         createdOn: editFormData.createdOn + "T00:00:00",
       };
-      console.log("payload sent was " + JSON.stringify(payload));
 
       const response = await network.patch(
         `/transactions/${transactionId}`,
         payload,
       );
-      console.log("save button response " + JSON.stringify(response));
       if (response.data === "Transaction successfully updated.") {
-        setTransactions((prev) => {
-          const newTransactionArr = prev.map((t) =>
+        setUserInfo((prev) => ({
+          ...prev,
+          transactions: prev.transactions.map((t) =>
             t.id === transactionId ? { ...t, ...payload } : t,
-          );
-          console.log(
-            "updated transactions is " + JSON.stringify(newTransactionArr),
-          );
-          return newTransactionArr;
-        });
+          ),
+        }));
         setEditingRowId(null);
       } else {
         alert(`An error occured: ${JSON.stringify(response.data)}`);
@@ -207,12 +185,11 @@ function Transactions() {
 
   const deleteTransaction = async (transactionId) => {
     const response = await network.delete(`/transactions/${transactionId}`);
-    console.log(response);
     if (response.data === "Successfully deleted transaction") {
-      setTransactions((prev) => {
-        prev.filter((transaction) => transaction.id !== transactionId);
-      });
-      window.location.reload();
+      setUserInfo((prev) => ({
+        ...prev,
+        transactions: prev.transactions.filter((t) => t.id !== transactionId),
+      }));
     } else {
       alert("Could not delete transaction");
     }
@@ -257,6 +234,7 @@ function Transactions() {
                 <th>Expense</th>
                 <th>Amount</th>
                 <th>Category</th>
+                <th>Account</th>
                 <th>Date</th>
               </tr>
             </thead>
@@ -272,7 +250,7 @@ function Transactions() {
                     <td>
                       <Icon
                         strokeWidth={2}
-                        size={30}
+                        size={32}
                         className="transaction-type-icon"
                       />{" "}
                     </td>
@@ -314,6 +292,7 @@ function Transactions() {
                         </div>
                       )}
                     </td>
+                    <td>{transaction.accountId}</td>
                     <td>
                       {isEditing ? (
                         <EditInput

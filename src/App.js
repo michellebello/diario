@@ -9,6 +9,7 @@ import Accounts from "./components/Accounts";
 import Budgets from "./components/Budgets";
 import Barchart from "./components/Barchart";
 import DonutChart from "./components/DonutChart";
+import { AppProvider } from "./contexts/context";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,7 +34,11 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
+  );
 }
 
 export default App;

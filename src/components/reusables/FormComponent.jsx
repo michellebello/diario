@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
 import "../styles/sidebar.css";
-import { CATEGORY_LIST } from "../../data/CategoryList";
+import { CATEGORY_LIST } from "../../data/aux/CategoryList";
 
 function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   const [name, setName] = useState("");
@@ -80,7 +80,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
           <option value="">Select an Account</option>
           {accounts.map((account) => (
             <option key={account.id} value={account.id}>
-              {account.number}
+              {`xxxx ${account.number.slice(account.number.length - 5, account.number.length - 1)}`}
             </option>
           ))}
         </select>

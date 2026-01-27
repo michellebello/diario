@@ -4,6 +4,7 @@ import {
   getTokenHeader,
   clearToken,
 } from "/Users/michelle/code/diario/src/contexts/Session.js";
+import { initialState, useAppContext } from "../../contexts/context";
 import Network from "../../utils/network";
 import logoView from "../pictures/logoView.png";
 import user from "../pictures/user.png";
@@ -25,6 +26,8 @@ function TopBar({ onLogoClick }) {
     },
   ];
 
+  const { _, setUserInfo } = useAppContext();
+
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -35,11 +38,16 @@ function TopBar({ onLogoClick }) {
   const handleLogout = async () => {
     const network = new Network();
     const currSession = getTokenHeader();
-    await network.post("/auth/logout", currSession);
-    clearToken();
-    navigate("/");
+    try {
+      await network.post("/auth/logout", currSession);
+    } catch (err) {
+      console.log("Err " + err);
+    }
 
-    console.log("Token removed:", currSession);
+    clearToken();
+    sessionStorage.removeItem("userInfo");
+    setUserInfo(initialState);
+    navigate("/");
   };
 
   return (
@@ -68,17 +76,15 @@ function TopBar({ onLogoClick }) {
           </ul>
         </li>
       </div>
-      <div className="user-button-div">
-        <a className="userButton" href={user} onClick={showUserForm}>
-          <img src={user} className="user" alt="user" />
-          {isVisible && (
-            <div className="userTab">
-              <button className="logout" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
-          )}
-        </a>
+      <div className="user-button-div" onClick={showUserForm}>
+        <img src={user} className="user" alt="user" />
+        {isVisible && (
+          <div className="userTab">
+            <button className="logout" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

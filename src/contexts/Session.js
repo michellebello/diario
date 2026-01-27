@@ -1,11 +1,11 @@
 const TOKEN_KEY = "CONTADOR_TOKEN";
 
 export const setToken = (token) => {
-  localStorage.setItem(TOKEN_KEY, token);
+  sessionStorage.setItem(TOKEN_KEY, token);
 };
 
 export const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY);
+  return sessionStorage.getItem(TOKEN_KEY);
 };
 
 export const getTokenHeader = () => {
@@ -13,7 +13,7 @@ export const getTokenHeader = () => {
 };
 
 export const clearToken = () => {
-  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
 };
 
 export const isAuthenticated = () => {

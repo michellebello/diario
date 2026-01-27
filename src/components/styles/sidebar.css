@@ -163,7 +163,8 @@ li {
   padding: 0.3rem;
   border: 1px solid #f2e9e4;
   border-radius: 5px;
-  font-weight: 300;
+  font-family: "Economica", sans-serif;
+  color: gray;
 }
 
 .options {

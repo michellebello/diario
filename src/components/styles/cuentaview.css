@@ -82,14 +82,12 @@
 
 .userTab {
   position: absolute;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  z-index: 10000;
 }
 
 .logout {
   position: absolute;
-  left: 0.2rem;
+  left: 1rem;
   top: 0.2rem;
   transform: translate(-50%, -50%);
   padding: 0.2rem;

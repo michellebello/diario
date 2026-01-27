@@ -50,19 +50,27 @@
 .from,
 .to {
   color: black;
-  font-size: clamp(0.7rem, 1vw, 1.1rem);
-  font-weight: 400;
-}
-.inputDate {
-  padding: 0.1rem;
-  background-color: #e0e0ef;
-  border-radius: 5px;
-  border-color: #383671;
-  border-width: 1px;
-  width: 10rem;
-  font-size: clamp(0.7rem, 1vw, 1rem);
+  font-size: clamp(0.75rem, 1.2vw, 1.1rem);
+  font-weight: 300;
 }
 
+.inputDate {
+  padding: 0.1rem;
+  background-color: #e3e1dede;
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+  width: 10rem;
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+  color: #4e4c4c;
+}
+
+.inputDate:focus {
+  cursor: pointer;
+  outline: 2px solid #b0afacde;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 2px #84828280;
+}
 /* transactions table */
 
 .allTransactions-div {
@@ -94,11 +102,19 @@
 }
 
 .allTransactions td {
-  padding: 0.85rem;
+  padding: 1.25rem 0.85rem;
   text-align: left;
   font-size: clamp(0.95rem, 1vw, 1rem);
   font-weight: 200;
   color: #000000;
+}
+
+.allTransactions tbody tr td {
+  transition: background-color 0.2s ease;
+}
+
+.allTransactions tr:hover td {
+  background-image: linear-gradient(#0000000f, #0000000f);
 }
 
 .transaction-type-icon {

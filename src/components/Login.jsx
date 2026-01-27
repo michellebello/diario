@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { setToken } from "../contexts/Session.js";
 import Network from "../utils/network.js";
+import { useAppContext } from "../contexts/context.jsx";
+import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import eye from "./pictures/eye.png";
 import logo from "./pictures/logo.png";
 import LabelInputForm from "./reusables/LabelInputForm";
 import "./styles/signUp.css";
 
 function Login() {
+  const { _, setUserInfo } = useAppContext();
+  const fetchUserData = useUserData();
+
   const navigator = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -34,13 +39,20 @@ function Login() {
 
     try {
       const network = new Network();
+
       const result = await network.post("/auth/login", credentials, false);
       const token = result.data;
 
       setToken(token);
+
+      setUserInfo((prev) => ({
+        ...prev,
+        username,
+        isLoggedIn: true,
+      }));
+
+      await fetchUserData();
       navigator("/mycuenta/transactions/table");
-      setSuccessMessage("Logged in successfully");
-      setErrorMessage("");
     } catch (error) {
       console.error("Error during login:", error);
 

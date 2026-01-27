@@ -1,4 +1,4 @@
-import { CATEGORY_LIST } from "../../../data/CategoryList";
+import { CATEGORY_LIST } from "../../../data/aux/CategoryList";
 import "../../../components/styles/edit-input.css";
 
 function OptionInput({ value, onChange }) {
