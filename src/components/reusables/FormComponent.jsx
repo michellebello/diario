@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
-import "../styles/sidebar.css";
 import { CATEGORY_LIST } from "../../data/aux/CategoryList";
+import "../styles/sidebar.css";
 
 function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   const [name, setName] = useState("");
@@ -51,7 +51,9 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   };
   return (
     <form className="addItemForm" id="add-item-form">
-      <p className="itemType">{formLabel}</p>
+      <div className="itemType-container">
+        <p className="itemType">{formLabel}</p>
+      </div>
 
       <div className="entry">
         <label className="entryLabel" for="entry-name">
@@ -137,7 +139,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
         <button type="button" className="addButton" onClick={addTransaction}>
           Add
         </button>
-        <button type="button" className="cancelButton" onClick={onCancel}>
+        <button type="button" className="addButton" onClick={onCancel}>
           Cancel
         </button>
       </div>

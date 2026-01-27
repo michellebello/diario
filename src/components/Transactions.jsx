@@ -234,7 +234,7 @@ function Transactions() {
                 <th>Expense</th>
                 <th>Amount</th>
                 <th>Category</th>
-                <th>Account</th>
+                <th>Account Number</th>
                 <th>Date</th>
               </tr>
             </thead>
@@ -292,7 +292,7 @@ function Transactions() {
                         </div>
                       )}
                     </td>
-                    <td>{transaction.accountId}</td>
+                    <td>{transaction.accountNumber}</td>
                     <td>
                       {isEditing ? (
                         <EditInput

@@ -91,7 +91,7 @@ function Accounts() {
         <p className="title">My accounts</p>
         <TextButton
           text="Add acount"
-          bgColor="#4843ae"
+          bgColor="#5154a1ff"
           fontColor="#ffffff"
           onClick={() => setShowAddAccount(true)}
         />
@@ -217,8 +217,8 @@ function Accounts() {
                   })
                 }
               >
-                {accountType.map((acc) => (
-                  <option>{acc}</option>
+                {accountType.map((acc, idx) => (
+                  <option key={idx}>{acc}</option>
                 ))}
               </select>
             </div>

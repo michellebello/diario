@@ -14,11 +14,25 @@ export function useUserData() {
 
       const response1 = await network.get("/accounts");
       const response2 = await network.get("/transactions");
+      const accounts = response1.data;
+      const transactions = response2.data;
+
+      const idToNumber = new Map();
+      // making a map from account id to account number;
+      accounts.forEach((acc) => {
+        const displayAccountNum = `${acc.name}  xxxx${acc.number.slice(acc.number.length - 5, acc.number.length - 1)}`;
+        idToNumber.set(acc.id, displayAccountNum);
+      });
+
+      const transactionWithAccNum = transactions.map((t) => ({
+        ...t,
+        accountNumber: idToNumber.get(t.accountId) || null,
+      }));
 
       setUserInfo((prev) => ({
         ...prev,
-        accounts: response1.data,
-        transactions: response2.data,
+        accounts: accounts,
+        transactions: transactionWithAccNum,
       }));
     } catch (err) {
       console.log(err);
