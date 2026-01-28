@@ -1,0 +1,108 @@
+/* budget top cards */
+
+.budget-top-card-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 8rem;
+
+  padding: 1.6rem 1.4rem;
+  border-radius: 16px;
+
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+
+  transition: all 0.25s ease;
+  cursor: default;
+}
+
+.budget-top-card-total:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 12px 20px rgba(0, 0, 0, 0.08),
+    0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.budget-top-card-title {
+  font-family: "Economica" "Sans";
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 200;
+  color: gray;
+}
+
+.budget-top-card-amount {
+  font-family: "Economica" "Sans";
+  font-size: clamp(1.25rem, 1.2vw, 1.5rem);
+  font-weight: 300;
+}
+
+/* budget categories breakdown cards */
+.budget-category-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 8rem;
+
+  padding: 1.6rem 1.4rem;
+  border-radius: 16px;
+
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  gap: 0.75rem;
+}
+
+.budget-category-top-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.budget-category-top-left-part {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.budget-category-top-info {
+  font-size: clamp(1.05rem, 1.2vw, 1.125rem);
+  font-weight: 100;
+}
+
+.budget-category-title {
+  font-size: clamp(1.05rem, 1.2vw, 1.125rem);
+  font-weight: 300;
+}
+
+.budget-category-top-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.budget-category-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  font-weight: 200;
+}
+
+.over-budget {
+  color: red;
+}
+
+.on-budget {
+  color: gray;
+}

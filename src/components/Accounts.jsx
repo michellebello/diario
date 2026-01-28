@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import TextButton from "../components/reusables/buttons/TextButton.jsx";
 import Network from "../utils/network.js";
-import AccountCard from "./reusables/AccountCard.jsx";
+import AccountCard from "./reusables/cards/AccountCard.jsx";
 import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
 import "./styles/accounts.css";
 import { useAppContext } from "../contexts/context.jsx";

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Network from "../../utils/network";
+import Network from "../../../utils/network";
 import { CreditCard, Wallet, PiggyBank, ChartLine } from "lucide-react";
-import { useAppContext } from "../../contexts/context";
-import "../styles/accountcard.css";
+import { useAppContext } from "../../../contexts/context";
+import "../../styles/accountcard.css";
 
 const formatBalance = (balance) => {
   return balance.toLocaleString("en-US", {
