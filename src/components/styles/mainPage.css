@@ -7,10 +7,12 @@
 }
 
 .totalMainPage {
-  width: 100%;
   min-height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
+  padding: 1rem;
+  background-color: #f9f9f4;
 }
 
 .mainPage {
@@ -18,7 +20,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  width: 100%;
+}
+
+.main-page-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .main-page-logo {
@@ -28,27 +39,84 @@
 
 .mptitle {
   font-size: clamp(2.25rem, 2.5vw, 2.75rem);
-  font-weight: bold;
+  font-weight: 500;
   padding: 0.5rem;
 }
 
 .text {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
   font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  font-weight: 200;
+  color: gray;
 }
 
-.buttons {
-  gap: 2rem;
+/* form css */
+
+.main-page-body {
+  width: clamp(27%, 10vw, 32%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #ffffff;
+  border: 1px solid #e5e3df;
+  border-radius: 0.75rem;
+  box-shadow:
+    0 20px 25px rgba(0, 0, 0, 0.1),
+    0 8px 10px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.main-page-switch-buttons-container {
+  width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  position: relative;
+  background-color: #f2efec;
 }
 
-.pic {
-  margin-top: 5%;
-  width: 55%;
+.main-page-switch-buttons {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  font-weight: 200;
+}
+
+.main-page-switch-buttons--active {
+  background: white;
+  color: #1e1e1e;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.main-page-switch-buttons--inactive {
+  color: #717182;
+  background-color: #f2efec;
+}
+
+.main-page-switch-buttons--inactive:hover {
+  color: #717182;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.main-page-switch-buttons:focus-visible {
+  outline: 2px solid #1e1e1e;
+  outline-offset: 2px;
+}
+
+.main-page-form-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 @media (max-width: 768px) {

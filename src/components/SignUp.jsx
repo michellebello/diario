@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import LabelInputForm from "./reusables/LabelInputForm";
 import Network from "../utils/network";
-import logo from "./pictures/logo.png";
-import eye from "./pictures/eye.png";
+import { EyeOff, Eye } from "lucide-react";
 import "./styles/signUp.css";
 
 function SignUp() {
@@ -17,14 +15,6 @@ function SignUp() {
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible((prev) => !prev);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisible((prev) => !prev);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,81 +58,97 @@ function SignUp() {
   };
 
   return (
-    <div className="totalPage">
-      <div className="signUpForm">
-        <img className="logo" src={logo} alt="logo" />
-        <p className="form-title">Sign up</p>
-        <form className="entries" onSubmit={handleSubmit}>
-          <LabelInputForm
-            label="First Name"
-            name="firstName"
-            type="text"
-            value={firstName}
-            autocomplete="Jane"
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <LabelInputForm
-            label="Last Name"
-            name="lastName"
-            type="text"
-            value={lastName}
-            autocomplete="Doe"
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <LabelInputForm
-            label="Username"
-            name="username"
-            type="text"
-            value={username}
-            autocomplete="janedoe"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <LabelInputForm
-            label="Password"
-            name="password"
-            type={passwordVisible ? "text" : "password"}
-            value={password}
-            autocomplete="********"
-            onChange={(e) => setPassword(e.target.value)}
-          >
-            <img
-              className="eye"
-              src={eye}
-              alt="eye"
-              onClick={togglePasswordVisibility}
-            />
-          </LabelInputForm>
-          <LabelInputForm
-            label="Confirm Password"
-            name="confirmPassword"
-            type={confirmPasswordVisible ? "text" : "password"}
-            value={confirmPassword}
-            autocomplete="********"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          >
-            <img
-              className="eye"
-              src={eye}
-              alt="eye"
-              onClick={toggleConfirmPasswordVisibility}
-            />
-          </LabelInputForm>
-
-          {errorMessage && <p className="error">{errorMessage}</p>}
-          {successMessage && <p className="success">{successMessage}</p>}
-          <button className="signUpButton" type="submit">
-            Register
-          </button>
-
-          <div className="loginDiv">
-            <p className="underText1">Already registered?</p>
-            <Link className="underText2" to="/login">
-              Login here
-            </Link>
-          </div>
-        </form>
+    <form className="entries" onSubmit={handleSubmit}>
+      <div className="entries-name">
+        <LabelInputForm
+          label="First Name"
+          name="firstName"
+          type="text"
+          value={firstName}
+          autocomplete="Jane"
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <LabelInputForm
+          label="Last Name"
+          name="lastName"
+          type="text"
+          value={lastName}
+          autocomplete="Doe"
+          onChange={(e) => setLastName(e.target.value)}
+        />
       </div>
-    </div>
+
+      <LabelInputForm
+        label="Username"
+        name="username"
+        type="text"
+        value={username}
+        autocomplete="janedoe"
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <LabelInputForm
+        label="Password"
+        name="password"
+        type={passwordVisible ? "text" : "password"}
+        value={password}
+        autocomplete="********"
+        onChange={(e) => setPassword(e.target.value)}
+      >
+        {passwordVisible ? (
+          <Eye
+            size="1.25rem"
+            color="#717182"
+            strokeWidth={1.5}
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          />
+        ) : (
+          <EyeOff
+            size="1.25rem"
+            color="#717182"
+            strokeWidth={1.5}
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          />
+        )}
+      </LabelInputForm>
+      <LabelInputForm
+        label="Confirm Password"
+        name="confirmPassword"
+        type={confirmPasswordVisible ? "text" : "password"}
+        value={confirmPassword}
+        autocomplete="********"
+        onChange={(e) => setConfirmPassword(e.target.value)}
+      >
+        {" "}
+        {confirmPasswordVisible ? (
+          <Eye
+            size="1.25rem"
+            color="#717182"
+            strokeWidth={1.5}
+            onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+          />
+        ) : (
+          <EyeOff
+            size="1.25rem"
+            color="#717182"
+            strokeWidth={1.5}
+            onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+          />
+        )}
+      </LabelInputForm>
+
+      {errorMessage && <p className="error">{errorMessage}</p>}
+      {successMessage && <p className="success">{successMessage}</p>}
+      <button className="signUpButton" type="submit">
+        Register
+      </button>
+
+      {/* <div className="loginDiv">
+        <p className="underText1">Already registered?</p>
+        <Link className="underText2" to="/login">
+          Login here
+        </Link>
+      </div> */}
+    </form>
   );
 }
 

@@ -56,13 +56,13 @@
 
 .inputDate {
   padding: 0.1rem;
-  background-color: #e3e1dede;
+  background-color: #ddddf3c1;
   border-radius: 5px;
   border: none;
   padding: 5px;
   width: 10rem;
   font-size: clamp(0.7rem, 1.2vw, 1rem);
-  color: #4e4c4c;
+  color: #817e7e;
 }
 
 .inputDate:focus {

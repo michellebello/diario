@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Network from "../../../utils/network";
 import { CreditCard, Wallet, PiggyBank, ChartLine } from "lucide-react";
-import { useAppContext } from "../../../contexts/context";
+import { useUserData } from "../../../data/user/fetchAndSaveUserData";
 import "../../styles/accountcard.css";
 
 const formatBalance = (balance) => {
@@ -35,7 +35,7 @@ function AccountCard({
   setDeleteMessageVisibility,
   setAccountToDelete,
 }) {
-  const { userInfo, setUserInfo } = useAppContext();
+  const fetchUserData = useUserData();
   const network = new Network();
 
   const accNum = number.slice(number.length - 4, number.length);
@@ -82,15 +82,9 @@ function AccountCard({
       const response = await network.patch(`/accounts/${accountId}`, body, {
         "Content-Type": "application/json",
       });
-      console.log("edit account gave " + response.data);
       if (response.data === "Account successfully updated with new data") {
         toggleEdit();
-        setUserInfo((prev) => ({
-          ...prev,
-          accounts: prev.accounts.map((a) =>
-            a.id === accountId ? { ...a, ...body } : a,
-          ),
-        }));
+        await fetchUserData();
       } else {
         alert("Error updating account, please try again");
       }

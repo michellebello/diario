@@ -30,10 +30,12 @@ import {
 } from "lucide-react";
 
 import "./styles/transactions.css";
+import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 
 function Transactions() {
   const network = new Network();
   const { userInfo, setUserInfo } = useAppContext();
+  const fetchUserData = useUserData();
   const transactions = userInfo.transactions;
   const loadingState = userInfo.loading.transactions;
   const { formVisibility, formLabel, closeForm } = useOutletContext();
@@ -123,7 +125,7 @@ function Transactions() {
 
     setEditFormData({
       name: transaction.name ?? "",
-      type: transaction.type ?? "",
+      category: transaction.category ?? "",
       amount: transaction.amount != null ? transaction.amount.toString() : "",
       createdOn: formattedDate,
     });
@@ -168,12 +170,7 @@ function Transactions() {
         payload,
       );
       if (response.data === "Transaction successfully updated.") {
-        setUserInfo((prev) => ({
-          ...prev,
-          transactions: prev.transactions.map((t) =>
-            t.id === transactionId ? { ...t, ...payload } : t,
-          ),
-        }));
+        await fetchUserData();
         setEditingRowId(null);
       } else {
         alert(`An error occured: ${JSON.stringify(response.data)}`);
@@ -184,12 +181,10 @@ function Transactions() {
   };
 
   const deleteTransaction = async (transactionId) => {
+    console.log("transaction id is " + transactionId);
     const response = await network.delete(`/transactions/${transactionId}`);
     if (response.data === "Successfully deleted transaction") {
-      setUserInfo((prev) => ({
-        ...prev,
-        transactions: prev.transactions.filter((t) => t.id !== transactionId),
-      }));
+      await fetchUserData();
     } else {
       alert("Could not delete transaction");
     }
@@ -241,7 +236,7 @@ function Transactions() {
             <tbody>
               {transactions.map((transaction, index) => {
                 const isEditing = transaction.id === editingRowId;
-                const Icon = categoryToIcon[transaction.type] || Plus;
+                const Icon = categoryToIcon[transaction.category] || Plus;
                 return (
                   <tr
                     key={index}
@@ -274,20 +269,22 @@ function Transactions() {
                           inputType="text"
                           onChange={handleEditChange}
                         />
+                      ) : transaction.typeName === "Expense" ? (
+                        `- $${transaction.amount.toFixed(2)}`
                       ) : (
-                        `$${transaction.amount.toFixed(2)}`
+                        `+ $${transaction.amount.toFixed(2)}`
                       )}
                     </td>
                     <td>
                       {isEditing ? (
                         <OptionInput
-                          value={editFormData.type || ""}
+                          value={editFormData.category || ""}
                           onChange={handleEditChange}
                         />
                       ) : (
                         <div className="transaction-type-container">
                           <p className="transaction-type-cat">
-                            {transaction.type}
+                            {transaction.category}
                           </p>
                         </div>
                       )}

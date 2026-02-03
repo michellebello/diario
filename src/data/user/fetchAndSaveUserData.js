@@ -17,22 +17,22 @@ export function useUserData() {
       const accounts = response1.data;
       const transactions = response2.data;
 
-      const idToNumber = new Map();
-      // making a map from account id to account number;
-      accounts.forEach((acc) => {
-        const displayAccountNum = `${acc.name}  xxxx${acc.number.slice(acc.number.length - 5, acc.number.length - 1)}`;
-        idToNumber.set(acc.id, displayAccountNum);
-      });
+      // const idToNumber = new Map();
+      // // making a map from account id to account number;
+      // accounts.forEach((acc) => {
+      //   const displayAccountNum = `${acc.name}  xxxx${acc.number.slice(acc.number.length - 5, acc.number.length - 1)}`;
+      //   idToNumber.set(acc.id, displayAccountNum);
+      // });
 
-      const transactionWithAccNum = transactions.map((t) => ({
-        ...t,
-        accountNumber: idToNumber.get(t.accountId) || null,
-      }));
+      // const transactionWithAccNum = transactions.map((t) => ({
+      //   ...t,
+      //   accountNumber: idToNumber.get(t.accountId) || null,
+      // }));
 
       setUserInfo((prev) => ({
         ...prev,
         accounts: accounts,
-        transactions: transactionWithAccNum,
+        transactions: transactions,
       }));
     } catch (err) {
       console.log(err);

@@ -17,9 +17,9 @@ const getIconColor = (Icon) => {
   if (Icon === TrendingDown) {
     return "#6bbe7eff";
   } else if (Icon === TrendingUp) {
-    return "#dbad44ff";
+    return "#f4c119ff";
   } else {
-    return "#d55959ff";
+    return "#e92424ff";
   }
 };
 
@@ -46,14 +46,14 @@ export function BudgetCategories({ category, total, spent }) {
           </div>
         </div>
         <div className="budget-category-top-buttons">
-          <IconButton type="edit" color="#c8b8d3ff" onClick={dummyFx} />
-          <IconButton type="delete" color="#bdadc9ff" onClick={dummyFx} />
+          <IconButton type="edit" color="#797575" onClick={dummyFx} />
+          <IconButton type="delete" color="#797575" onClick={dummyFx} />
         </div>
       </div>
       <ProgressBar
         completed={percent}
-        bgColor="#aba59cff"
-        baseBgColor="#ece9dfff"
+        bgColor="#babaeac1"
+        baseBgColor="#eeedf6ff"
         height="10px"
         isLabelVisible={false}
       />

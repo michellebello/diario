@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
+import { useAppContext } from "../../contexts/context";
+import { useUserData } from "../../data/user/fetchAndSaveUserData";
 import { CATEGORY_LIST } from "../../data/aux/CategoryList";
 import "../styles/sidebar.css";
 
@@ -10,22 +12,12 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
   const [selectedAccountId, setSelectedAccountId] = useState("");
-  const [accounts, setAccounts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const { userInfo, _ } = useAppContext();
+  const fetchUserData = useUserData();
 
   const network = new Network();
-
-  useEffect(() => {
-    const fetchAccountNumbers = async () => {
-      try {
-        const response = await network.get("/accounts/numbers");
-        setAccounts(response.data);
-      } catch (error) {
-        console.error("Error fetching accounts:", error);
-      }
-    };
-    fetchAccountNumbers();
-  }, []);
+  const accs = userInfo.accounts;
 
   const addTransaction = async () => {
     if (!name || !type || !amount || !date || !selectedAccountId) {
@@ -41,10 +33,14 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
     };
 
     try {
-      await network.post("/transactions", transactionData);
+      const resp = await network.post("/transactions", transactionData);
+      console.log("Sent " + transactionData);
+      console.log(resp);
       setErrorMessage("");
       onTransactionAdded();
       onCancel();
+      // here add GET "/transactions" ?
+      await fetchUserData();
     } catch (error) {
       setErrorMessage(error.response?.data?.message);
     }
@@ -56,7 +52,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       </div>
 
       <div className="entry">
-        <label className="entryLabel" for="entry-name">
+        <label className="entryLabel" htmlFor="entry-name">
           Name
         </label>
         <input
@@ -70,26 +66,26 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       </div>
 
       <div className="entry">
-        <label className="entryLabel" for="entry-account">
+        <label className="entryLabel" htmlFor="entry-account">
           Spending Account
         </label>
         <select
           id="entry-account"
           className="entryInput"
           value={selectedAccountId}
-          onChange={(e) => setSelectedAccountId(e.target.value)}
+          onChange={(e) => setSelectedAccountId(Number(e.target.value))}
         >
           <option value="">Select an Account</option>
-          {accounts.map((account) => (
-            <option key={account.id} value={account.id}>
-              {`xxxx ${account.number.slice(account.number.length - 5, account.number.length - 1)}`}
+          {accs.map((acc) => (
+            <option key={acc.id} value={acc.id}>
+              {acc.number}
             </option>
           ))}
         </select>
       </div>
 
       <div className="entry">
-        <label className="entryLabel" for="entry-date">
+        <label className="entryLabel" htmlFor="entry-date">
           Date
         </label>
         <input
@@ -102,7 +98,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       </div>
 
       <div className="entry">
-        <label className="entryLabel" for="entry-type">
+        <label className="entryLabel" htmlFor="entry-type">
           Category
         </label>
         <select
@@ -112,7 +108,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
           onChange={(e) => setType(e.target.value)}
         >
           {CATEGORY_LIST.map((cat, idx) => (
-            <option id={idx} value={cat}>
+            <option key={idx} value={cat}>
               {cat}
             </option>
           ))}

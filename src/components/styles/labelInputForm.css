@@ -7,8 +7,9 @@
 
 .labelForm {
   margin-bottom: 0.2rem;
-  color: black;
-  font-size: clamp(0.85rem, 0.8vw, 0.9rem);
+  color: #272626;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  font-family: "Economica", sans-serif;
   font-weight: 300;
 }
 
@@ -19,12 +20,23 @@
 
 .inputForm {
   width: 100%;
-  padding: 5px;
-  padding-right: 2.5rem;
-  border: 0.1rem solid #aca9e3;
+  padding: 7px;
+  border: 0.01px #717182;
+  background-color: #f2efec;
   border-radius: 5px;
   box-sizing: border-box;
   font-weight: 400;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  font-family: "Economica", sans-serif;
+  font-weight: 300;
+  color: #717182;
+}
+
+.inputForm:focus {
+  cursor: pointer;
+  outline: 2px solid #e3e3f6c1;
+  border-radius: 5px;
+  box-shadow: 0 0 0.1px 0.4px#717182;
 }
 
 .inputAddon {

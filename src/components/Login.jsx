@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { setToken } from "../contexts/Session.js";
 import Network from "../utils/network.js";
 import { useAppContext } from "../contexts/context.jsx";
 import { useUserData } from "../data/user/fetchAndSaveUserData.js";
-import eye from "./pictures/eye.png";
-import logo from "./pictures/logo.png";
+import { EyeOff, Eye } from "lucide-react";
 import LabelInputForm from "./reusables/LabelInputForm";
 import "./styles/signUp.css";
 
@@ -74,52 +73,49 @@ function Login() {
   };
 
   return (
-    <div className="totalPage">
-      <div className="signUpForm">
-        <img className="logo" src={logo} alt="logo"></img>
-        <p className="form-title">Login</p>
-        <form className="entries" onSubmit={handleSubmit}>
-          <LabelInputForm
-            label="Username"
-            name="username"
-            type="text"
-            value={username}
-            autocomplete="username"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          ></LabelInputForm>
-          <LabelInputForm
-            label="Password"
-            name="password"
-            type={passwordVisible ? "text" : "password"}
-            value={password}
-            autocomplete="*******"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          >
-            <img
-              className="eye"
-              src={eye}
-              alt="eye"
-              onClick={toggleVisibility}
-            ></img>
-          </LabelInputForm>
-          {errorMessage && <p className="error">{errorMessage}</p>}
-          {successMessage && <p className="success">{successMessage}</p>}
-          <button className="loginButton" type="submit">
-            Login
-          </button>
-          <div className="loginDiv">
-            <p className="underText1">Don't have an account?</p>
-            <Link className="underText2" to="/signup">
-              Register here
-            </Link>
-          </div>
-        </form>
-      </div>
-    </div>
+    <form className="entries" onSubmit={handleSubmit}>
+      <LabelInputForm
+        label="Username"
+        name="username"
+        type="text"
+        value={username}
+        autocomplete="username"
+        onChange={(e) => {
+          setUsername(e.target.value);
+        }}
+      ></LabelInputForm>
+      <LabelInputForm
+        label="Password"
+        name="password"
+        type={passwordVisible ? "text" : "password"}
+        value={password}
+        autocomplete="*******"
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+      >
+        {passwordVisible ? (
+          <Eye
+            size="1.25rem"
+            color="#717182"
+            strokeWidth={1.5}
+            onClick={toggleVisibility}
+          />
+        ) : (
+          <EyeOff
+            size="1.25rem"
+            color="#717182"
+            strokeWidth={1.5}
+            onClick={toggleVisibility}
+          />
+        )}
+      </LabelInputForm>
+      {errorMessage && <p className="error">{errorMessage}</p>}
+      {successMessage && <p className="success">{successMessage}</p>}
+      <button className="loginButton" type="submit">
+        Login
+      </button>
+    </form>
   );
 }
 
