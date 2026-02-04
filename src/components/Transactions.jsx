@@ -223,6 +223,15 @@ function Transactions() {
       ) : transactions && transactions.length > 0 ? (
         <div className="allTransactions-div">
           <table className="allTransactions">
+            <colgroup>
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "10%" }} />
+            </colgroup>
             <thead>
               <tr>
                 <th>{}</th>
@@ -261,7 +270,7 @@ function Transactions() {
                         transaction.name
                       )}
                     </td>
-                    <td>
+                    <td className="transaction-amount">
                       {isEditing ? (
                         <EditInput
                           value={editFormData.amount || ""}

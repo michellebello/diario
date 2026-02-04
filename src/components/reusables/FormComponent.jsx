@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
 import { useAppContext } from "../../contexts/context";
 import { useUserData } from "../../data/user/fetchAndSaveUserData";
@@ -7,28 +7,29 @@ import { CATEGORY_LIST } from "../../data/aux/CategoryList";
 import "../styles/sidebar.css";
 
 function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
+  const [selectedAccountId, setSelectedAccountId] = useState("");
   const [name, setName] = useState("");
-  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
-  const [selectedAccountId, setSelectedAccountId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { userInfo, _ } = useAppContext();
   const fetchUserData = useUserData();
 
   const network = new Network();
-  const accs = userInfo.accounts;
+  const accountNumbers = userInfo.accountNumbers;
 
   const addTransaction = async () => {
-    if (!name || !type || !amount || !date || !selectedAccountId) {
+    if (!name || !category || !amount || !date || !selectedAccountId) {
       setErrorMessage("All fields must be complete");
       return;
     }
     const transactionData = {
-      name,
-      type,
-      amount: parseFloat(amount),
       accountId: Number(selectedAccountId),
+      name,
+      category,
+      typeName: formLabel,
+      amount: parseFloat(amount),
       createdOn: new Date(date).toISOString(),
     };
 
@@ -39,7 +40,6 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       setErrorMessage("");
       onTransactionAdded();
       onCancel();
-      // here add GET "/transactions" ?
       await fetchUserData();
     } catch (error) {
       setErrorMessage(error.response?.data?.message);
@@ -76,9 +76,9 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
           onChange={(e) => setSelectedAccountId(Number(e.target.value))}
         >
           <option value="">Select an Account</option>
-          {accs.map((acc) => (
-            <option key={acc.id} value={acc.id}>
-              {acc.number}
+          {accountNumbers.map((acc) => (
+            <option key={acc.accountId} value={acc.accountId}>
+              {acc.formattedAccountNumber}
             </option>
           ))}
         </select>
@@ -104,8 +104,8 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
         <select
           id="entry-type"
           className="entryInput"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
         >
           {CATEGORY_LIST.map((cat, idx) => (
             <option key={idx} value={cat}>

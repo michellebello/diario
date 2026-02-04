@@ -7,8 +7,9 @@ export const initialState = {
   username: null,
   accounts: [],
   transactions: [],
+  accountNumbers: [],
   isLoggedIn: false,
-  loading: { accounts: false, transactions: false },
+  loading: { accounts: false, transactions: false, accountNumbers: false },
   error: { accounts: null, transactions: null },
 };
 
