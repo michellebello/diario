@@ -21,7 +21,7 @@ function Barchart() {
       let result = "";
       if (beforeDate && afterDate) {
         result = await network.get(
-          "/transactions?after=" + afterDate + "&before=" + beforeDate
+          "/transactions?after=" + afterDate + "&before=" + beforeDate,
         );
       } else {
         result = await network.get("/transactions");
@@ -30,7 +30,7 @@ function Barchart() {
       const totalPerCategory = new Map();
       let totalExpense = 0;
       for (let transaction of transactionData) {
-        const category = transaction.type;
+        const category = transaction.category;
         if (totalPerCategory.has(category)) {
           let total = totalPerCategory.get(category);
           total = total + transaction.amount;
@@ -83,7 +83,7 @@ function Barchart() {
       .attr("preserveAspectRatio", "xMidYMid meet");
 
     const sortedTransactionMap = new Map(
-      [...transactionMap.entries()].sort((a, b) => b[1] - a[1])
+      [...transactionMap.entries()].sort((a, b) => b[1] - a[1]),
     );
 
     const x = d3

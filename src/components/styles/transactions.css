@@ -115,9 +115,16 @@
   color: #000000;
 }
 
-.allTransactions td.transaction-amount {
+.allTransactions td.transaction-amount.minus {
   text-align: right;
-  font-size: clamp(0.65rem, 1vw, 1rem);
+  font-size: clamp(0.7rem, 1.25vw, 1rem);
+  color: #e13f3f;
+}
+
+.allTransactions td.transaction-amount.plus {
+  text-align: right;
+  font-size: clamp(0.7rem, 1.25vw, 1rem);
+  color: #3fa13f;
 }
 
 .allTransactions tbody tr td {
@@ -130,7 +137,7 @@
 
 .transaction-type-icon {
   background-color: rgba(227, 227, 246, 0.755);
-  color: rgba(89, 89, 158, 0.76);
+  color: #59599ec2;
   padding: 6px 4px;
   border-radius: 5px;
   width: clamp(1.2rem, 2.5vw, 5rem);

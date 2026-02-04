@@ -270,7 +270,14 @@ function Transactions() {
                         transaction.name
                       )}
                     </td>
-                    <td className="transaction-amount">
+                    <td
+                      className={`transaction-amount 
+                              ${
+                                transaction.typeName === "Expense"
+                                  ? `minus`
+                                  : `plus`
+                              }`}
+                    >
                       {isEditing ? (
                         <EditInput
                           value={editFormData.amount || ""}
@@ -278,10 +285,10 @@ function Transactions() {
                           inputType="text"
                           onChange={handleEditChange}
                         />
-                      ) : transaction.typeName === "Expense" ? (
-                        `- $${transaction.amount.toFixed(2)}`
-                      ) : (
+                      ) : transaction.typeName !== "Expense" ? (
                         `+ $${transaction.amount.toFixed(2)}`
+                      ) : (
+                        `- $${transaction.amount.toFixed(2)}`
                       )}
                     </td>
                     <td>

@@ -8,9 +8,20 @@ export const initialState = {
   accounts: [],
   transactions: [],
   accountNumbers: [],
+  accountBalance: [],
   isLoggedIn: false,
-  loading: { accounts: false, transactions: false, accountNumbers: false },
-  error: { accounts: null, transactions: null },
+  loading: {
+    accounts: false,
+    transactions: false,
+    accountNumbers: false,
+    accountBalance: false,
+  },
+  error: {
+    accounts: null,
+    transactions: null,
+    accountNumbers: null,
+    accountBalance: null,
+  },
 };
 
 export const AppProvider = ({ children }) => {

@@ -1,18 +1,21 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TextButton from "../components/reusables/buttons/TextButton.jsx";
 import Network from "../utils/network.js";
 import AccountCard from "./reusables/cards/AccountCard.jsx";
 import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
 import "./styles/accounts.css";
 import { useAppContext } from "../contexts/context.jsx";
+import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 
 const accountType = ["Credit", "Checking", "Savings", "Investment"];
 
 function Accounts() {
   const network = new Network();
+  const fetchUserData = useUserData();
+
   const { userInfo, setUserInfo } = useAppContext();
   const accounts = userInfo.accounts;
+  const accountBalance = userInfo.accountBalance;
   const [showAddAccount, setShowAddAccount] = useState(false);
   const [newAccount, setNewAccount] = useState({
     name: "",
@@ -27,7 +30,6 @@ function Accounts() {
 
   const addAccount = async (e) => {
     e.preventDefault();
-    console.log(accountTypeTotal);
 
     if (
       !newAccount.name ||
@@ -48,6 +50,7 @@ function Accounts() {
           ...prev,
           accounts: [...prev.accounts, newAccount],
         }));
+        await fetchUserData();
       } else {
         setErrorMessage("Failed to add account");
       }
@@ -59,17 +62,6 @@ function Accounts() {
       setErrorMessage(error.message || "Failed to add account");
     }
   };
-
-  const [accountTypeTotal, setAccountTypeTotal] = useState({});
-  const getBalancePerType = async () => {
-    const response = await network.get("/accounts/balance");
-    console.log(" response. data gave " + JSON.stringify(response.data));
-    setAccountTypeTotal(response.data);
-  };
-
-  useEffect(() => {
-    getBalancePerType();
-  }, []);
 
   const deleteAccount = async (accountId) => {
     const response = await network.delete(`/accounts/${accountId}`);
@@ -99,7 +91,7 @@ function Accounts() {
 
       {/* total balances per account type */}
       <div className="account-top-barchart">
-        <ReBarchart dataObject={accountTypeTotal} />
+        <ReBarchart dataObject={accountBalance} />
       </div>
       {/* account cards */}
       <div className="accounts-body">
