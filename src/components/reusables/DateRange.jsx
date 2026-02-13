@@ -7,6 +7,9 @@ export default function DateRange({
   setBeforeDate,
   apply,
 }) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const checkDateRange = (e) => {
     const currBeforeDate = e.target.value;
     const beforeDateComp = new Date(currBeforeDate);
@@ -36,6 +39,7 @@ export default function DateRange({
             <input
               id="input-date-to"
               type="date"
+              max={today.toLocaleDateString("en-CA")}
               className="inputDate"
               value={beforeDate}
               onChange={checkDateRange}

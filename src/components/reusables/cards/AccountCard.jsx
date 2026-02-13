@@ -83,8 +83,8 @@ function AccountCard({
         "Content-Type": "application/json",
       });
       if (response.data === "Account successfully updated with new data") {
-        toggleEdit();
         await fetchUserData();
+        toggleEdit();
       } else {
         alert("Error updating account, please try again");
       }

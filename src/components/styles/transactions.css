@@ -108,23 +108,17 @@
 }
 
 .allTransactions td {
-  padding: 1.25rem 0.85rem;
+  padding: 1rem 0.85rem;
   text-align: center;
-  font-size: clamp(0.95rem, 1vw, 1rem);
+  font-size: clamp(0.9rem, 1vw, 1rem);
   font-weight: 200;
   color: #000000;
 }
 
-.allTransactions td.transaction-amount.minus {
-  text-align: right;
-  font-size: clamp(0.7rem, 1.25vw, 1rem);
-  color: #e13f3f;
-}
-
 .allTransactions td.transaction-amount.plus {
   text-align: right;
-  font-size: clamp(0.7rem, 1.25vw, 1rem);
-  color: #3fa13f;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  color: #479647;
 }
 
 .allTransactions tbody tr td {
@@ -154,18 +148,30 @@
 .transaction-type-container {
   width: 100%;
   display: flex;
+  gap: 0.3rem;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .transaction-type-cat {
   background-color: #e3e3f6c1;
-  border-radius: 20px;
+  border: 1px solid rgb(197, 194, 201);
+  border-radius: 8px;
   text-align: center;
-  padding: 5px 10px;
-  color: #4e4c4c;
+  padding: 6px 10px;
+  color: #2b2a2a;
   font-weight: 300;
   font-size: clamp(0.65rem, 1vw, 0.95rem);
+}
+
+.transaction-taxable {
+  background-color: #478873c1;
+  color: #ffffffc1;
+  font-size: clamp(0.65rem, 0.9vw, 0.9rem);
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: 300;
 }
 
 .noTransactions {
@@ -201,6 +207,15 @@
   width: 100%;
   flex-direction: row;
   justify-content: center;
+  gap: 0.25rem;
+}
+
+.transaction-action-buttons-div {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 0.25rem;
 }
 

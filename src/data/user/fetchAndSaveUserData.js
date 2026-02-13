@@ -14,6 +14,7 @@ export function useUserData() {
           transactions: true,
           accountNumbers: true,
           accountBalance: true,
+          budgets: true,
         },
       }));
 
@@ -21,10 +22,12 @@ export function useUserData() {
       const response2 = await network.get("/transactions");
       const response3 = await network.get("/accounts/numbers");
       const response4 = await network.get("/accounts/balance");
+      const response5 = await network.get("/budgets");
       const accounts = response1.data;
       const transactions = response2.data;
       const accountNumbers = response3.data;
       const accountBalance = response4.data;
+      const budgets = response5.data;
 
       setUserInfo((prev) => ({
         ...prev,
@@ -32,6 +35,7 @@ export function useUserData() {
         transactions: transactions,
         accountNumbers: accountNumbers,
         accountBalance: accountBalance,
+        budgets: budgets,
       }));
     } catch (err) {
       console.log(err);
@@ -42,6 +46,7 @@ export function useUserData() {
           transactions: err,
           accountNumbers: err,
           accountBalance: err,
+          budgets: err,
         },
       }));
     } finally {
@@ -52,6 +57,7 @@ export function useUserData() {
           transactions: false,
           accountNumbers: false,
           accountBalance: false,
+          budgets: false,
         },
       }));
     }

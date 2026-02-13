@@ -81,12 +81,7 @@ function Accounts() {
       {/* top part (title and add account button) */}
       <div className="account-top">
         <p className="title">My accounts</p>
-        <TextButton
-          text="Add acount"
-          bgColor="#5154a1ff"
-          fontColor="#ffffff"
-          onClick={() => setShowAddAccount(true)}
-        />
+        <TextButton text="Add acount" onClick={() => setShowAddAccount(true)} />
       </div>
 
       {/* total balances per account type */}

@@ -1,39 +1,52 @@
-import React from "react";
-import { BudgetTopCards } from "./reusables/cards/BudgetTopCards";
-import { BudgetCategories } from "./reusables/cards/BudgetCategories";
+import TextButton from "./reusables/buttons/TextButton.jsx";
+import { CurrBudgetCard } from "./reusables/cards/CurrBudgetCard.jsx";
+import BudgetCard from "./reusables/cards/BudgetCard.jsx";
+import { useAppContext } from "../contexts/context.jsx";
 import "../components/styles/budgets.css";
 
 function Budgets() {
+  const currMonth = new Date().toLocaleString("default", { month: "long" });
+  const currYear = new Date().getFullYear();
+  const currDate = `${currMonth} ${currYear}`;
+
+  const budgets = useAppContext().userInfo.budgets;
+  const displayBudgets = budgets.slice(1, budgets.length);
+  const currBudget = budgets.find(
+    (budget) =>
+      budget.monthNumber === new Date().getMonth() + 1 &&
+      budget.year === new Date().getFullYear(),
+  );
+
   return (
     <div className="budgets-content">
-      <div className="budgets-top">
+      <div className="budgets-top-part">
         <p className="title">My budgets</p>
-      </div>
-      <div className="budget-cards-container">
-        <BudgetTopCards
-          cardTitle="Total Budgeted"
-          amount="$8000"
-          amountColor="#000000"
-        />
-        <BudgetTopCards
-          cardTitle="Total spent"
-          amount="$3532.87"
-          amountColor="#000000"
-        />
-        <BudgetTopCards
-          cardTitle="Remaining"
-          amount="$4567.13"
-          amountColor="#000000"
+        <TextButton
+          text="Create new budget"
+          bgColor="#5154a1ff"
+          fontColor="#ffffff"
+          onClick={() => alert("Create new budget")}
         />
       </div>
-      <div className="budget-categories-total-body">
-        <div className="budget-categories-container">
-          <BudgetCategories category="Entertainment" total={250} spent={100} />
-          <BudgetCategories category="Eat Out" total={300} spent={450} />
-          <BudgetCategories category="Groceries" total={1000} spent={678} />
-        </div>
-        <div className="budget-categories-breakdown-chart-container">
-          <p>Remaining</p>
+      <div className="curr-budget-container">
+        <CurrBudgetCard
+          currDate={currDate}
+          currAmount={5089.98}
+          currTotal={currBudget?.totalAmount || 0}
+        />
+      </div>
+      <div className="all-budgets-container">
+        <p className="all-budgets-title">Previous budgets</p>
+        <div className="all-budgets-div">
+          {displayBudgets.map((budget) => (
+            <BudgetCard
+              key={budget.id}
+              month={budget.monthNumber}
+              year={budget.year}
+              // spent={budget.spent}
+              total={budget.totalAmount}
+            />
+          ))}
         </div>
       </div>
     </div>

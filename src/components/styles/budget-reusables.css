@@ -11,7 +11,7 @@
   padding: 1.6rem 1.4rem;
   border-radius: 16px;
 
-  background: #ffffff;
+  background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.02);
 
   box-shadow:
@@ -28,8 +28,20 @@
     0 12px 20px rgba(0, 0, 0, 0.08),
     0 4px 8px rgba(0, 0, 0, 0.06);
 }
+.budget-top-card-titles {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 .budget-top-card-title {
+  font-family: "Economica" "Sans";
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 200;
+  color: gray;
+}
+
+.budget-top-card-second-title {
   font-family: "Economica" "Sans";
   font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: 200;
@@ -105,4 +117,137 @@
 
 .on-budget {
   color: gray;
+}
+
+/* curr budget card */
+.curr-budget-top-card-total {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1.6rem 1.4rem;
+  border-radius: 16px;
+  background: #eaeaf0;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+  cursor: default;
+  font-weight: 300;
+  color: rgb(74, 73, 73);
+}
+
+.curr-budget-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.curr-budget-date {
+  font-size: clamp(1.25rem, 1.2vw, 1.5rem);
+  font-weight: 200;
+}
+
+.curr-budget-amounts {
+  font-size: clamp(1.5rem, 1.5vw, 1.75em);
+  font-weight: 200;
+}
+
+.view-budget-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  height: clamp(2.25rem, 1.5vw, 2.75rem);
+  padding: 0.5rem;
+  padding-left: 0.9rem;
+  background-color: #ffffff;
+  border: none;
+  font-family: "Economica" "Sans";
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 300;
+  color: gray;
+  cursor: pointer;
+}
+
+.view-budget-button:hover {
+  background-color: #babaeac1;
+  box-shadow:
+    gray 0px 1px 2px,
+    rgba(0, 0, 0, 0.1) 0px 4px 8px;
+  transition: all 0.25s ease;
+}
+
+/* budget cards */
+.budget-card-total {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3f1e9cd;
+  padding: 1rem;
+  border-radius: 15px;
+  cursor: pointer;
+  gap: 1.5rem;
+}
+
+.budget-card-total:hover {
+  box-shadow: 0 0 1.5px 2px #dddbdb80;
+  background-color: #edeae0b5;
+  transition: all 0.25s ease;
+}
+
+.budget-card-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.budget-card-date {
+  font-size: clamp(1.05rem, 1.2vw, 1.125rem);
+  font-weight: 300;
+  color: #353532;
+}
+
+.budget-card-bottom-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.budget-card-amounts {
+  font-size: clamp(1rem, 1.2vw, 1.25rem);
+  font-weight: 200;
+  color: #393836;
+}
+
+.budget-card-amounts.over-budget {
+  color: #e26376c1;
+  font-weight: 300;
+}
+
+.go-to-budget-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem;
+  background-color: #ffffff;
+  font-family: "Economica" "Sans";
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-weight: 200;
+  color: rgb(96, 94, 94);
+}
+
+.go-to-budget-button:hover {
+  background-color: #dddde6c1;
+  box-shadow: gray 0px 1px 2px;
+  transition: all 0.25s ease;
 }

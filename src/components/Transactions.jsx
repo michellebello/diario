@@ -272,11 +272,7 @@ function Transactions() {
                     </td>
                     <td
                       className={`transaction-amount 
-                              ${
-                                transaction.typeName === "Expense"
-                                  ? `minus`
-                                  : `plus`
-                              }`}
+                              ${transaction.typeName !== "Expense" && `plus`}`}
                     >
                       {isEditing ? (
                         <EditInput
@@ -302,6 +298,9 @@ function Transactions() {
                           <p className="transaction-type-cat">
                             {transaction.category}
                           </p>
+                          {transaction.isTaxable && (
+                            <p className="transaction-taxable">Taxable</p>
+                          )}
                         </div>
                       )}
                     </td>
@@ -321,7 +320,7 @@ function Transactions() {
                     <td className="transaction-modify-buttons">
                       <div className="transaction-modify-buttons-div">
                         {isEditing ? (
-                          <>
+                          <div className="transaction-action-buttons-div">
                             <TextButton
                               text="Save"
                               bgColor="#ffffff"
@@ -334,9 +333,9 @@ function Transactions() {
                               fontColor="#ba6e6eff"
                               onClick={cancelEdit}
                             />
-                          </>
+                          </div>
                         ) : (
-                          <>
+                          <div className="transaction-modify-buttons-div">
                             <IconButton
                               type="edit"
                               color="#797575"
@@ -347,7 +346,7 @@ function Transactions() {
                               color="#797575"
                               onClick={() => deleteTransaction(transaction.id)}
                             />
-                          </>
+                          </div>
                         )}
                       </div>
                     </td>

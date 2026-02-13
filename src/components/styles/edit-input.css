@@ -12,7 +12,7 @@
   border-radius: 5px;
   padding: 5px 7px;
   border: none;
-  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-size: clamp(0.85rem, 0.9vw, 0.95rem);
 }
 
 .edit-input-tag:focus {

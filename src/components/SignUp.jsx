@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LabelInputForm from "./reusables/LabelInputForm";
-import Network from "../utils/network";
+import Network from "../utils/network.js";
 import { EyeOff, Eye } from "lucide-react";
 import "./styles/signUp.css";
 

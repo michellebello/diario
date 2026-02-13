@@ -13,13 +13,16 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
-  const [marked, setMarked] = useState(false);
+  const [isTaxable, setIsTaxable] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { userInfo, _ } = useAppContext();
   const fetchUserData = useUserData();
 
   const network = new Network();
   const accountNumbers = userInfo.accountNumbers;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const addTransaction = async () => {
     if (!name || !category || !amount || !date || !selectedAccountId) {
@@ -33,11 +36,12 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       typeName: formLabel,
       amount: parseFloat(amount),
       createdOn: new Date(date).toISOString(),
+      isTaxable,
     };
 
     try {
+      console.log("Sent " + JSON.stringify(transactionData));
       const resp = await network.post("/transactions", transactionData);
-      console.log("Sent " + transactionData);
       console.log(resp);
       setErrorMessage("");
       onTransactionAdded();
@@ -94,6 +98,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
             id="entry-date"
             className="entryInput"
             type="date"
+            max={today.toLocaleDateString("en-CA")}
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
@@ -136,8 +141,8 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
         <div className="entry-vertical">
           <p className="entryLabel-vertical">Mark as taxable</p>
           <SliderButton
-            value={marked}
-            onSelect={() => setMarked((prev) => !prev)}
+            value={isTaxable}
+            onSelect={() => setIsTaxable((prev) => !prev)}
           />
         </div>
       </div>
