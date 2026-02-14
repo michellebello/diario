@@ -1,21 +1,8 @@
 import ProgressBar from "@ramonak/react-progress-bar";
+import { monthNumToMonthName } from "../../../data/aux/MonthNumToName.js";
 import { CircleAlert } from "lucide-react";
 
-export default function BudgetCard({ month, year, spent, total }) {
-  const monthNumToMonthName = {
-    1: "January",
-    2: "February",
-    3: "March",
-    4: "April",
-    5: "May",
-    6: "June",
-    7: "July",
-    8: "August",
-    9: "September",
-    10: "October",
-    11: "November",
-    12: "December",
-  };
+export default function BudgetCard({ month, year, spent, total, onClick }) {
   const monthName = monthNumToMonthName[month];
   const percent = (spent / total) * 100;
   const isOverBudget = spent > total;
@@ -45,10 +32,7 @@ export default function BudgetCard({ month, year, spent, total }) {
           )}
         </div>
       </div>
-      <button
-        onClick={() => alert("View budget")}
-        className="go-to-budget-button"
-      >
+      <button onClick={onClick} className="go-to-budget-button">
         View budget
       </button>
     </div>

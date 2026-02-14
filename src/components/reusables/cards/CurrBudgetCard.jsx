@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import "../../../components/styles/budget-reusables.css";
 
-export function CurrBudgetCard({ currDate, currAmount, currTotal }) {
+export function CurrBudgetCard({ currDate, currAmount, currTotal, onClick }) {
   return (
     <div className="curr-budget-top-card-total">
       <div className="curr-budget-div">
@@ -10,10 +10,7 @@ export function CurrBudgetCard({ currDate, currAmount, currTotal }) {
           ${currAmount} / ${currTotal}
         </p>
       </div>
-      <button
-        onClick={() => alert("View budget")}
-        className="view-budget-button"
-      >
+      <button onClick={onClick} className="view-budget-button">
         View budget
         <ChevronRight />
       </button>

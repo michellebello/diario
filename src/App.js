@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import Transactions from "./components/Transactions";
 import Accounts from "./components/Accounts";
 import Budgets from "./components/Budgets";
+import BudgetBreakdown from "./components/BudgetBreakdown";
 import Barchart from "./components/Barchart";
 import DonutChart from "./components/DonutChart";
 import { AppProvider } from "./contexts/context";
@@ -26,8 +27,9 @@ function App() {
             { path: "transactions/table", element: <Transactions /> },
             { path: "transactions/barchart", element: <Barchart /> },
             { path: "transactions/donutchart", element: <DonutChart /> },
-            { path: "budgets", element: <Budgets /> },
             { path: "accounts", element: <Accounts /> },
+            { path: "budgets", element: <Budgets /> },
+            { path: "budgets/:budgetId", element: <BudgetBreakdown /> },
           ],
         },
       ],
