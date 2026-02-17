@@ -8,6 +8,7 @@ import Transactions from "./components/Transactions";
 import Accounts from "./components/Accounts";
 import Budgets from "./components/Budgets";
 import BudgetBreakdown from "./components/BudgetBreakdown";
+import TaxReport from "./components/TaxReport";
 import Barchart from "./components/Barchart";
 import DonutChart from "./components/DonutChart";
 import { AppProvider } from "./contexts/context";
@@ -30,6 +31,7 @@ function App() {
             { path: "accounts", element: <Accounts /> },
             { path: "budgets", element: <Budgets /> },
             { path: "budgets/:budgetId", element: <BudgetBreakdown /> },
+            { path: "taxreport", element: <TaxReport /> },
           ],
         },
       ],

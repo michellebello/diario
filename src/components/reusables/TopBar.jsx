@@ -24,6 +24,10 @@ function TopBar({ onLogoClick }) {
       path: "/mycuenta/budgets",
       label: "Budgets",
     },
+    {
+      path: "/mycuenta/taxreport",
+      label: "Tax Report",
+    },
   ];
 
   const { _, setUserInfo } = useAppContext();

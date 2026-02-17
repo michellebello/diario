@@ -12,9 +12,7 @@ function Budgets() {
   const navigate = useNavigate();
   const network = new Network();
   const budgets = useAppContext().userInfo.budgets;
-
   const displayBudgets = budgets.slice(1);
-
   const [budgetSpents, setBudgetSpents] = useState([]);
 
   const getBudgetSpentAmount = async () => {
@@ -79,6 +77,7 @@ function Budgets() {
             />
           ))}
         </div>
+        {/* add barchart here */}
       </div>
     </div>
   );

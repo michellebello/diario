@@ -5,6 +5,7 @@ import { monthNumToMonthName } from "../data/aux/MonthNumToName";
 import Network from "../utils/network";
 import { BudgetTopCards } from "./reusables/cards/BudgetTopCards";
 import { BudgetCategories } from "./reusables/cards/BudgetCategories";
+import ReBarchart from "./reusables/data-charts/ReBarchart";
 
 import "../components/styles/budget-breakdown.css";
 
@@ -65,7 +66,12 @@ function BudgetBreakdown() {
           ))}
         </div>
         <div className="budget-categories-breakdown-chart-container">
-          <p>Remaining</p>
+          <ReBarchart
+            dataObject={budgetData.reduce((acc, curr) => {
+              acc[curr.category] = curr.amount;
+              return acc;
+            }, {})}
+          />
         </div>
       </div>
     </div>
