@@ -1,33 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import TextButton from "./reusables/buttons/TextButton.jsx";
+import TextButton from "./reusables/buttons/AddButton.jsx";
 import { CurrBudgetCard } from "./reusables/cards/CurrBudgetCard.jsx";
 import BudgetCard from "./reusables/cards/BudgetCard.jsx";
 import { useAppContext } from "../contexts/context.jsx";
 import "../components/styles/budgets.css";
-import Network from "../utils/network.js";
 
 function Budgets() {
   const navigate = useNavigate();
-  const network = new Network();
   const budgets = useAppContext().userInfo.budgets;
   const displayBudgets = budgets.slice(1);
-  const [budgetSpents, setBudgetSpents] = useState([]);
-
-  const getBudgetSpentAmount = async () => {
-    const spentAmounts = [];
-    for (let i = 0; i < budgets.length; i++) {
-      const budgetId = budgets[i].id;
-      const response = await network.get(`/budgets/${budgetId}/spent`);
-      spentAmounts.push(response.data);
-    }
-    setBudgetSpents(spentAmounts);
-  };
-
-  useEffect(() => {
-    getBudgetSpentAmount();
-  }, [budgets]);
 
   const goToBudgetPage = (budget) => {
     navigate(`/mycuenta/budgets/${budget.id}`, {
@@ -35,7 +17,8 @@ function Budgets() {
         budgetId: budget.id,
         budgetMonth: budget.monthNumber,
         budgetYear: budget.year,
-        budgetTotal: budget.totalAmount,
+        budgetTotal: budget.totalAmount.toFixed(2),
+        budgetSpent: budget.totalSpent.toFixed(2),
       },
     });
   };
@@ -58,7 +41,7 @@ function Budgets() {
       <div className="curr-budget-container">
         <CurrBudgetCard
           currDate={currDate}
-          currAmount={budgetSpents[0] || 0}
+          currAmount={budgets[0]?.totalSpent || 0}
           currTotal={budgets[0]?.totalAmount || 0}
           onClick={() => goToBudgetPage(budgets[0])}
         />
@@ -71,13 +54,12 @@ function Budgets() {
               key={budget.id}
               month={budget.monthNumber}
               year={budget.year}
-              spent={budgetSpents[2]}
+              spent={budget.totalSpent}
               total={budget.totalAmount}
               onClick={() => goToBudgetPage(budget)}
             />
           ))}
         </div>
-        {/* add barchart here */}
       </div>
     </div>
   );

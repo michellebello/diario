@@ -18,7 +18,7 @@ function BudgetBreakdown() {
 
   const getBudgetBreakdownData = async (budgetId) => {
     const response = await network.get(`/budgets/${budgetId}/allocations`);
-    console.log("getting: " + response.data);
+    console.log("budget info " + JSON.stringify(response.data));
     setBudgetData(response.data);
   };
 
@@ -30,6 +30,7 @@ function BudgetBreakdown() {
     budgetMonth: month,
     budgetYear: year,
     budgetTotal: totalAmount,
+    budgetSpent: totalSpent,
   } = budgetInfo ?? {};
 
   return (
@@ -45,30 +46,32 @@ function BudgetBreakdown() {
         />
         <BudgetTopCards
           cardTitle="Total spent"
-          amount="$3532.87"
+          amount={`$${totalSpent}`}
           amountColor="#000000"
         />
         <BudgetTopCards
           cardTitle="Remaining"
-          amount="$4567.13"
+          amount={`$${totalAmount - totalSpent}`}
           amountColor="#000000"
         />
       </div>
       <div className="budget-categories-total-body">
         <div className="budget-categories-container">
-          {budgetData.map((budget, idx) => (
+          {budgetData.map((budget) => (
             <BudgetCategories
-              key={idx}
+              key={budget.id}
+              id={budget.id}
+              budgetId={budget.budgetId}
               category={budget.category}
-              spent={200}
-              total={budget.amount}
+              spent={budget.spent.toFixed(2)}
+              total={budget.amount.toFixed(2)}
             />
           ))}
         </div>
         <div className="budget-categories-breakdown-chart-container">
           <ReBarchart
             dataObject={budgetData.reduce((acc, curr) => {
-              acc[curr.category] = curr.amount;
+              acc[curr.category] = curr.spent;
               return acc;
             }, {})}
           />

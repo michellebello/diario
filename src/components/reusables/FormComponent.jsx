@@ -40,9 +40,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
     };
 
     try {
-      console.log("Sent " + JSON.stringify(transactionData));
-      const resp = await network.post("/transactions", transactionData);
-      console.log(resp);
+      await network.post("/transactions", transactionData);
       setErrorMessage("");
       onTransactionAdded();
       onCancel();

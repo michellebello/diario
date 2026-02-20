@@ -37,6 +37,7 @@ export function useUserData() {
         accountBalance: accountBalance,
         budgets: budgets,
       }));
+      console.log("setting new user data");
     } catch (err) {
       console.log(err);
       setUserInfo((prev) => ({

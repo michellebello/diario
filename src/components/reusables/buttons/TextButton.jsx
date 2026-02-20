@@ -1,18 +1,17 @@
-import { CirclePlus } from "lucide-react";
 import "../../../components/styles/text-button.css";
 
-function TextButton({ text, onClick }) {
+function TextButton({ text, bgColor, fontColor, onClick }) {
   return (
     <div className="text-button-container">
       <button
         className="text-button"
         onClick={onClick}
         style={{
-          fontSize: "clamp(0.9rem, 1.2vw, 1rem)",
+          backgroundColor: bgColor,
+          color: fontColor,
         }}
       >
         {text}
-        <CirclePlus />
       </button>
     </div>
   );

@@ -7,7 +7,7 @@ export function CurrBudgetCard({ currDate, currAmount, currTotal, onClick }) {
       <div className="curr-budget-div">
         <p className="curr-budget-date">{currDate} (current)</p>
         <p className="curr-budget-amounts">
-          ${currAmount} / ${currTotal}
+          ${currAmount.toFixed(2)} / ${currTotal.toFixed(2)}
         </p>
       </div>
       <button onClick={onClick} className="view-budget-button">

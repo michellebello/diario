@@ -103,21 +103,23 @@
   padding: 1rem;
   text-align: center;
   font-weight: 300;
-  font-size: clamp(1rem, 1vw, 1.25rem);
+  font-size: clamp(1rem, 1vw, 1.2rem);
   color: #797575;
 }
 
 .allTransactions td {
+  width: 100%;
+  align-items: center;
   padding: 1rem 0.85rem;
   text-align: center;
-  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-size: clamp(0.8rem, 1vw, 1rem);
   font-weight: 200;
   color: #000000;
 }
 
 .allTransactions td.transaction-amount.plus {
   text-align: right;
-  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-size: clamp(0.8rem, 1vw, 1rem);
   color: #479647;
 }
 

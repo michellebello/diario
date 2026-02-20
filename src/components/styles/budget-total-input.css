@@ -1,0 +1,33 @@
+.budget-total-input-container {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.budget-total-input-field {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 6rem;
+  padding: 2px 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-weight: 200;
+  color: rgb(75, 70, 70);
+  font-size: clamp(0.8rem, 1.1vw, 1rem);
+}
+
+.budget-total-input-field:focus {
+  border: 1px solid #554d4d;
+}
+
+.budget-total-input-button {
+  flex-shrink: 0;
+  font-family: "Economica" "Sans";
+  font-size: clamp(0.75rem, 1.1vw, 0.9rem);
+  padding: 3px 6px;
+  background-color: #3e6de498;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -1,7 +1,10 @@
 import "../../../components/styles/budget-reusables.css";
 import IconButton from "../buttons/IconButton";
+import { BudgetTotalInput } from "../input/BudgetTotalInput.jsx";
 import { TrendingUp, TrendingDown, TriangleAlert } from "lucide-react";
 import ProgressBar from "@ramonak/react-progress-bar";
+import Network from "../../../utils/network";
+import { useState } from "react";
 
 const budgetPercentToIcon = (percent) => {
   if (percent < 51) {
@@ -23,9 +26,10 @@ const getIconColor = (Icon) => {
   }
 };
 
-export function BudgetCategories({ category, total, spent }) {
+export function BudgetCategories({ id, budgetId, category, total, spent }) {
+  const network = new Network();
   const percent = ((spent / total) * 100).toFixed(0, 2);
-  const remaining = total - spent;
+  const remaining = (total - spent).toFixed(2);
   let overBudget = false;
   if (remaining < 0) {
     overBudget = true;
@@ -35,19 +39,57 @@ export function BudgetCategories({ category, total, spent }) {
   const dummyFx = () => {
     console.log("hola");
   };
+
+  const [newAmount, setNewAmount] = useState(total);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const updateBudgetAllocation = async (newAmount) => {
+    const amount = parseFloat(newAmount);
+    if (!amount) return;
+    console.log("new amount sent: " + amount);
+    const newAmountObj = { amount: amount };
+    const response = await network.patch(
+      `/budgets/${budgetId}/${id}`,
+      newAmountObj,
+    );
+    if (response.status === 200) {
+      setIsEditing(false);
+    } else {
+      console.log("error updating budget category");
+    }
+  };
   return (
     <div className="budget-category-total">
       <div className="budget-category-top-row">
-        <div className="budget-category-top-left-part">
-          <Icon color={getIconColor(Icon)} />
-          <div className="budget-category-top-info">
+        <div className="budget-category-top-info">
+          <div className="budget-category-top-left-part">
+            <Icon color={getIconColor(Icon)} />
             <p className="budget-category-title">{category}</p>
-            <p className="budget-category-money">{`$${spent} out of $${total}`}</p>
+          </div>
+          <div className="budget-category-top-buttons">
+            <IconButton
+              type="edit"
+              color="#797575"
+              onClick={() => setIsEditing((prev) => !prev)}
+            />
+            <IconButton type="delete" color="#797575" onClick={dummyFx} />
+            {/* TO DO: add DELELETE budget allocation function here */}
           </div>
         </div>
-        <div className="budget-category-top-buttons">
-          <IconButton type="edit" color="#797575" onClick={dummyFx} />
-          <IconButton type="delete" color="#797575" onClick={dummyFx} />
+        <div className="budget-category-money-container">
+          <p className="budget-category-money">{`$${spent}`}</p>
+          <p className="budget-category-money">of</p>
+          {isEditing ? (
+            <BudgetTotalInput
+              className="budget-total-input"
+              value={newAmount}
+              type="text"
+              onChange={(e) => setNewAmount(e.target.value)}
+              onClick={() => updateBudgetAllocation(newAmount)}
+            />
+          ) : (
+            <p className="budget-category-money">{`$${total}`}</p>
+          )}
         </div>
       </div>
       <ProgressBar
