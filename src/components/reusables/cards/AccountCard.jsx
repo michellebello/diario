@@ -31,7 +31,6 @@ function AccountCard({
   number,
   type,
   balance,
-  deleteMessageVisibility,
   setDeleteMessageVisibility,
   setAccountToDelete,
 }) {
@@ -45,7 +44,6 @@ function AccountCard({
   const [bg, text] = typeToColor[type] ?? ["#E5E7EB", "#111827"];
 
   const [isEditing, setIsEditing] = useState(false);
-  // const [deleteMessageVisibility, setDeleteMessageVisibility] = useState(false);
 
   const [newBalance, setNewBalance] = useState(balance);
   const [newType, setNewType] = useState(type);

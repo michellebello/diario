@@ -33,11 +33,49 @@ function BudgetBreakdown() {
     budgetSpent: totalSpent,
   } = budgetInfo ?? {};
 
+  const [deleteMessageVisibility, setDeleteMessageVisibility] = useState(false);
+  const [allocationIdToDelete, setAllocationIdToDelete] = useState(null);
+
+  const deleteBudgetAllocation = async () => {
+    const response = await network.delete(
+      `/budgets/${budgetId}/${allocationIdToDelete}`,
+    );
+    if (response.status === 200) {
+      setDeleteMessageVisibility(false);
+      window.location.reload();
+    } else {
+      console.error("Error deleting budget category");
+    }
+  };
   return (
     <div className="budgets-content">
       <div className="budgets-top">
         <p className="title">{`Budget Breakdown: ${monthNumToMonthName[month]} ${year}`}</p>
       </div>
+      {/* confirm delete account message */}
+      {deleteMessageVisibility && (
+        <div className="delete-account-total">
+          <div className="delete-account-container">
+            <p className="delete-account-message">
+              Are you sure you want to delete this budget category?
+            </p>
+            <div className="delete-account-buttons">
+              <button
+                className="delete-account-button"
+                onClick={() => deleteBudgetAllocation(allocationIdToDelete)}
+              >
+                Yes
+              </button>
+              <button
+                className="delete-account-button"
+                onClick={() => setDeleteMessageVisibility(false)}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="budget-cards-container">
         <BudgetTopCards
           cardTitle="Total Budgeted"
@@ -65,6 +103,8 @@ function BudgetBreakdown() {
               category={budget.category}
               spent={budget.spent.toFixed(2)}
               total={budget.amount.toFixed(2)}
+              setDeleteMessageVisibility={setDeleteMessageVisibility}
+              setAllocationIdToDelete={setAllocationIdToDelete}
             />
           ))}
         </div>

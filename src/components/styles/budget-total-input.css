@@ -8,22 +8,27 @@
   flex: 1 1 auto;
   min-width: 0;
   max-width: 6rem;
+  margin-left: 0.1rem;
   padding: 2px 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-weight: 200;
   color: rgb(75, 70, 70);
-  font-size: clamp(0.8rem, 1.1vw, 1rem);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  transition: border-color 0.3s ease;
 }
 
 .budget-total-input-field:focus {
-  border: 1px solid #554d4d;
+  cursor: pointer;
+  outline: 2px solid #e3e3f6c1;
+  border-radius: 5px;
+  box-shadow: 0 0 0.1px 0.4px#717182;
 }
 
 .budget-total-input-button {
   flex-shrink: 0;
   font-family: "Economica" "Sans";
-  font-size: clamp(0.75rem, 1.1vw, 0.9rem);
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
   padding: 3px 6px;
   background-color: #3e6de498;
   color: #fff;

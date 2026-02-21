@@ -26,7 +26,15 @@ const getIconColor = (Icon) => {
   }
 };
 
-export function BudgetCategories({ id, budgetId, category, total, spent }) {
+export function BudgetCategories({
+  id,
+  budgetId,
+  category,
+  total,
+  spent,
+  setDeleteMessageVisibility,
+  setAllocationIdToDelete,
+}) {
   const network = new Network();
   const percent = ((spent / total) * 100).toFixed(0, 2);
   const remaining = (total - spent).toFixed(2);
@@ -36,9 +44,6 @@ export function BudgetCategories({ id, budgetId, category, total, spent }) {
   }
 
   const Icon = budgetPercentToIcon(percent);
-  const dummyFx = () => {
-    console.log("hola");
-  };
 
   const [newAmount, setNewAmount] = useState(total);
   const [isEditing, setIsEditing] = useState(false);
@@ -54,10 +59,17 @@ export function BudgetCategories({ id, budgetId, category, total, spent }) {
     );
     if (response.status === 200) {
       setIsEditing(false);
+      window.location.reload();
     } else {
-      console.log("error updating budget category");
+      console.error("Error updating budget category");
     }
   };
+
+  const handleDeleteClick = () => {
+    setAllocationIdToDelete(id);
+    setDeleteMessageVisibility(true);
+  };
+
   return (
     <div className="budget-category-total">
       <div className="budget-category-top-row">
@@ -72,8 +84,11 @@ export function BudgetCategories({ id, budgetId, category, total, spent }) {
               color="#797575"
               onClick={() => setIsEditing((prev) => !prev)}
             />
-            <IconButton type="delete" color="#797575" onClick={dummyFx} />
-            {/* TO DO: add DELELETE budget allocation function here */}
+            <IconButton
+              type="delete"
+              color="#797575"
+              onClick={handleDeleteClick}
+            />
           </div>
         </div>
         <div className="budget-category-money-container">
