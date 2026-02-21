@@ -14,7 +14,7 @@ function BudgetBreakdown() {
   const { state } = useLocation();
   const { budgetId } = useParams();
   const [budgetData, setBudgetData] = useState([]);
-  const [budgetInfo, setBudgetInfo] = useState(state ?? null);
+  const [budgetInfo, _] = useState(state ?? null);
 
   const getBudgetBreakdownData = async (budgetId) => {
     const response = await network.get(`/budgets/${budgetId}/allocations`);
@@ -89,7 +89,7 @@ function BudgetBreakdown() {
         />
         <BudgetTopCards
           cardTitle="Remaining"
-          amount={`$${totalAmount - totalSpent}`}
+          amount={`$${(totalAmount - totalSpent).toFixed(2)}`}
           amountColor="#000000"
         />
       </div>
