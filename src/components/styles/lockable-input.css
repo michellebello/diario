@@ -1,0 +1,29 @@
+.lockable-input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.lockable-input-dropdown,
+.lockable-input-input {
+  width: 100%;
+  padding: 7px;
+  border: 0.01px #717182;
+  background-color: #f2efec;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-weight: 400;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  font-family: "Economica", sans-serif;
+  font-weight: 300;
+  color: #717182;
+}
+
+.lockable-input-dropdown:focus,
+.lockable-input-input:focus {
+  cursor: pointer;
+  outline: 1px solid #a79e9e;
+  border-radius: 5px;
+  box-shadow: 0 0 1px 2px #e7e1e180;
+  background-color: #ebe3e3;
+}

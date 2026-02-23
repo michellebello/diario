@@ -35,7 +35,7 @@ function Budgets() {
           text="Create new budget"
           bgColor="#5154a1ff"
           fontColor="#ffffff"
-          onClick={() => alert("Create new budget")}
+          onClick={() => navigate("/mycuenta/budgets/create-budget")}
         />
       </div>
       <div className="curr-budget-container">
