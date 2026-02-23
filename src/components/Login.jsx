@@ -75,6 +75,7 @@ function Login() {
   return (
     <form className="entries" onSubmit={handleSubmit}>
       <LabelInputForm
+        inputType="input"
         label="Username"
         name="username"
         type="text"
@@ -85,6 +86,7 @@ function Login() {
         }}
       ></LabelInputForm>
       <LabelInputForm
+        inputType="input"
         label="Password"
         name="password"
         type={passwordVisible ? "text" : "password"}

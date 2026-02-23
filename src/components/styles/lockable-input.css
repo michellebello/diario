@@ -22,8 +22,7 @@
 .lockable-input-dropdown:focus,
 .lockable-input-input:focus {
   cursor: pointer;
-  outline: 1px solid #a79e9e;
+  outline: 2px solid #e3e3f6c1;
   border-radius: 5px;
-  box-shadow: 0 0 1px 2px #e7e1e180;
-  background-color: #ebe3e3;
+  box-shadow: 0 0 0.1px 0.4px#717182;
 }

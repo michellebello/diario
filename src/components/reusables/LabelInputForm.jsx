@@ -2,6 +2,8 @@ import React from "react";
 import "../styles/labelInputForm.css";
 
 function LabelInputForm({
+  inputType,
+  dropdownOptions,
   label,
   name,
   type,
@@ -17,16 +19,33 @@ function LabelInputForm({
         {label}
       </label>
       <div className="inputContainer">
-        <input
-          id={name}
-          className="inputForm"
-          name={name}
-          type={type}
-          value={value}
-          autoComplete={autocomplete}
-          onChange={onChange}
-          {...rest}
-        />
+        {inputType !== "input" && dropdownOptions ? (
+          <select
+            id="entry-account"
+            name={name}
+            type={type}
+            className="inputForm"
+            value={value}
+            onChange={onChange}
+          >
+            {dropdownOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            id={name}
+            className="inputForm"
+            name={name}
+            type={type}
+            value={value}
+            autoComplete={autocomplete}
+            onChange={onChange}
+            {...rest}
+          />
+        )}
         {children && <div className="inputAddon">{children}</div>}
       </div>
     </div>

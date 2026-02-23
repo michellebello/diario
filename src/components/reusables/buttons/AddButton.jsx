@@ -4,13 +4,7 @@ import "../../../components/styles/add-button.css";
 function AddButton({ text, onClick }) {
   return (
     <div className="add-button-container">
-      <button
-        className="add-button"
-        onClick={onClick}
-        style={{
-          fontSize: "clamp(0.9rem, 1.2vw, 1rem)",
-        }}
-      >
+      <button className="add-button" onClick={onClick}>
         {text}
         <CirclePlus />
       </button>

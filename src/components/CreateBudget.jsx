@@ -3,7 +3,23 @@ import AddButton from "./reusables/buttons/AddButton";
 import LabelInputForm from "./reusables/LabelInputForm";
 import { LockableInput } from "./reusables/input/LockableInput";
 import { CATEGORY_LIST } from "../data/aux/CategoryList";
+import TextButton from "./reusables/buttons/TextButton";
 import "../components/styles/create-new-budget.css";
+
+const NUM_TO_MONTH = new Map([
+  [1, "January"],
+  [2, "February"],
+  [3, "March"],
+  [4, "April"],
+  [5, "May"],
+  [6, "June"],
+  [7, "July"],
+  [8, "August"],
+  [9, "September"],
+  [10, "October"],
+  [11, "November"],
+  [12, "December"],
+]);
 
 function CreateBudget() {
   const [month, setMonth] = useState("");
@@ -32,11 +48,18 @@ function CreateBudget() {
       return copy;
     });
   };
-
+  const [totalAllocated, setTotalAllocated] = useState(0);
   const updateBudgetAllocationMap = (key, value) => {
     setBudgetAllocations((prev) => {
       const copy = new Map(prev);
       copy.set(key, value);
+      const values = Array.from(copy.values());
+      const newTotal = values.reduce(
+        (sum, val) => sum + (parseFloat(val) || 0),
+        0,
+      );
+
+      setTotalAllocated(newTotal);
       return copy;
     });
   };
@@ -45,21 +68,23 @@ function CreateBudget() {
     <div className="create-budget-content">
       <div className="create-budget-top-div">
         <p className="create-budget-top-title">Create New Budget</p>
-        <p className="create-budget-top-p">Set up your monthly budget</p>
+        {/* <p className="create-budget-top-p">Set up your monthly budget</p> */}
       </div>
       <div className="create-budget-configuration-div">
         {/* budget configuration part */}
         <p className="create-budget-secondary-titles">Budget Period</p>
         <div className="create-budget-configuration-row">
           <LabelInputForm
+            inputType="dropdown"
+            dropdownOptions={NUM_TO_MONTH.values()}
             label="Month"
             name="budgetPeriod"
-            type="text"
+            type="number"
             value={month}
-            autocomplete="January"
-            onChange={(e) => setMonth(e.target.value)}
+            onChange={(e) => setMonth(NUM_TO_MONTH.get(month))}
           />
           <LabelInputForm
+            inputType="input"
             label="Year"
             name="budgetYear"
             type="text"
@@ -85,41 +110,57 @@ function CreateBudget() {
             onClick={addNewBudgetAllocation}
           />
         </div>
-        {activeAllocations.map((category, idx) => (
-          <div className="create-budget-allocation-container">
-            <LockableInput
-              key={idx}
-              isLocked={false}
-              type="dropdown"
-              dropdownOptions={CATEGORY_LIST.filter(
-                (cat) => !activeAllocations.includes(cat) || cat === category,
-              )}
-              value={category}
-              onChange={(e) => {
-                const selectedCat = e.target.value;
-                setActiveAllocations((prev) =>
-                  prev.map((cat) => (cat === category ? selectedCat : cat)),
-                );
-                setBudgetAllocations((prev) => {
-                  const newMap = new Map(prev);
-                  const value = newMap.get(category) ?? "";
-                  newMap.set(selectedCat, value);
-                  newMap.delete(category);
-                  return newMap;
-                });
-              }}
-            />
-            <LockableInput
-              key={idx + 10}
-              isLocked={false}
-              type="text"
-              value={budgetAllocations.get(category) ?? ""}
-              onChange={(e) =>
-                updateBudgetAllocationMap(category, e.target.value)
-              }
-            />
+        <div className="create-budget-allocation-total-container">
+          {activeAllocations.map((category, idx) => (
+            <div className="create-budget-allocation-container">
+              <LockableInput
+                key={idx}
+                isLocked={false}
+                type="dropdown"
+                dropdownOptions={CATEGORY_LIST.filter(
+                  (cat) => !activeAllocations.includes(cat) || cat === category,
+                )}
+                value={category}
+                onChange={(e) => {
+                  const selectedCat = e.target.value;
+                  setActiveAllocations((prev) =>
+                    prev.map((cat) => (cat === category ? selectedCat : cat)),
+                  );
+                  setBudgetAllocations((prev) => {
+                    const newMap = new Map(prev);
+                    const value = newMap.get(category) ?? "";
+                    newMap.set(selectedCat, value);
+                    newMap.delete(category);
+                    return newMap;
+                  });
+                }}
+              />
+              <LockableInput
+                key={idx + 10}
+                isLocked={false}
+                type="text"
+                value={budgetAllocations.get(category) ?? ""}
+                onChange={(e) =>
+                  updateBudgetAllocationMap(category, e.target.value)
+                }
+              />
+            </div>
+          ))}
+        </div>
+        <div className="create-budget-totals-div">
+          <div className="create-budget-total-flex">
+            <p className="create-budget-totals-p"> Total Allocated</p>
+            <p className="create-budget-totals-p">${totalAllocated}</p>
           </div>
-        ))}
+          <div className="create-budget-total-flex">
+            <p className="create-budget-totals-p">Budget Total</p>
+            <p className="create-budget-totals-p">${budgetAmount}</p>
+          </div>
+        </div>
+      </div>
+      <div className="create-budgets-buttons-div">
+        <TextButton text="Create Budget" />
+        <TextButton text="Cancel" />
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ export function LockableInput({
       ) : (
         <input
           className="lockable-input-input"
-          type="text"
+          type="number"
           value={value}
           onChange={onChange}
           disabled={isLocked}
