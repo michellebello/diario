@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AddButton from "./reusables/buttons/AddButton";
 import LabelInputForm from "./reusables/LabelInputForm";
 import { LockableInput } from "./reusables/input/LockableInput";
 import { CATEGORY_LIST } from "../data/aux/CategoryList";
 import TextButton from "./reusables/buttons/TextButton";
+import Network from "../utils/network";
 import "../components/styles/create-new-budget.css";
 
 const NUM_TO_MONTH = new Map([
@@ -22,6 +24,9 @@ const NUM_TO_MONTH = new Map([
 ]);
 
 function CreateBudget() {
+  const network = new Network();
+  const navigate = useNavigate();
+  const [topErrorMessage, setTopErrorMessage] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [budgetAmount, setBudgetAmount] = useState("");
@@ -36,6 +41,9 @@ function CreateBudget() {
   });
 
   const addNewBudgetAllocation = () => {
+    if (budgetAmount === "" || budgetAmount.length === 0) {
+      setTopErrorMessage("Please fill out budget period details first");
+    }
     const remainingCats = CATEGORY_LIST.filter(
       (cat) => !activeAllocations.includes(cat),
     );
@@ -47,6 +55,7 @@ function CreateBudget() {
       copy.set(others, "");
       return copy;
     });
+    setTopErrorMessage("");
   };
   const [totalAllocated, setTotalAllocated] = useState(0);
   const updateBudgetAllocationMap = (key, value) => {
@@ -58,10 +67,58 @@ function CreateBudget() {
         (sum, val) => sum + (parseFloat(val) || 0),
         0,
       );
-
       setTotalAllocated(newTotal);
       return copy;
     });
+  };
+
+  const removeInfo = () => {
+    setTopErrorMessage("");
+    setBudgetAmount("");
+    setMonth("");
+    setYear("");
+    const map = new Map();
+    map.set(CATEGORY_LIST[0], "");
+    setBudgetAllocations(map);
+    setActiveAllocations([CATEGORY_LIST[0]]);
+    setTotalAllocated(0);
+  };
+
+  const addNewBudget = async () => {
+    if (!year || !month || !budgetAmount) {
+      setTopErrorMessage("Please fill out all fields");
+      return;
+    }
+    try {
+      const budgetBody = {
+        year: parseInt(year),
+        monthNumber: parseInt(month),
+        totalAmount: parseInt(budgetAmount),
+      };
+      const response1 = await network.post("/budgets", budgetBody);
+      console.log("response " + response1.data);
+      if (response1.status === 200) {
+        const budgetId = response1.data;
+        const allocations = activeAllocations.map((category) => ({
+          category: category,
+          amount: parseFloat(budgetAllocations.get(category)) || 0,
+        }));
+        const response2 = await network.post(
+          `/budgets/${budgetId}/allocations`,
+          allocations,
+        );
+        console.log(response2);
+        if (response2.status === 200) {
+          navigate("/mycuenta.budgets");
+        } else {
+          setTopErrorMessage("Something occured. Try again");
+        }
+      } else {
+        setTopErrorMessage("Try again.");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -73,34 +130,39 @@ function CreateBudget() {
       <div className="create-budget-configuration-div">
         {/* budget configuration part */}
         <p className="create-budget-secondary-titles">Budget Period</p>
-        <div className="create-budget-configuration-row">
-          <LabelInputForm
-            inputType="dropdown"
-            dropdownOptions={NUM_TO_MONTH.values()}
-            label="Month"
-            name="budgetPeriod"
-            type="number"
-            value={month}
-            onChange={(e) => setMonth(NUM_TO_MONTH.get(month))}
-          />
-          <LabelInputForm
-            inputType="input"
-            label="Year"
-            name="budgetYear"
-            type="text"
-            value={year}
-            autocomplete="2026"
-            onChange={(e) => setYear(e.target.value)}
-          />
+        <div className="create-budget-configuration-col">
+          <div className="create-budget-configuration-row">
+            <LabelInputForm
+              inputType="dropdown"
+              dropdownOptions={[...NUM_TO_MONTH.entries()]}
+              label="Month"
+              name="budgetPeriod"
+              type="number"
+              value={month}
+              onChange={(e) => setMonth(parseInt(e.target.value))}
+            />
+            <LabelInputForm
+              inputType="input"
+              label="Year"
+              name="budgetYear"
+              type="text"
+              value={year}
+              autocomplete="2026"
+              onChange={(e) => setYear(e.target.value)}
+            />
+            <LabelInputForm
+              label="Total Budget Amount"
+              name="budgetAmount"
+              type="text"
+              value={budgetAmount}
+              autocomplete="1000"
+              onChange={(e) => setBudgetAmount(e.target.value)}
+            />
+          </div>
+          {topErrorMessage && (
+            <p className="top-error-message">{topErrorMessage}</p>
+          )}
         </div>
-        <LabelInputForm
-          label="Total Budget Amount"
-          name="budgetAmount"
-          type="text"
-          value={budgetAmount}
-          autocomplete="1000"
-          onChange={(e) => setBudgetAmount(e.target.value)}
-        />
       </div>
       <div className="create-budget-allocation-div">
         <div className="create-budget-allocation-top">
@@ -159,8 +221,18 @@ function CreateBudget() {
         </div>
       </div>
       <div className="create-budgets-buttons-div">
-        <TextButton text="Create Budget" />
-        <TextButton text="Cancel" />
+        <TextButton
+          text="Create Budget"
+          bgColor="#e7dbdb"
+          fontColor="#4e4c4c"
+          onClick={addNewBudget}
+        />
+        <TextButton
+          text="Cancel"
+          bgColor="#eadddd"
+          fontColor="#ba6e6eff"
+          onClick={removeInfo}
+        />
       </div>
     </div>
   );

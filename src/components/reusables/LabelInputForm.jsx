@@ -28,9 +28,9 @@ function LabelInputForm({
             value={value}
             onChange={onChange}
           >
-            {dropdownOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            {dropdownOptions.map(([optionKey, optionVal]) => (
+              <option key={optionKey} value={optionKey}>
+                {optionVal}
               </option>
             ))}
           </select>

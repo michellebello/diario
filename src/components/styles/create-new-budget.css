@@ -65,6 +65,12 @@
   margin-top: 0.5rem;
 }
 
+.create-budget-configuration-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 LabelInputForm:focus {
   cursor: pointer;
   outline: 1px solid #a79e9e;
@@ -117,4 +123,14 @@ LabelInputForm:focus {
 .create-budgets-buttons-div {
   justify-content: center;
   gap: 1.25rem;
+}
+
+/* error messages */
+.top-error-message {
+  text-align: center;
+  color: #9f5353;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  font-weight: 300;
+  font-family: "Economica", sans-serif;
+  padding: 0.2rem;
 }

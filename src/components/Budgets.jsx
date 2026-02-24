@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TextButton from "./reusables/buttons/AddButton.jsx";
 import { CurrBudgetCard } from "./reusables/cards/CurrBudgetCard.jsx";
 import BudgetCard from "./reusables/cards/BudgetCard.jsx";
 import { useAppContext } from "../contexts/context.jsx";
+import NewBudget from "../components/reusables/new-budget/NewBudget.jsx";
 import "../components/styles/budgets.css";
 
 function Budgets() {
@@ -23,6 +25,11 @@ function Budgets() {
     });
   };
 
+  const [addFormVisibility, setAddFormVisibility] = useState(false);
+  const showAddBudgetForm = () => {
+    setAddFormVisibility((prev) => !prev);
+  };
+
   const currMonth = new Date().toLocaleString("default", { month: "long" });
   const currYear = new Date().getFullYear();
   const currDate = `${currMonth} ${currYear}`;
@@ -35,7 +42,7 @@ function Budgets() {
           text="Create new budget"
           bgColor="#5154a1ff"
           fontColor="#ffffff"
-          onClick={() => navigate("/mycuenta/budgets/create-budget")}
+          onClick={showAddBudgetForm}
         />
       </div>
       <div className="curr-budget-container">
@@ -61,6 +68,7 @@ function Budgets() {
           ))}
         </div>
       </div>
+      {addFormVisibility && <NewBudget />}
     </div>
   );
 }
