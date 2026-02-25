@@ -15,13 +15,13 @@ function LabelInputForm({
 }) {
   return (
     <div className="duoLabelInput">
-      <label className="labelForm" htmlFor={name}>
+      <label htmlFor={name} className="labelForm">
         {label}
       </label>
       <div className="inputContainer">
         {inputType !== "input" && dropdownOptions ? (
           <select
-            id="entry-account"
+            id={name}
             name={name}
             type={type}
             className="inputForm"

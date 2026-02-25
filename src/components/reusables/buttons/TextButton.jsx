@@ -1,9 +1,10 @@
 import "../../../components/styles/text-button.css";
 
-function TextButton({ text, bgColor, fontColor, onClick }) {
+function TextButton({ type, text, bgColor, fontColor, onClick }) {
   return (
     <div className="text-button-container">
       <button
+        type={type}
         className="text-button"
         onClick={onClick}
         style={{

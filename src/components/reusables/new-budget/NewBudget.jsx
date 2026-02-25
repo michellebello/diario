@@ -2,7 +2,7 @@ import { useState } from "react";
 import NewBudget1 from "./new-budget-1";
 import NewBudget2 from "./new-budget-2";
 
-function NewBudget() {
+function NewBudget({ onCancel }) {
   const [currPage, setCurrPage] = useState(1);
   const [budgetId, setBudgetId] = useState(null);
   const [budgetAmount, setBudgetAmount] = useState(0);
@@ -25,6 +25,7 @@ function NewBudget() {
           setBudgetId={setBudgetId}
           setBudgetAmount={setBudgetAmount}
           handleNext={handleNext}
+          onCancel={onCancel}
         />
       )}
       {currPage === 2 && (

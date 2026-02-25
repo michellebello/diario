@@ -1,13 +1,16 @@
-import Network from "../../../utils/network";
+import { useUserData } from "../../../data/user/fetchAndSaveUserData.js";
+import Network from "../../../utils/network.js";
 import AddButton from "../buttons/AddButton";
 import TextButton from "../buttons/TextButton";
 import { LockableInput } from "../input/LockableInput";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { CATEGORY_LIST } from "../../../data/aux/CategoryList";
+import "../../../components/styles/create-new-budget.css";
 
 function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
   const network = new Network();
+  const fetchUserData = useUserData();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [activeAllocations, setActiveAllocations] = useState([
@@ -20,13 +23,10 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
   });
 
   const addNewBudgetAllocation = () => {
-    if (budgetAmount === "" || budgetAmount.length === 0) {
-      setErrorMessage("Please fill out budget period details first");
-    }
     const remainingCats = CATEGORY_LIST.filter(
       (cat) => !activeAllocations.includes(cat),
     );
-    if (remainingCats === 0) return;
+    if (remainingCats.length === 0) return;
     const others = remainingCats[0];
     setActiveAllocations((prev) => [...prev, others]);
     setBudgetAllocations((prev) => {
@@ -34,8 +34,8 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
       copy.set(others, "");
       return copy;
     });
-    setErrorMessage("");
   };
+
   const [totalAllocated, setTotalAllocated] = useState(0);
   const updateBudgetAllocationMap = (key, value) => {
     setBudgetAllocations((prev) => {
@@ -51,9 +51,14 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
     });
   };
 
-  const addBudgetAllocations = async () => {
-    if (!activeAllocations || !budgetAllocations) {
-      setErrorMessage("Please fill out all fields");
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (activeAllocations.length === 0) {
+      setErrorMessage("Please allocate at least one category");
+      return;
+    }
+    if (totalAllocated > budgetAmount) {
+      setErrorMessage("Allocated total cannot exceed budget total");
       return;
     }
     try {
@@ -65,85 +70,102 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
         `/budgets/${budgetId}/allocations`,
         allocations,
       );
-      console.log(response);
-      if (response.status === 200) {
-        navigate(`/mycuenta/budgets/${budgetId}`);
+      console.log(
+        "budget allocation creating response" + JSON.stringify(response),
+      );
+      if (response.status === 201) {
+        await fetchUserData();
+        navigate(`/mycuenta/budgets/`);
       }
     } catch (err) {
       console.log(err);
+      setErrorMessage("Something went wrong");
     }
   };
 
   return (
-    <div className="create-budget-allocation-div">
-      <div className="create-budget-allocation-top">
-        <p className="create-budget-secondary-titles">Budget Allocation</p>
-        <AddButton
-          text="Add budget category"
-          onClick={addNewBudgetAllocation}
-        />
-      </div>
-      <div className="create-budget-allocation-total-container">
-        {activeAllocations.map((category, idx) => (
-          <div className="create-budget-allocation-container">
-            <LockableInput
-              key={idx}
-              isLocked={false}
-              type="dropdown"
-              dropdownOptions={CATEGORY_LIST.filter(
-                (cat) => !activeAllocations.includes(cat) || cat === category,
-              )}
-              value={category}
-              onChange={(e) => {
-                const selectedCat = e.target.value;
-                setActiveAllocations((prev) =>
-                  prev.map((cat) => (cat === category ? selectedCat : cat)),
-                );
-                setBudgetAllocations((prev) => {
-                  const newMap = new Map(prev);
-                  const value = newMap.get(category) ?? "";
-                  newMap.set(selectedCat, value);
-                  newMap.delete(category);
-                  return newMap;
-                });
-              }}
+    <div className="create-budget-content">
+      <form className="create-budget-form" onSubmit={onSubmit}>
+        <div className="create-budget-top-div">
+          <p className="create-budget-top-title">Create New Budget</p>
+        </div>
+        <div className="create-budget-allocation-div">
+          <div className="create-budget-allocation-top">
+            <p className="create-budget-secondary-titles">Budget Allocation</p>
+            <AddButton type="button" text="" onClick={addNewBudgetAllocation} />
+          </div>
+          <div className="create-budget-allocation-total-container">
+            {activeAllocations.map((category, idx) => (
+              <div className="create-budget-allocation-container">
+                <div className="create-budget-allocation-left">
+                  <LockableInput
+                    key={idx}
+                    isLocked={false}
+                    type="dropdown"
+                    dropdownOptions={CATEGORY_LIST.filter(
+                      (cat) =>
+                        !activeAllocations.includes(cat) || cat === category,
+                    )}
+                    value={category}
+                    onChange={(e) => {
+                      const selectedCat = e.target.value;
+                      setActiveAllocations((prev) =>
+                        prev.map((cat) =>
+                          cat === category ? selectedCat : cat,
+                        ),
+                      );
+                      setBudgetAllocations((prev) => {
+                        const newMap = new Map(prev);
+                        const value = newMap.get(category) ?? "";
+                        newMap.set(selectedCat, value);
+                        newMap.delete(category);
+                        return newMap;
+                      });
+                    }}
+                  />
+                </div>
+                <div className="create-budget-allocation-right">
+                  <LockableInput
+                    key={`amount ${idx}`}
+                    isLocked={false}
+                    type="text"
+                    value={budgetAllocations.get(category) ?? ""}
+                    onChange={(e) =>
+                      updateBudgetAllocationMap(category, e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="create-budget-totals-div">
+            <div className="create-budget-total-flex">
+              <p className="create-budget-totals-p"> Total Allocated</p>
+              <p className="create-budget-totals-p">${totalAllocated}</p>
+            </div>
+            <div className="create-budget-total-flex">
+              <p className="create-budget-totals-p">Budget Total</p>
+              <p className="create-budget-totals-p">${budgetAmount}</p>
+            </div>
+          </div>
+          {errorMessage && <p>{errorMessage}</p>}
+          <div className="create-budgets-buttons-div">
+            <TextButton
+              type="button"
+              text="Cancel"
+              bgColor="#eadddd"
+              fontColor="#ba6e6eff"
+              onClick={handlePrev}
             />
-            <LockableInput
-              key={idx + 10}
-              isLocked={false}
-              type="text"
-              value={budgetAllocations.get(category) ?? ""}
-              onChange={(e) =>
-                updateBudgetAllocationMap(category, e.target.value)
-              }
+            <TextButton
+              type="submit"
+              text="Submit"
+              bgColor="#e7dbdb"
+              fontColor="#4e4c4c"
             />
           </div>
-        ))}
-      </div>
-      <div className="create-budget-totals-div">
-        <div className="create-budget-total-flex">
-          <p className="create-budget-totals-p"> Total Allocated</p>
-          <p className="create-budget-totals-p">${totalAllocated}</p>
         </div>
-        <div className="create-budget-total-flex">
-          <p className="create-budget-totals-p">Budget Total</p>
-          <p className="create-budget-totals-p">${budgetAmount}</p>
-        </div>
-      </div>
-      <div className="create-budgets-buttons-div">
-        <TextButton
-          text="Create Budget"
-          bgColor="#e7dbdb"
-          fontColor="#4e4c4c"
-          onClick={addBudgetAllocations}
-        />
-        <TextButton
-          text="Cancel"
-          bgColor="#eadddd"
-          fontColor="#ba6e6eff"
-          onClick={handlePrev}
-        />
-      </div>
+      </form>
     </div>
   );
 }

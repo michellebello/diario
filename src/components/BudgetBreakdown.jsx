@@ -14,7 +14,7 @@ function BudgetBreakdown() {
   const { state } = useLocation();
   const { budgetId } = useParams();
   const [budgetData, setBudgetData] = useState([]);
-  const [budgetInfo, _] = useState(state ?? null);
+  const [budgetInfo, setBudgetInfo] = useState(state ?? null);
 
   const getBudgetBreakdownData = async (budgetId) => {
     const response = await network.get(`/budgets/${budgetId}/allocations`);
@@ -101,7 +101,7 @@ function BudgetBreakdown() {
               id={budget.id}
               budgetId={budget.budgetId}
               category={budget.category}
-              spent={budget.spent.toFixed(2)}
+              spent={budget.spent !== null ? budget.spent.toFixed(2) : 0}
               total={budget.amount.toFixed(2)}
               setDeleteMessageVisibility={setDeleteMessageVisibility}
               setAllocationIdToDelete={setAllocationIdToDelete}

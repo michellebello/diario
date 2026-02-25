@@ -1,10 +1,14 @@
 import { CirclePlus } from "lucide-react";
 import "../../../components/styles/add-button.css";
 
-function AddButton({ text, onClick }) {
+function AddButton({ type, text, onClick }) {
   return (
     <div className="add-button-container">
-      <button className="add-button" onClick={onClick}>
+      <button
+        type={type}
+        className={`add-button ${text === "" ? `no-text` : ""}`}
+        onClick={onClick}
+      >
         {text}
         <CirclePlus />
       </button>

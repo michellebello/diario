@@ -2,56 +2,72 @@ import { useState } from "react";
 import Network from "../../../utils/network";
 import LabelInputForm from "../LabelInputForm";
 import { NUM_TO_MONTH } from "./monthData";
+import TextButton from "../buttons/TextButton";
+import "../../../components/styles/create-new-budget.css";
 
-function NewBudget1({ setBudgetId, setBudgetAmount, handleNext }) {
+function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
   const network = new Network();
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
-  const [localBudgetId, setLocalBudgetId] = useState(null);
   const [localBudgetAmount, setLocalBudgetAmount] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const handleMonth = (e) => {
+    setMonth(e.target.value);
+  };
+
+  const handleYear = (e) => {
+    setYear(e.target.value);
+  };
+
+  const handleBudgetTotal = (e) => {
+    setLocalBudgetAmount(e.target.value);
+  };
+
   const addNewBudget = async () => {
-    if (!year || !month || !localBudgetAmount) {
+    const yearTrimmed = year.trim();
+    const monthTrimmed = month.trim();
+    const budgetTotal = localBudgetAmount.trim();
+    if (!yearTrimmed || !month || !budgetTotal) {
       setErrorMessage("Please fill out all fields");
-      return;
+      return false;
     }
     try {
       const budgetBody = {
-        year: parseInt(year),
-        monthNumber: parseInt(month),
-        totalAmount: parseInt(localBudgetAmount),
+        year: parseInt(yearTrimmed),
+        monthNumber: parseInt(monthTrimmed),
+        totalAmount: parseInt(budgetTotal),
       };
-      const response1 = await network.post("/budgets", budgetBody);
-      console.log("response " + response1.data);
-      if (response1.status === 200) {
-        const budgetId = response1.data;
-        setLocalBudgetId(budgetId);
+      const response = await network.post("/budgets", budgetBody);
+      if (response.status === 200) {
+        const budgetId = response.data;
+        console.log("budget id is " + budgetId);
+        setBudgetId(budgetId);
+        setBudgetAmount(localBudgetAmount);
+        return true;
+      }
+      setErrorMessage("");
+      return false;
+    } catch (err) {
+      if (err.response && err.response.status === 409) {
+        setErrorMessage("Budget for this period already exists");
       } else {
         setErrorMessage("Try again.");
       }
-    } catch (err) {
-      console.log(err);
+      return false;
     }
   };
 
-  const onSubmit = () => {
-    addNewBudget();
-    setBudgetId(localBudgetId);
-    setBudgetAmount(localBudgetAmount);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const success = await addNewBudget();
+    if (!success) return;
     handleNext();
   };
 
-  const handleCancel = () => {
-    setErrorMessage("");
-    setBudgetAmount("");
-    setMonth("");
-    setYear("");
-  };
-
   return (
-    <div>
-      <form className="add-account-form">
+    <div className="create-budget-content">
+      <form className="create-budget-form" onSubmit={onSubmit}>
         <div className="create-budget-top-div">
           <p className="create-budget-top-title">Create New Budget</p>
         </div>
@@ -59,46 +75,48 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext }) {
           {/* budget configuration part */}
           <p className="create-budget-secondary-titles">Budget Period</p>
           <div className="create-budget-configuration-col">
-            <div className="create-budget-configuration-row">
-              <LabelInputForm
-                inputType="dropdown"
-                dropdownOptions={[...NUM_TO_MONTH.entries()]}
-                label="Month"
-                name="budgetPeriod"
-                type="number"
-                value={month}
-                onChange={(e) => setMonth(parseInt(e.target.value))}
-              />
-              <LabelInputForm
-                inputType="input"
-                label="Year"
-                name="budgetYear"
-                type="text"
-                value={year}
-                autocomplete="2026"
-                onChange={(e) => setYear(e.target.value)}
-              />
-              <LabelInputForm
-                label="Total Budget Amount"
-                name="budgetAmount"
-                type="text"
-                value={localBudgetAmount}
-                autocomplete="1000"
-                onChange={(e) => setLocalBudgetAmount(e.target.value)}
-              />
-            </div>
+            <LabelInputForm
+              inputType="dropdown"
+              dropdownOptions={[...NUM_TO_MONTH.entries()]}
+              label="Month"
+              name="budgetPeriod"
+              type="number"
+              value={month}
+              onChange={handleMonth}
+            />
+            <LabelInputForm
+              inputType="input"
+              label="Year"
+              name="budgetYear"
+              type="number"
+              value={year}
+              autocomplete="2026"
+              onChange={handleYear}
+            />
+            <LabelInputForm
+              label="Total Budget Amount"
+              name="budgetAmount"
+              type="number"
+              value={localBudgetAmount}
+              autocomplete="1000"
+              onChange={handleBudgetTotal}
+            />
           </div>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
-          <div className="add-account-buttons">
-            <button className="add-account-save-button" onClick={onSubmit}>
-              Submit
-            </button>
-            <button
-              className="add-account-cancel-button"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
+          <div className="create-budgets-buttons-div">
+            <TextButton
+              tyoe="button"
+              text="Cancel"
+              bgColor="#ede8f7"
+              fontColor="#4e4c4c"
+              onClick={onCancel}
+            />
+            <TextButton
+              type="submit"
+              text="Next"
+              bgColor="#ede8f7"
+              fontColor="#4e4c4c"
+            />
           </div>
         </div>
       </form>
