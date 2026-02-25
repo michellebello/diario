@@ -8,7 +8,6 @@ import Transactions from "./components/Transactions";
 import Accounts from "./components/Accounts";
 import Budgets from "./components/Budgets";
 import BudgetBreakdown from "./components/BudgetBreakdown";
-import CreateBudget from "./components/CreateBudget";
 import TaxReport from "./components/TaxReport";
 import Barchart from "./components/Barchart";
 import DonutChart from "./components/DonutChart";
@@ -32,7 +31,6 @@ function App() {
             { path: "accounts", element: <Accounts /> },
             { path: "budgets", element: <Budgets /> },
             { path: "budgets/:budgetId", element: <BudgetBreakdown /> },
-            { path: "budgets/create-budget", element: <CreateBudget /> },
             { path: "taxreport", element: <TaxReport /> },
           ],
         },
