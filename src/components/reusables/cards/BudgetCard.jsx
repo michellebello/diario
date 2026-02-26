@@ -1,6 +1,6 @@
 import ProgressBar from "@ramonak/react-progress-bar";
 import { monthNumToMonthName } from "../../../data/aux/MonthNumToName.js";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, TrashIcon } from "lucide-react";
 
 export default function BudgetCard({ month, year, spent, total, onClick }) {
   const monthName = monthNumToMonthName[month];
@@ -32,9 +32,18 @@ export default function BudgetCard({ month, year, spent, total, onClick }) {
           )}
         </div>
       </div>
-      <button onClick={onClick} className="go-to-budget-button">
-        View budget
-      </button>
+      <div className="right-buttons">
+        <button onClick={onClick} className="go-to-budget-button">
+          View budget
+        </button>
+        <button
+          type="button"
+          onClick={() => {}}
+          className="delete-budget-button"
+        >
+          <TrashIcon size="clamp(0.8rem, 1vw, 1.2rem)" />
+        </button>
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ export function LockableInput({
   isLocked,
   type,
   dropdownOptions,
+  defaultOption,
   value,
   onChange,
 }) {
@@ -16,6 +17,7 @@ export function LockableInput({
             onChange={onChange}
             disabled={isLocked}
           >
+            <option>{defaultOption}</option>
             {dropdownOptions.map((option) => (
               <option key={option} value={option}>
                 {option}

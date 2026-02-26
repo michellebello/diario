@@ -1,8 +1,10 @@
 import { useState } from "react";
+import Network from "../../../utils/network";
 import NewBudget1 from "./new-budget-1";
 import NewBudget2 from "./new-budget-2";
 
 function NewBudget({ onCancel }) {
+  const network = new Network();
   const [currPage, setCurrPage] = useState(1);
   const [budgetId, setBudgetId] = useState(null);
   const [budgetAmount, setBudgetAmount] = useState(0);
@@ -18,6 +20,14 @@ function NewBudget({ onCancel }) {
     }
   };
 
+  const handleCancel = async () => {
+    if (budgetId !== null) {
+      await network.delete(`/budgets/${budgetId}`);
+      console.log(`budget with id ${budgetId} deleted`);
+    }
+    onCancel();
+  };
+
   return (
     <div>
       {currPage === 1 && (
@@ -25,7 +35,7 @@ function NewBudget({ onCancel }) {
           setBudgetId={setBudgetId}
           setBudgetAmount={setBudgetAmount}
           handleNext={handleNext}
-          onCancel={onCancel}
+          onCancel={handleCancel}
         />
       )}
       {currPage === 2 && (

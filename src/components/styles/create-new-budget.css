@@ -4,18 +4,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: safe;
   background-color: #00000080;
   z-index: 1000;
 }
 
 .create-budget-form {
   z-index: 1000;
-  margin-top: 15%;
+  margin-top: 5%;
   width: clamp(15rem, 32vw, 25rem);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0.8rem 1rem;
+  padding: 1.2rem 1.5rem;
   border-radius: 16px;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.02);
@@ -28,16 +29,15 @@
 .create-budget-top-div {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  margin-bottom: 0.75rem;
-  margin-top: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
 }
 .create-budget-top-title {
   color: #545252;
   font-size: clamp(0.95rem, 1.2vw, 1.15rem);
   font-weight: 400;
   font-family: "Economica", sans-serif;
-  margin-left: 0.5rem;
 }
 
 /* main budget configuration part */
@@ -48,13 +48,8 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: 0.8rem 1rem;
   border-radius: 16px;
   background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .create-budget-secondary-titles {
@@ -82,12 +77,35 @@
 .create-budget-allocation-top {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+}
+
+.create-budget-add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0.25rem 0.4rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+  border-radius: 10px;
+}
+
+.create-budget-add-button:hover {
+  background-color: rgb(214, 203, 232);
 }
 
 .create-budget-totals-div {
   gap: 0.5rem;
-  padding: 1.2rem 1.4rem;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  /* padding: 1.2rem 1.4rem; */
 }
 
 .create-budget-allocation-container {
@@ -106,6 +124,29 @@
 
 .create-budget-allocation-right {
   width: 55%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.create-budget-delete-allocation-row-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.25rem;
+  background-color: #ffff;
+  border: none;
+  border-radius: 10px;
+  color: #9c3636;
+}
+
+.create-budget-delete-allocation-row-button:hover {
+  background-color: #ebc0c5;
+}
+
+.create-budget-total-flex {
+  margin-left: 0.25rem;
 }
 
 .create-budget-total-flex,
@@ -126,14 +167,4 @@
   justify-content: space-evenly;
   gap: 0.75rem;
   margin-top: 1rem;
-}
-
-/* error messages */
-.top-error-message {
-  text-align: center;
-  color: #9f5353;
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-  font-weight: 300;
-  font-family: "Economica", sans-serif;
-  padding: 0.2rem;
 }

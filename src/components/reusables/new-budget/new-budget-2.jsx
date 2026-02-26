@@ -1,11 +1,11 @@
 import { useUserData } from "../../../data/user/fetchAndSaveUserData.js";
 import Network from "../../../utils/network.js";
-import AddButton from "../buttons/AddButton";
 import TextButton from "../buttons/TextButton";
-import { LockableInput } from "../input/LockableInput";
+import BudgetCategoryRow from "../input/BudgetCategoryRow.jsx";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { CATEGORY_LIST } from "../../../data/aux/CategoryList";
+import { ErrorMessage } from "../cards/ErrorMessage.jsx";
 import "../../../components/styles/create-new-budget.css";
 
 function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
@@ -13,58 +13,62 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
   const fetchUserData = useUserData();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-  const [activeAllocations, setActiveAllocations] = useState([
-    CATEGORY_LIST[0],
-  ]);
-  const [budgetAllocations, setBudgetAllocations] = useState(() => {
-    const map = new Map();
-    map.set(CATEGORY_LIST[0], "");
-    return map;
-  });
 
-  const addNewBudgetAllocation = () => {
-    const remainingCats = CATEGORY_LIST.filter(
-      (cat) => !activeAllocations.includes(cat),
+  const [rows, setRows] = useState([{ category: CATEGORY_LIST[0], value: "" }]);
+  const totalAllocated = rows.reduce(
+    (sum, r) => sum + (parseFloat(r.value) || 0),
+    0,
+  );
+
+  const addRow = () => {
+    const hasEmptyRows = rows.some((r) => r.value === "" || r.value === null);
+    console.log(hasEmptyRows);
+
+    if (hasEmptyRows) {
+      setErrorMessage("Please fill out all allocation fields");
+      return;
+    }
+    setErrorMessage("");
+    const remaining = CATEGORY_LIST.filter(
+      (cat) => !rows.some((r) => r.category === cat),
     );
-    if (remainingCats.length === 0) return;
-    const others = remainingCats[0];
-    setActiveAllocations((prev) => [...prev, others]);
-    setBudgetAllocations((prev) => {
-      const copy = new Map(prev);
-      copy.set(others, "");
+    if (!remaining.length) return;
+
+    setRows((prev) => [...prev, { category: remaining[0], value: "" }]);
+  };
+
+  const isButtonDisabled = rows.length >= CATEGORY_LIST.length;
+
+  const updateCategory = (index, newCat) => {
+    setRows((prev) => {
+      const copy = [...prev];
+      copy[index].category = newCat;
       return copy;
     });
   };
 
-  const [totalAllocated, setTotalAllocated] = useState(0);
-  const updateBudgetAllocationMap = (key, value) => {
-    setBudgetAllocations((prev) => {
-      const copy = new Map(prev);
-      copy.set(key, value);
-      const values = Array.from(copy.values());
-      const newTotal = values.reduce(
-        (sum, val) => sum + (parseFloat(val) || 0),
-        0,
-      );
-      setTotalAllocated(newTotal);
+  const updateValue = (index, newVal) => {
+    if (newVal === 0 || newVal === null) {
+      setErrorMessage("Complete field");
+    }
+    setRows((prev) => {
+      const copy = [...prev];
+      copy[index].value = newVal;
       return copy;
     });
+  };
+
+  const deleteRow = (index) => {
+    setRows((prev) => prev.filter((_, i) => i !== index));
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (activeAllocations.length === 0) {
-      setErrorMessage("Please allocate at least one category");
-      return;
-    }
-    if (totalAllocated > budgetAmount) {
-      setErrorMessage("Allocated total cannot exceed budget total");
-      return;
-    }
+
     try {
-      const allocations = activeAllocations.map((category) => ({
-        category: category,
-        amount: parseFloat(budgetAllocations.get(category)) || 0,
+      const allocations = rows.map((row) => ({
+        category: row.category,
+        amount: parseFloat(row.value),
       }));
       const response = await network.post(
         `/budgets/${budgetId}/allocations`,
@@ -75,11 +79,12 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
       );
       if (response.status === 201) {
         await fetchUserData();
-        navigate(`/mycuenta/budgets/`);
+        navigate(`/mycuenta/budgets/`, { replace: true });
+        window.location.reload();
       }
     } catch (err) {
-      console.log(err);
-      setErrorMessage("Something went wrong");
+      console.log(err.errorMessage);
+      setErrorMessage("Something went wrong" || err.errorMessage);
     }
   };
 
@@ -92,50 +97,30 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
         <div className="create-budget-allocation-div">
           <div className="create-budget-allocation-top">
             <p className="create-budget-secondary-titles">Budget Allocation</p>
-            <AddButton type="button" text="" onClick={addNewBudgetAllocation} />
+            <button
+              type="button"
+              onClick={addRow}
+              className="create-budget-add-button"
+              disabled={isButtonDisabled}
+            >
+              +
+            </button>
           </div>
           <div className="create-budget-allocation-total-container">
-            {activeAllocations.map((category, idx) => (
-              <div className="create-budget-allocation-container">
-                <div className="create-budget-allocation-left">
-                  <LockableInput
-                    key={idx}
-                    isLocked={false}
-                    type="dropdown"
-                    dropdownOptions={CATEGORY_LIST.filter(
-                      (cat) =>
-                        !activeAllocations.includes(cat) || cat === category,
-                    )}
-                    value={category}
-                    onChange={(e) => {
-                      const selectedCat = e.target.value;
-                      setActiveAllocations((prev) =>
-                        prev.map((cat) =>
-                          cat === category ? selectedCat : cat,
-                        ),
-                      );
-                      setBudgetAllocations((prev) => {
-                        const newMap = new Map(prev);
-                        const value = newMap.get(category) ?? "";
-                        newMap.set(selectedCat, value);
-                        newMap.delete(category);
-                        return newMap;
-                      });
-                    }}
-                  />
-                </div>
-                <div className="create-budget-allocation-right">
-                  <LockableInput
-                    key={`amount ${idx}`}
-                    isLocked={false}
-                    type="text"
-                    value={budgetAllocations.get(category) ?? ""}
-                    onChange={(e) =>
-                      updateBudgetAllocationMap(category, e.target.value)
-                    }
-                  />
-                </div>
-              </div>
+            {rows.map((row, idx) => (
+              <BudgetCategoryRow
+                key={idx}
+                category={row.category}
+                input={row.value}
+                categoryList={CATEGORY_LIST.filter(
+                  (cat) =>
+                    !rows.some((r) => r.category === cat) ||
+                    cat === row.category,
+                )}
+                onCategoryChange={(newCat) => updateCategory(idx, newCat)}
+                onInputChange={(val) => updateValue(idx, val)}
+                onDelete={() => deleteRow(idx)}
+              />
             ))}
           </div>
           <div className="create-budget-totals-div">
@@ -148,7 +133,7 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
               <p className="create-budget-totals-p">${budgetAmount}</p>
             </div>
           </div>
-          {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && <ErrorMessage message={errorMessage} />}
           <div className="create-budgets-buttons-div">
             <TextButton
               type="button"

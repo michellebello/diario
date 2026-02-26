@@ -266,6 +266,11 @@
   color: #e26376c1;
   font-weight: 300;
 }
+.right-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
 
 .go-to-budget-button {
   display: flex;
@@ -284,6 +289,26 @@
   background-color: #dddde6c1;
   box-shadow: gray 0px 1px 2px;
   transition: all 0.25s ease;
+}
+
+.delete-budget-button {
+  padding: 3px 7px;
+  border: none;
+  background-color: transparent;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-weight: 400;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  font-family: "Economica", sans-serif;
+  font-weight: 300;
+  color: #864444;
+}
+
+.delete-budget-button:hover {
+  cursor: pointer;
+  outline: 2px solid #a06262;
+  border-radius: 5px;
+  background-color: #da9e9e;
 }
 
 @media (max-width: 768px) {

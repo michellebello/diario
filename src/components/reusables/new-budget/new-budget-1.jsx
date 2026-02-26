@@ -3,6 +3,7 @@ import Network from "../../../utils/network";
 import LabelInputForm from "../LabelInputForm";
 import { NUM_TO_MONTH } from "./monthData";
 import TextButton from "../buttons/TextButton";
+import { ErrorMessage } from "../cards/ErrorMessage";
 import "../../../components/styles/create-new-budget.css";
 
 function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
@@ -64,6 +65,7 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
     if (!success) return;
     handleNext();
   };
+  console.log("setting error message " + errorMessage);
 
   return (
     <div className="create-budget-content">
@@ -73,7 +75,6 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
         </div>
         <div className="create-budget-configuration-div">
           {/* budget configuration part */}
-          <p className="create-budget-secondary-titles">Budget Period</p>
           <div className="create-budget-configuration-col">
             <LabelInputForm
               inputType="dropdown"
@@ -102,7 +103,7 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
               onChange={handleBudgetTotal}
             />
           </div>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {errorMessage && <ErrorMessage message={errorMessage} />}
           <div className="create-budgets-buttons-div">
             <TextButton
               tyoe="button"

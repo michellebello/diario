@@ -62,7 +62,7 @@ function Budgets() {
         />
       </div>
       <div className="all-budgets-container">
-        <p className="all-budgets-title">Previous budgets</p>
+        <p className="all-budgets-title">Other budgets</p>
         <div className="all-budgets-div">
           {displayBudgets.map((budget) => (
             <BudgetCard
