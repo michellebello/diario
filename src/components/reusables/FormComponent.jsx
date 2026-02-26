@@ -79,7 +79,9 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
             value={selectedAccountId}
             onChange={(e) => setSelectedAccountId(Number(e.target.value))}
           >
-            <option value="">Select an Account</option>
+            <option disabled selected value="">
+              Select an account
+            </option>
             {accountNumbers.map((acc) => (
               <option key={acc.accountId} value={acc.accountId}>
                 {acc.formattedAccountNumber}

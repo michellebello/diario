@@ -3,6 +3,7 @@ import "../styles/labelInputForm.css";
 
 function LabelInputForm({
   inputType,
+  defaultDropdown,
   dropdownOptions,
   label,
   name,

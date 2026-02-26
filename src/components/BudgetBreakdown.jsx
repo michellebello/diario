@@ -6,6 +6,7 @@ import Network from "../utils/network";
 import { BudgetTopCards } from "./reusables/cards/BudgetTopCards";
 import { BudgetCategories } from "./reusables/cards/BudgetCategories";
 import ReBarchart from "./reusables/data-charts/ReBarchart";
+import DeleteConfirmationForm from "../components/reusables/forms/DeleteConfirmationForm";
 
 import "../components/styles/budget-breakdown.css";
 
@@ -54,59 +55,29 @@ function BudgetBreakdown() {
       </div>
       {/* confirm delete account message */}
       {deleteMessageVisibility && (
-        <div className="delete-account-total">
-          <div className="delete-account-container">
-            <p className="delete-account-message">
-              Are you sure you want to delete this budget category?
-            </p>
-            <div className="delete-account-buttons">
-              <button
-                className="delete-account-button"
-                onClick={() => deleteBudgetAllocation(allocationIdToDelete)}
-              >
-                Yes
-              </button>
-              <button
-                className="delete-account-button"
-                onClick={() => setDeleteMessageVisibility(false)}
-              >
-                No
-              </button>
-            </div>
-          </div>
-        </div>
+        <DeleteConfirmationForm
+          deletingObject="budget allocation"
+          deleteFunction={() => deleteBudgetAllocation(allocationIdToDelete)}
+          closeForm={() => setDeleteMessageVisibility(false)}
+        />
       )}
-      <div className="budget-cards-container">
-        <BudgetTopCards
-          cardTitle="Total Budgeted"
-          amount={`$${totalAmount}`}
-          amountColor="#000000"
-        />
-        <BudgetTopCards
-          cardTitle="Total spent"
-          amount={`$${totalSpent}`}
-          amountColor="#000000"
-        />
-        <BudgetTopCards
-          cardTitle="Remaining"
-          amount={`$${(totalAmount - totalSpent).toFixed(2)}`}
-          amountColor="#000000"
-        />
-      </div>
-      <div className="budget-categories-total-body">
-        <div className="budget-categories-container">
-          {budgetData.map((budget) => (
-            <BudgetCategories
-              key={budget.id}
-              id={budget.id}
-              budgetId={budget.budgetId}
-              category={budget.category}
-              spent={budget.spent !== null ? budget.spent.toFixed(2) : 0}
-              total={budget.amount.toFixed(2)}
-              setDeleteMessageVisibility={setDeleteMessageVisibility}
-              setAllocationIdToDelete={setAllocationIdToDelete}
-            />
-          ))}
+      <div className="budget-cards-top">
+        <div className="budget-cards-container">
+          <BudgetTopCards
+            cardTitle="Total Budgeted"
+            amount={`$${totalAmount}`}
+            amountColor="#000000"
+          />
+          <BudgetTopCards
+            cardTitle="Total spent"
+            amount={`$${totalSpent}`}
+            amountColor="#000000"
+          />
+          <BudgetTopCards
+            cardTitle="Remaining"
+            amount={`$${(totalAmount - totalSpent).toFixed(2)}`}
+            amountColor="#000000"
+          />
         </div>
         <div className="budget-categories-breakdown-chart-container">
           <ReBarchart
@@ -116,6 +87,21 @@ function BudgetBreakdown() {
             }, {})}
           />
         </div>
+      </div>
+
+      <div className="budget-categories-container">
+        {budgetData.map((budget) => (
+          <BudgetCategories
+            key={budget.id}
+            id={budget.id}
+            budgetId={budget.budgetId}
+            category={budget.category}
+            spent={budget.spent !== null ? budget.spent.toFixed(2) : 0}
+            total={budget.amount.toFixed(2)}
+            setDeleteMessageVisibility={setDeleteMessageVisibility}
+            setAllocationIdToDelete={setAllocationIdToDelete}
+          />
+        ))}
       </div>
     </div>
   );

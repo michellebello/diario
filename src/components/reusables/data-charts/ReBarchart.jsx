@@ -38,8 +38,6 @@ function ReBarchart({ dataObject }) {
     return () => resizeObserver.disconnect();
   }, []);
 
-  // const isKeyTooLong = Object.keys(dataObject).some((key) => key.length > 10);
-
   return (
     <div>
       <ResponsiveContainer width="100%" height={300}>

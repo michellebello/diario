@@ -20,6 +20,7 @@
 
   transition: all 0.25s ease;
   cursor: default;
+  gap: 0.25rem;
 }
 
 .budget-top-card-total:hover {

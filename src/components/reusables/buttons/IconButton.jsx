@@ -6,9 +6,9 @@ function IconButton({ type, color, onClick }) {
     <div className="edit-button-container">
       <button className="edit-button" onClick={onClick}>
         {type === "delete" ? (
-          <Trash2 color={color} width="1rem" height="1rem" />
+          <Trash2 color={color} size="clamp(0.8rem, 1.2vw, 1.1rem)" />
         ) : (
-          <Pencil color={color} width="1rem" height="1rem" />
+          <Pencil color={color} size="clamp(0.8rem, 1.2vw, 1.1rem)" />
         )}
       </button>
     </div>

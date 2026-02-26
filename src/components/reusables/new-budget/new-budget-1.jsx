@@ -40,6 +40,7 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
         totalAmount: parseInt(budgetTotal),
       };
       const response = await network.post("/budgets", budgetBody);
+      console.log(response);
       if (response.status === 200) {
         const budgetId = response.data;
         console.log("budget id is " + budgetId);
@@ -51,7 +52,7 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
       return false;
     } catch (err) {
       if (err.response && err.response.status === 409) {
-        setErrorMessage("Budget for this period already exists");
+        setErrorMessage(err.message);
       } else {
         setErrorMessage("Try again.");
       }
@@ -65,7 +66,6 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
     if (!success) return;
     handleNext();
   };
-  console.log("setting error message " + errorMessage);
 
   return (
     <div className="create-budget-content">
@@ -78,6 +78,7 @@ function NewBudget1({ setBudgetId, setBudgetAmount, handleNext, onCancel }) {
           <div className="create-budget-configuration-col">
             <LabelInputForm
               inputType="dropdown"
+              defaultDropdown="January"
               dropdownOptions={[...NUM_TO_MONTH.entries()]}
               label="Month"
               name="budgetPeriod"

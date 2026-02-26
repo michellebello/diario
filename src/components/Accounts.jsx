@@ -6,6 +6,7 @@ import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
 import "./styles/accounts.css";
 import { useAppContext } from "../contexts/context.jsx";
 import { useUserData } from "../data/user/fetchAndSaveUserData.js";
+import AddAccountForm from "./reusables/forms/AddAcountForm.jsx";
 
 const accountType = ["Credit", "Checking", "Savings", "Investment"];
 
@@ -30,17 +31,17 @@ function Accounts() {
 
   const addAccount = async (e) => {
     e.preventDefault();
-
+    console.log(JSON.stringify(newAccount));
     if (
       !newAccount.name ||
       !newAccount.number ||
       !newAccount.type ||
       !newAccount.balance
     ) {
-      alert("Please fill in all required fields.");
+      setErrorMessage("Please fill in all required fields.");
     }
-    newAccount.balance = parseFloat(newAccount.balance);
     try {
+      console.log(JSON.stringify(newAccount));
       const result = await network.post("/accounts", newAccount);
       if (result.data === "New account added") {
         setErrorMessage("");
@@ -135,99 +136,14 @@ function Accounts() {
       )}
       {/* form to add new account  */}
       {showAddAccount && (
-        <div className="add-account-container">
-          <form className="add-account-form">
-            <p className="add-account-form-title">Add New Account</p>
-            <div className="add-acount-fields">
-              <label className="add-account-label" htmlFor="account-name">
-                Account Name:
-              </label>
-              <input
-                id="account-name"
-                className="add-account-input"
-                type="text"
-                name="accountName"
-                value={newAccount.name}
-                onChange={(e) =>
-                  setNewAccount({ ...newAccount, name: e.target.value })
-                }
-              />
-            </div>
-            <div className="add-acount-fields">
-              <label className="add-account-label" htmlFor="account-number">
-                Account Number:
-              </label>
-              <input
-                id="account-number"
-                className="add-account-input"
-                type="text"
-                name="accountNumber"
-                value={newAccount.number}
-                onChange={(e) =>
-                  setNewAccount({
-                    ...newAccount,
-                    number: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="add-acount-fields">
-              <label className="add-account-label" htmlFor="account-balance">
-                Initial Balance:
-              </label>
-              <input
-                id="account-balance"
-                className="add-account-input"
-                type="number"
-                name="accountBalance"
-                value={newAccount.balance}
-                onChange={(e) =>
-                  setNewAccount({
-                    ...newAccount,
-                    balance: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="add-acount-fields">
-              <label className="add-account-label" htmlFor="account-type">
-                Account Type:
-              </label>
-              <select
-                id="account-type"
-                className="add-account-input"
-                value={newAccount.type}
-                onChange={(e) =>
-                  setNewAccount({
-                    ...newAccount,
-                    type: e.target.value,
-                  })
-                }
-              >
-                {accountType.map((acc, idx) => (
-                  <option key={idx}>{acc}</option>
-                ))}
-              </select>
-            </div>
-            {errorMessage && (
-              <div className="error-message">{errorMessage}</div>
-            )}
-            <div className="add-account-buttons">
-              <button
-                className="add-account-save-button"
-                onClick={(e) => addAccount(e)}
-              >
-                Submit
-              </button>
-              <button
-                className="add-account-cancel-button"
-                onClick={() => setShowAddAccount(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
+        <AddAccountForm
+          accountType={accountType}
+          errorMessage={errorMessage}
+          addAcount={(e) => addAccount(e)}
+          hideForm={() => setShowAddAccount((prev) => !prev)}
+          newAccount={newAccount}
+          setNewAccount={setNewAccount}
+        />
       )}
     </div>
   );
