@@ -67,6 +67,7 @@ function Budgets() {
           {displayBudgets.map((budget) => (
             <BudgetCard
               key={budget.id}
+              budgetId={budget.id}
               month={budget.monthNumber}
               year={budget.year}
               spent={budget.totalSpent}
