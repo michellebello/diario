@@ -1,8 +1,7 @@
-.main-content {
-  overflow-y: auto;
-  min-height: 100vh;
+.all-content {
+  height: 100%;
   width: 100%;
-  background-color: #fffffc;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }

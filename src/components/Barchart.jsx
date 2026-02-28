@@ -161,7 +161,7 @@ function Barchart() {
   };
 
   return (
-    <div className="main-content">
+    <div className="all-content">
       <div className="topTransaction">
         <p className="content-title">Transactions Barchart View</p>
         <DateRange

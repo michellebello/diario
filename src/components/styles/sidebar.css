@@ -1,7 +1,6 @@
 .formContainer {
   display: flex;
   margin: 0;
-  min-height: 100vh;
   background-color: #fffffc;
   background-blend-mode: multiply;
   position: relative;
@@ -290,8 +289,8 @@ li {
 
   /* form component */
   .addItemForm {
-    width: 12rem;
-    padding: 1rem;
+    width: clamp(20rem, 5vw, 30rem);
+    margin-top: 15%;
   }
 
   .itemType {

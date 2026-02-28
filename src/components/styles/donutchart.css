@@ -1,4 +1,8 @@
-.main-content {
+.all-content {
+  height: 100%;
+  width: 100%;
+  padding-inline: 1rem;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }

@@ -63,11 +63,11 @@ function TopBar({ onLogoClick }) {
         onClick={onLogoClick}
       />
 
-      <div className="barTags">
-        <li>
-          <ul>
-            {TOPBAR_LINKS.map((link) => {
-              return (
+      <nav className="barTags">
+        <ul>
+          {TOPBAR_LINKS.map((link) => {
+            return (
+              <li key={link.label}>
                 <NavLink
                   className="topbarLinks"
                   to={link.path}
@@ -75,11 +75,11 @@ function TopBar({ onLogoClick }) {
                 >
                   {link.label}
                 </NavLink>
-              );
-            })}
-          </ul>
-        </li>
-      </div>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
       <div className="user-button-div" onClick={showUserForm}>
         <img src={user} className="user" alt="user" />
         {isVisible && (

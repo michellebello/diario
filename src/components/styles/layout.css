@@ -1,18 +1,43 @@
 .layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
   height: 100vh;
   background-color: #fffffc;
 }
 
 .content-container {
+  flex: 1 1 auto;
   display: flex;
+  width: 100%;
+  min-width: 0;
   height: calc(100vh - var(--topbar-height));
 }
 
 .main-content {
-  position: relative;
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: hidden;
   padding-inline: 1.5rem;
   padding-block: 1.5rem;
-
   box-sizing: border-box;
+}
+
+.SideBar {
+  flex-shrink: 0;
+  width: 240px;
+}
+
+@media (max-width: 768px) {
+  .SideBar {
+    width: 100%;
+    order: -1;
+  }
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
 }
