@@ -3,13 +3,7 @@ import TextButton from "./reusables/buttons/AddButton.jsx";
 import Network from "../utils/network.js";
 import AccountCard from "./reusables/cards/AccountCard.jsx";
 import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
-import {
-  Landmark,
-  Wallet,
-  PiggyBank,
-  CreditCard,
-  TrendingUp,
-} from "lucide-react";
+import EmptyBodyCard from "./reusables/cards/EmptyBodyCard.jsx";
 import "./styles/accounts.css";
 import { useAppContext } from "../contexts/context.jsx";
 import { useUserData } from "../data/user/fetchAndSaveUserData.js";
@@ -126,60 +120,11 @@ function Accounts() {
             />
           ))
         ) : (
-          <div className="empty-account-content">
-            <div className="empty-account-container">
-              <div className="empty-account-top">
-                <div className="empty-account-icon">
-                  <Landmark color="#333578" size="clamp(1.95rem, 3vw, 4rem)" />
-                </div>
-                <p className="empty-account-title">No Accounts Yet</p>
-              </div>
-              <p className="empty-account-message">
-                Start managing your finances by adding your first account
-              </p>
-              <div className="empty-account-all-account-types-container">
-                <p className="empty-account-all-account-type-p">You can add:</p>
-                <div className="empty-account-all-account-type-divs">
-                  <div className="empty-account-all-account-type-div">
-                    <Wallet
-                      color="#333578"
-                      className="empty-account-all-account-type-icon-div"
-                    />
-                    <span className="empty-account-message">Checking</span>
-                  </div>
-                  <div className="empty-account-all-account-type-div">
-                    <PiggyBank
-                      color="#333578"
-                      className="empty-account-all-account-type-icon"
-                    />
-                    <span className="empty-account-message">Savings</span>
-                  </div>
-                  <div className="empty-account-all-account-type-div">
-                    <CreditCard
-                      color="#333578"
-                      className="empty-account-all-account-type-icon"
-                    />
-                    <span className="empty-account-message">Credit</span>
-                  </div>
-                  <div className="empty-account-all-account-type-div">
-                    <TrendingUp
-                      color="#333578"
-                      className="empty-account-all-account-type-icon"
-                    />
-                    <span className="empty-account-message">Investment</span>
-                  </div>
-                </div>
-              </div>
-              <div className="empty-account-button-container">
-                <button
-                  className="empty-account-button"
-                  onClick={() => setShowAddAccount(true)}
-                >
-                  + Add Your First Account
-                </button>
-              </div>
-            </div>
-          </div>
+          <EmptyBodyCard
+            type="account"
+            isAccount={true}
+            showAddFormFunction={() => setShowAddAccount(true)}
+          />
         )}
         {showAddAccount && (
           <AddAccountForm

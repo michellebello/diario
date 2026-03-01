@@ -6,6 +6,7 @@ import { CurrBudgetCard } from "./reusables/cards/CurrBudgetCard.jsx";
 import BudgetCard from "./reusables/cards/BudgetCard.jsx";
 import { useAppContext } from "../contexts/context.jsx";
 import NewBudget from "../components/reusables/new-budget/NewBudget.jsx";
+import EmptyBodyCard from "./reusables/cards/EmptyBodyCard.jsx";
 import "../components/styles/budgets.css";
 
 function Budgets() {
@@ -53,30 +54,41 @@ function Budgets() {
           onClick={showAddBudgetForm}
         />
       </div>
-      <div className="curr-budget-container">
-        <CurrBudgetCard
-          currDate={currDate}
-          currAmount={currBudget.totalSpent || 0}
-          currTotal={currBudget.totalAmount || 0}
-          onClick={() => goToBudgetPage(currBudget)}
-        />
-      </div>
-      <div className="all-budgets-container">
-        <p className="all-budgets-title">Other budgets</p>
-        <div className="all-budgets-div">
-          {displayBudgets.map((budget) => (
-            <BudgetCard
-              key={budget.id}
-              budgetId={budget.id}
-              month={budget.monthNumber}
-              year={budget.year}
-              spent={budget.totalSpent}
-              total={budget.totalAmount}
-              onClick={() => goToBudgetPage(budget)}
+      {budgets.length > 0 ? (
+        <div>
+          <div className="curr-budget-container">
+            <CurrBudgetCard
+              currDate={currDate}
+              currAmount={currBudget.totalSpent || 0}
+              currTotal={currBudget.totalAmount || 0}
+              onClick={() => goToBudgetPage(currBudget)}
             />
-          ))}
+          </div>
+          <div className="all-budgets-container">
+            <p className="all-budgets-title">Other budgets</p>
+            <div className="all-budgets-div">
+              {displayBudgets.map((budget) => (
+                <BudgetCard
+                  key={budget.id}
+                  budgetId={budget.id}
+                  month={budget.monthNumber}
+                  year={budget.year}
+                  spent={budget.totalSpent}
+                  total={budget.totalAmount}
+                  onClick={() => goToBudgetPage(budget)}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <EmptyBodyCard
+          type="budget"
+          isAccount={false}
+          showAddFormFunction={() => setAddFormVisibility(true)}
+        />
+      )}
+
       {addFormVisibility && <NewBudget onCancel={showAddBudgetForm} />}
     </div>
   );
