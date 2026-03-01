@@ -1,4 +1,3 @@
-/* follow pattern! */
 .account-content {
   height: 100%;
   width: 100%;
@@ -7,7 +6,6 @@
   display: flex;
   flex-direction: column;
 }
-/* // */
 
 .account-top {
   display: flex;
@@ -43,7 +41,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #00000080;
   z-index: 1000;
 }
 
@@ -128,14 +126,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #00000080;
   z-index: 1000;
+}
+
+.add-account-container,
+.delete-account-total {
+  position: fixed;
+  inset: 0;
+  display: flex;
 }
 
 .delete-account-container {
   background-color: #f8d7da;
+  width: clamp(280px, 40vw, 400px);
   border-radius: 10px;
-  width: 15%;
   padding: 1rem;
 }
 
@@ -165,8 +170,191 @@
   cursor: pointer;
   font-size: clamp(0.8rem, 1vw, 0.9rem);
 }
+
+/* no accounts yet message */
+
+.empty-account-content {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-account-container {
+  width: clamp(25rem, 20vw, 40rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  font-family: "Economica", sans-serif;
+  border: 1px solid #00000005;
+  box-shadow:
+    0 4px 10px #0000000a,
+    0 1px 2px #0000000f;
+  padding: 2rem 1.6rem;
+  border-radius: 24px;
+  background-color: #ffffff;
+  gap: 1rem;
+}
+
+.empty-account-top {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.empty-account-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  border-radius: 9999px;
+  background-color: #e3e3f6c1;
+  flex-shrink: 0;
+  width: fit-content;
+}
+
+.empty-account-title {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 300;
+  text-align: center;
+}
+
+.empty-account-message {
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  font-weight: 200;
+  text-align: center;
+  color: #9b9797;
+}
+
+.empty-account-all-account-types-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.9rem, 1vw, 1.1rem);
+  font-weight: 200;
+  margin-top: 0.5rem;
+}
+
+.empty-account-all-account-type-p {
+  margin-bottom: 0.5rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  font-weight: 300;
+  color: #424040;
+}
+
+.empty-account-all-account-type-divs {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: grid;
+  grid-column: 2;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 0.5rem;
+}
+
+.empty-account-all-account-type-div {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: start;
+  color: #9b9797;
+}
+
+.empty-account-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  margin-top: 0.5rem;
+  font-weight: 100;
+}
+
+.empty-account-button {
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  border: none;
+  color: #333578;
+  background-color: #e3e3f6c1;
+  font-size: clamp(0.9rem, 1vw, 1.1rem);
+  font-weight: 200;
+}
+
+.empty-account-button:hover {
+  color: #ffffff;
+  background-color: #59599ec2;
+  font-weight: 200;
+}
+
 @media (max-width: 768px) {
   .accounts-body {
-    grid-template-columns: 50% 50%;
+    grid-template-columns: (auto-fit, minmax(240px, 1fr));
+  }
+
+  .empty-account-content {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .empty-account-container {
+    width: clamp(15rem, 10vw, 20rem);
+    padding: 1.2rem 1rem;
+  }
+
+  .empty-account-top {
+    gap: 0.5rem;
+  }
+  .empty-account-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .empty-account-title {
+    font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+  }
+
+  .empty-account-message {
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+  }
+
+  .empty-account-all-account-types-container {
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    margin-top: 0.5rem;
+  }
+
+  .empty-account-all-account-type-p {
+    margin-bottom: 0.5rem;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+  }
+
+  .empty-account-all-account-type-divs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .empty-account-all-account-type-div {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .empty-account-button-container {
+    margin-top: 1rem;
   }
 }

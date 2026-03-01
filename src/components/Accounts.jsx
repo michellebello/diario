@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextButton from "./reusables/buttons/AddButton.jsx";
 import Network from "../utils/network.js";
 import AccountCard from "./reusables/cards/AccountCard.jsx";
 import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
+import {
+  Landmark,
+  Wallet,
+  PiggyBank,
+  CreditCard,
+  TrendingUp,
+} from "lucide-react";
 import "./styles/accounts.css";
 import { useAppContext } from "../contexts/context.jsx";
 import { useUserData } from "../data/user/fetchAndSaveUserData.js";
@@ -25,6 +32,12 @@ function Accounts() {
     balance: "",
   });
 
+  useEffect(() => {
+    if (accounts && accounts.length === 0) {
+      setShowAddAccount(true);
+    }
+  }, [accounts]);
+
   const [deleteMessageVisibility, setDeleteMessageVisibility] = useState(false);
   const [accountToDelete, setAccountToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,7 +54,6 @@ function Accounts() {
       setErrorMessage("Please fill in all required fields.");
     }
     try {
-      console.log(JSON.stringify(newAccount));
       const result = await network.post("/accounts", newAccount);
       if (result.data === "New account added") {
         setErrorMessage("");
@@ -82,12 +94,19 @@ function Accounts() {
       {/* top part (title and add account button) */}
       <div className="account-top">
         <p className="title">My accounts</p>
-        <TextButton text="Add acount" onClick={() => setShowAddAccount(true)} />
+        {accounts.length > 0 && !showAddAccount && (
+          <TextButton
+            text="Add acount"
+            onClick={() => setShowAddAccount(true)}
+          />
+        )}
       </div>
 
       {/* total balances per account type */}
       <div className="account-top-barchart">
-        <ReBarchart dataObject={accountBalance} />
+        {accountBalance.length > 0 && (
+          <ReBarchart dataObject={accountBalance} />
+        )}
       </div>
       {/* account cards */}
       <div className="accounts-body">
@@ -107,7 +126,71 @@ function Accounts() {
             />
           ))
         ) : (
-          <p>No accounts </p>
+          <div className="empty-account-content">
+            <div className="empty-account-container">
+              <div className="empty-account-top">
+                <div className="empty-account-icon">
+                  <Landmark color="#333578" size="clamp(1.95rem, 3vw, 4rem)" />
+                </div>
+                <p className="empty-account-title">No Accounts Yet</p>
+              </div>
+
+              <p className="empty-account-message">
+                Start managing your finances by adding your first account
+              </p>
+              <div className="empty-account-all-account-types-container">
+                <p className="empty-account-all-account-type-p">You can add:</p>
+                <div className="empty-account-all-account-type-divs">
+                  <div className="empty-account-all-account-type-div">
+                    <Wallet
+                      color="#333578"
+                      className="empty-account-all-account-type-icon-div"
+                    />
+                    <span className="empty-account-message">Checking</span>
+                  </div>
+                  <div className="empty-account-all-account-type-div">
+                    <PiggyBank
+                      color="#333578"
+                      className="empty-account-all-account-type-icon"
+                    />
+                    <span className="empty-account-message">Savings</span>
+                  </div>
+                  <div className="empty-account-all-account-type-div">
+                    <CreditCard
+                      color="#333578"
+                      className="empty-account-all-account-type-icon"
+                    />
+                    <span className="empty-account-message">Credit</span>
+                  </div>
+                  <div className="empty-account-all-account-type-div">
+                    <TrendingUp
+                      color="#333578"
+                      className="empty-account-all-account-type-icon"
+                    />
+                    <span className="empty-account-message">Investment</span>
+                  </div>
+                </div>
+              </div>
+              <div className="empty-account-button-container">
+                <button
+                  className="empty-account-button"
+                  onClick={() => setShowAddAccount(true)}
+                >
+                  + Add Your First Account
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {showAddAccount && (
+          <AddAccountForm
+            accountType={accountType}
+            errorMessage={errorMessage}
+            addAcount={(e) => addAccount(e)}
+            hideForm={() => setShowAddAccount(false)}
+            newAccount={newAccount}
+            setNewAccount={setNewAccount}
+          />
         )}
       </div>
       {/* confirm delete account message */}
@@ -119,12 +202,14 @@ function Accounts() {
             </p>
             <div className="delete-account-buttons">
               <button
+                type="text"
                 className="delete-account-button"
                 onClick={() => deleteAccount(accountToDelete)}
               >
                 Yes
               </button>
               <button
+                type="text"
                 className="delete-account-button"
                 onClick={() => setDeleteMessageVisibility(false)}
               >
@@ -133,17 +218,6 @@ function Accounts() {
             </div>
           </div>
         </div>
-      )}
-      {/* form to add new account  */}
-      {showAddAccount && (
-        <AddAccountForm
-          accountType={accountType}
-          errorMessage={errorMessage}
-          addAcount={(e) => addAccount(e)}
-          hideForm={() => setShowAddAccount((prev) => !prev)}
-          newAccount={newAccount}
-          setNewAccount={setNewAccount}
-        />
       )}
     </div>
   );

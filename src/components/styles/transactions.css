@@ -358,7 +358,7 @@
 
   .apply-filter-button {
     padding: 0.1rem;
-    margin-right: 0.5rem;
+    margin-right: 0rem;
     font-size: clamp(0.95rem, 1.5vw, 1.25rem);
   }
   .no-transactions {
@@ -397,5 +397,9 @@
 
   .allTransactions {
     table-layout: auto;
+  }
+  .apply-filter-button {
+    cursor: pointer;
+    padding: 0.1rem;
   }
 }

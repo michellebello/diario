@@ -11,7 +11,7 @@
 }
 
 .card-total:hover {
-  box-shadow: 0 0 1.5px 2px rgba(221, 219, 219, 0.5);
+  box-shadow: 0 0 1.5px 2px #dddbdb80;
   cursor: pointer;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .card-icon {
-  background-color: rgba(189, 188, 244, 0.755);
+  background-color: #bdbcf4c1;
   border-radius: 5px;
   padding: 2px 4px;
   display: flex;
@@ -96,8 +96,8 @@
 .card-button-edit {
   width: 100%;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.906);
-  color: rgb(107, 106, 98);
+  background-color: #ffffffe7;
+  color: #6b6a62;
   border: none;
   padding: 3px 5px;
 }
@@ -133,13 +133,13 @@
 .edit-input {
   width: 100%;
   border: none;
-  background-color: rgb(227, 223, 223);
+  background-color: #e3dfdf;
   padding: 5px;
   border-radius: 8px;
-  color: rgba(118, 115, 106, 0.803);
+  color: #76736acd;
   font-size: clamp(0.9rem, 1vw, 1rem);
   font-weight: 200;
-  border: rgba(0, 0, 0, 0.1);
+  border: #0000001a;
 }
 
 .edit-account-buttons {
@@ -155,8 +155,8 @@
   padding: 5px;
   font-size: clamp(0.85rem, 1vw, 0.9rem);
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.906);
-  color: rgb(107, 106, 98);
+  background-color: #ffffffe7;
+  color: #6b6a62;
   border: none;
   padding: 3px 5px;
 }

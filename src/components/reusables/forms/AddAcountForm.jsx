@@ -93,10 +93,10 @@ function AddAccountForm({
           {errorMessage && <ErrorMessage message={errorMessage} />}
         </div>
         <div className="buttons">
-          <button className="addButton" onClick={hideForm}>
+          <button type="text" className="addButton" onClick={hideForm}>
             Cancel
           </button>
-          <button className="addButton" onClick={addAcount}>
+          <button type="submit" className="addButton" onClick={addAcount}>
             Submit
           </button>
         </div>
