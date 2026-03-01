@@ -134,7 +134,6 @@ function Accounts() {
                 </div>
                 <p className="empty-account-title">No Accounts Yet</p>
               </div>
-
               <p className="empty-account-message">
                 Start managing your finances by adding your first account
               </p>

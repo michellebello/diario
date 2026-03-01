@@ -307,8 +307,9 @@
   }
 
   .empty-account-container {
-    width: clamp(15rem, 10vw, 20rem);
+    width: clamp(12rem, 10vw, 20rem);
     padding: 1.2rem 1rem;
+    gap: 0.5rem;
   }
 
   .empty-account-top {
@@ -325,8 +326,8 @@
   }
 
   .empty-account-message {
-    margin-top: 0.7rem;
-    margin-bottom: 0.7rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     font-size: clamp(0.85rem, 1vw, 0.95rem);
   }
 
@@ -355,6 +356,8 @@
   }
 
   .empty-account-button-container {
-    margin-top: 1rem;
+    margin-top: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
   }
 }
