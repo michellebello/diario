@@ -163,10 +163,35 @@
 
 @media (max-width: 768px) {
   .card-total {
-    width: clamp(10rem, 35vw, 20rem);
+    width: 100%;
+    gap: 0.5rem;
   }
 
   .card-info {
     font-size: clamp(0.75rem, 1vw, 0.95rem);
+  }
+
+  .card-type-container {
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .card-balance-container {
+    gap: 0.1rem;
+    margin-top: 0.45rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .card-buttons {
+    margin-top: 0.45rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .edit-total-container {
+    margin-top: 0.25rem;
+  }
+
+  .edit-account-buttons {
+    margin-top: 0.45rem;
   }
 }
