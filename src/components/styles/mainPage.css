@@ -61,8 +61,8 @@
   border: 1px solid #e5e3df;
   border-radius: 0.75rem;
   box-shadow:
-    0 20px 25px rgba(0, 0, 0, 0.1),
-    0 8px 10px rgba(0, 0, 0, 0.04);
+    0 20px 25px #0000001a,
+    0 8px 10px #0000000a;
   overflow: hidden;
 }
 
@@ -84,7 +84,7 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  font-size: clamp(1rem, 1.2vw, 1.25rem);
   font-weight: 200;
 }
 
@@ -120,10 +120,6 @@
 }
 
 @media (max-width: 768px) {
-  .mainPage {
-    margin-bottom: 5%;
-  }
-
   .mptitle {
     font-size: clamp(1.7rem, 1.5vw, 2rem);
     margin-bottom: 0.25rem;
@@ -136,5 +132,17 @@
 
   .pic {
     width: 60%;
+  }
+
+  .main-page-body {
+    width: clamp(50%, 50vw, 60%);
+  }
+
+  .main-page-form-container {
+    padding: 0.5rem 0.95rem;
+  }
+
+  .main-page-switch-buttons {
+    font-size: clamp(0.9rem, 1vw, 1.1rem);
   }
 }

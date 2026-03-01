@@ -138,16 +138,9 @@ function SignUp() {
 
       {errorMessage && <p className="error">{errorMessage}</p>}
       {successMessage && <p className="success">{successMessage}</p>}
-      <button className="signUpButton" type="submit">
+      <button className="loginButton" type="submit">
         Register
       </button>
-
-      {/* <div className="loginDiv">
-        <p className="underText1">Already registered?</p>
-        <Link className="underText2" to="/login">
-          Login here
-        </Link>
-      </div> */}
     </form>
   );
 }

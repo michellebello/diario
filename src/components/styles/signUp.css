@@ -23,15 +23,18 @@
   gap: 0.5rem;
 }
 
-.loginButton,
-.signUpButton {
+.labelForm {
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+}
+
+.loginButton {
   margin-top: 0.5rem;
   width: 100%;
   padding: 7px;
   background-color: #333578;
   border-style: none;
   color: #ffffff;
-  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  font-size: clamp(0.95rem, 1.2vw, 1.25rem);
   font-family: "Economica", sans-serif;
   font-weight: 200;
   border-radius: 5px;
@@ -80,5 +83,10 @@
   .underText2 {
     font-size: 0.7rem;
     margin-right: 0px;
+  }
+
+  .loginButton {
+    margin-top: 0;
+    font-size: clamp(0.85rem, 1vw, 1rem);
   }
 }
