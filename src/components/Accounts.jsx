@@ -96,11 +96,8 @@ function Accounts() {
         )}
       </div>
 
-      {/* total balances per account type */}
       <div className="account-top-barchart">
-        {accountBalance.length > 0 && (
-          <ReBarchart dataObject={accountBalance} />
-        )}
+        {accounts.length > 0 && <ReBarchart dataObject={accountBalance} />}
       </div>
       {/* account cards */}
       <div className="accounts-body">

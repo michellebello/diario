@@ -17,14 +17,22 @@ function Budgets() {
 
   const navigate = useNavigate();
   const budgets = useAppContext().userInfo.budgets;
-  const displayBudgets = budgets.filter(
-    (budget) =>
-      !(budget.monthNumber === currMonthNum && budget.year === currYear),
-  );
 
-  const currBudget = budgets.find(
+  let currBudget = budgets.find(
     (budget) => budget.year === currYear && budget.monthNumber === currMonthNum,
   );
+
+  if (!currBudget && budgets.length > 0) {
+    currBudget = budgets[0];
+  }
+
+  let displayBudgets;
+  if (budgets.length > 1) {
+    displayBudgets = budgets.filter(
+      (budget) =>
+        !(budget.year === currYear && budget.monthNumber === currMonthNum),
+    );
+  }
 
   const goToBudgetPage = (budget) => {
     navigate(`/mycuenta/budgets/${budget.id}`, {
@@ -55,11 +63,11 @@ function Budgets() {
         />
       </div>
       {budgets.length > 0 ? (
-        <div>
+        <>
           <div className="curr-budget-container">
             <CurrBudgetCard
               currDate={currDate}
-              currAmount={currBudget.totalSpent || 0}
+              currAmount={currBudget.totalSpent}
               currTotal={currBudget.totalAmount || 0}
               onClick={() => goToBudgetPage(currBudget)}
             />
@@ -80,7 +88,7 @@ function Budgets() {
               ))}
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <EmptyBodyCard
           type="budget"

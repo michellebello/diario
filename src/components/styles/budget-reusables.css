@@ -316,11 +316,22 @@
   .budget-card-total {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.7rem;
   }
 
   .budget-card-bottom-div {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
+  }
+
+  .go-to-budget-button {
+    padding: 0.25rem 0.55rem;
+  }
+  .right-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
   }
 }
