@@ -17,19 +17,19 @@ export const CATEGORY_LIST = [
 ];
 
 export const CATEGORY_TO_COLOR = {
-  Groceries: "#6A944D",
-  "Eat Out": "#48A9A6",
-  Income: "#2ECC71",
-  Utilities: "#EF6F6C",
-  Rent: "#C0392B",
-  Car: "#4281A4",
-  Transportation: "#DD5896",
-  Shopping: "#8B5E83",
-  Health: "#A3CB38",
-  Pet: "#D4C5E2",
-  Education: "#F1C40F",
-  Entertainment: "#9B59B6",
-  Streaming: "#34495E",
-  Miscenallenous: "#FCB97D",
-  Other: "#BDC3C7",
+  Income: "#888ac0", // Your App Navy (Strongest)
+  Rent: "#4B4E97", // Deep Purple-Blue
+  Utilities: "#5E62B3", // Medium Slate Blue
+  Car: "#7075CE", // Rich Lavender
+  Transportation: "#8287E9", // Bright Periwinkle
+  Shopping: "#9499FF", // Electric Lilac
+  Health: "#A6ABFF", // Soft Purple
+  Pet: "#B8BDFF", // Pale Lavender
+  Education: "#BDBDF4", // Your App Lavender
+  Entertainment: "#C9CEFF", // Baby Blue-Purple
+  Streaming: "#D6D9FF", // Cloud Blue
+  Groceries: "#E2E5FF", // Icy Blue
+  "Eat Out": "#EDF0FF", // Whisper Blue
+  Miscenallenous: "#F8F9FF", // Near White Blue
+  Other: "#B0B3C1",
 };

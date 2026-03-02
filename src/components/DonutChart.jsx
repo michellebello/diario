@@ -4,6 +4,7 @@ import { RotatingLines } from "react-loader-spinner";
 import "./styles/donutchart.css";
 import DateRange from "./reusables/DateRange.jsx";
 import Edonut from "./reusables/data-charts/echarts/Edonut.jsx";
+import Epidonut from "./reusables/data-charts/echarts/Epidonut.jsx";
 
 function DonutChart() {
   const [loadingState, setLoadingState] = useState(false);
@@ -29,14 +30,16 @@ function DonutChart() {
       let totalExpense = 0;
       for (let transaction of transactionData) {
         const category = transaction.category;
-        if (totalPerCategory.has(category)) {
-          let total = totalPerCategory.get(category);
-          total = total + transaction.amount;
-          totalPerCategory.set(category, total);
-        } else {
-          totalPerCategory.set(category, transaction.amount);
+        if (category !== "Income") {
+          if (totalPerCategory.has(category)) {
+            let total = totalPerCategory.get(category);
+            total = total + transaction.amount;
+            totalPerCategory.set(category, total);
+          } else {
+            totalPerCategory.set(category, transaction.amount);
+          }
+          totalExpense += transaction.amount;
         }
-        totalExpense += transaction.amount;
       }
       setTransactionMap(totalPerCategory);
       setGrandTotal(totalExpense);
@@ -54,6 +57,16 @@ function DonutChart() {
 
   const [afterDate, setAfterDate] = useState("");
   const [beforeDate, setBeforeDate] = useState("");
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="all-content">
@@ -77,7 +90,13 @@ function DonutChart() {
         ) : (
           <div className="donut-chart-container">
             {transactionMap.size > 0 ? (
-              <Edonut transactionMap={transactionMap} />
+              <>
+                {isMobile ? (
+                  <Epidonut transactionMap={transactionMap} />
+                ) : (
+                  <Edonut transactionMap={transactionMap} />
+                )}
+              </>
             ) : (
               <p className="no-transactions"> No transactions found.</p>
             )}

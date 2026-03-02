@@ -196,12 +196,9 @@ function Transactions() {
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 685px)");
-
     const listener = () => setIsMobile(media.matches);
-
     listener();
     media.addEventListener("change", listener);
-
     return () => media.removeEventListener("change", listener);
   }, []);
 

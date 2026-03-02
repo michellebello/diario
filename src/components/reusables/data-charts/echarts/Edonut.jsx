@@ -19,7 +19,8 @@ function Edonut({ transactionMap }) {
     series: [
       {
         type: "pie",
-        radius: ["40%", "70%"],
+        center: ["50%", "60%"],
+        radius: ["50%", "70%"],
         avoidLabelOverlap: true,
         padAngle: 5,
         itemStyle: {
@@ -33,8 +34,8 @@ function Edonut({ transactionMap }) {
         emphasis: {
           label: {
             show: true,
-            fontSize: "1.1rem",
-            fontWeight: "300",
+            fontSize: "clamp(0.8rem, 2vw, 1.2rem)",
+            fontWeight: "200",
           },
         },
         data: pieData,
@@ -46,7 +47,7 @@ function Edonut({ transactionMap }) {
     <div className="ebarchart-container">
       <ReactECharts
         option={chartOptions}
-        style={{ height: "400px", width: "100%" }}
+        style={{ height: "500px", width: "100%" }}
       />
     </div>
   );

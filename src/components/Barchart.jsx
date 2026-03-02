@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import * as d3 from "d3";
 import { RotatingLines } from "react-loader-spinner";
 import Network from "../utils/network.js";
 import DateRange from "./reusables/DateRange.jsx";
 import Ebarchart from "./reusables/data-charts/echarts/Ebarchart.jsx";
+import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
 import "./styles/barchart.css";
 
 function Barchart() {
@@ -32,14 +32,16 @@ function Barchart() {
       let totalExpense = 0;
       for (let transaction of transactionData) {
         const category = transaction.category;
-        if (totalPerCategory.has(category)) {
-          let total = totalPerCategory.get(category);
-          total = total + transaction.amount;
-          totalPerCategory.set(category, total);
-        } else {
-          totalPerCategory.set(category, transaction.amount);
+        if (category !== "Income") {
+          if (totalPerCategory.has(category)) {
+            let total = totalPerCategory.get(category);
+            total = total + transaction.amount;
+            totalPerCategory.set(category, total);
+          } else {
+            totalPerCategory.set(category, transaction.amount);
+          }
+          totalExpense += transaction.amount;
         }
-        totalExpense += transaction.amount;
       }
       setTransactionMap(totalPerCategory);
       setGrandTotal(totalExpense);
