@@ -10,14 +10,15 @@ import {
 import { useMemo, useState, useLayoutEffect, useRef } from "react";
 
 function ReBarchart({ dataObject }) {
-  const chartData = useMemo(
-    () =>
-      Object.entries(dataObject).map(([key, value]) => ({
+  const chartData = useMemo(() => {
+    return Object.entries(dataObject).map(([key, value]) => {
+      const isCredit = key === "Credit";
+      return {
         "Account Type": key,
-        "Total Balance": value,
-      })),
-    [dataObject],
-  );
+        "Total Balance": isCredit ? value * -1 : value,
+      };
+    });
+  }, [dataObject]);
 
   const [fontSize, setFontSize] = useState(12);
   const containerRef = useRef(null);

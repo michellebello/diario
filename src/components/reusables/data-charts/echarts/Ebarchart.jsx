@@ -42,7 +42,6 @@ function Ebarchart({ xAxisData, yAxisData }) {
           color: "#e0e0e0",
           type: "dashed",
           width: 1,
-          type: [5, 5],
         },
       },
     },

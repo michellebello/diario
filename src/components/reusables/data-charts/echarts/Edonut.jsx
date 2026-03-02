@@ -1,7 +1,27 @@
 import ReactECharts from "echarts-for-react";
+import { useState, useLayoutEffect, useRef } from "react";
 import { CATEGORY_TO_COLOR } from "../../../../data/aux/CategoryList";
 
 function Edonut({ transactionMap }) {
+  const [fontSize, setFontSize] = useState(12);
+  const containerRef = useRef(null);
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const width = entries[0].contentRect.width;
+
+      if (width < 400) setFontSize(10);
+      else if (width < 700) setFontSize(12);
+      else if (width < 1000) setFontSize(16);
+      else setFontSize(20);
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   const pieData = Array.from(transactionMap, ([category, value]) => ({
     name: category,
     value: Number(value),
@@ -19,7 +39,7 @@ function Edonut({ transactionMap }) {
     series: [
       {
         type: "pie",
-        center: ["50%", "60%"],
+        center: ["50%", "50%"],
         radius: ["50%", "70%"],
         avoidLabelOverlap: true,
         padAngle: 5,
@@ -30,12 +50,16 @@ function Edonut({ transactionMap }) {
           show: true,
           position: "outside",
           formatter: "{b}: {d}%",
+          fontFamily: "Economica, sans-serif",
+          fontWeight: "300",
+          fontSize: fontSize,
         },
         emphasis: {
           label: {
             show: true,
-            fontSize: "clamp(0.8rem, 2vw, 1.2rem)",
+            fontSize: fontSize,
             fontWeight: "200",
+            fontFamily: "Economica, sans-serif",
           },
         },
         data: pieData,
