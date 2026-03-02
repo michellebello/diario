@@ -183,18 +183,18 @@
 .transaction-type-cat {
   background-color: #e3e3f6c1;
   border: 1px solid rgb(197, 194, 201);
-  border-radius: 8px;
+  border-radius: 20px;
   text-align: center;
-  padding: 6px 10px;
+  padding: 5px 10px;
   color: #2b2a2a;
   font-weight: 300;
   font-size: clamp(0.65rem, 1vw, 0.95rem);
 }
 
 .transaction-taxable {
-  background-color: #478873c1;
-  color: #ffffffc1;
-  font-size: clamp(0.65rem, 0.9vw, 0.9rem);
+  background-color: #72b0aac1;
+  color: #ffffff;
+  font-size: clamp(0.75rem, 1vw, 0.95rem);
   text-align: center;
   padding: 5px 10px;
   border-radius: 20px;
@@ -280,6 +280,11 @@
     width: 100%;
     max-width: 100%;
     font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  }
+
+  .edit-cat-and-tax {
+    display: flex;
+    gap: 0.55rem;
   }
 
   .editing-row td {

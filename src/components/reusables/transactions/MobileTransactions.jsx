@@ -84,12 +84,14 @@ function MobileTransactions({
               <div className="card-row">
                 <span className="label">Amount</span>
                 {isEditing ? (
-                  <EditInput
-                    value={editFormData.amount || ""}
-                    inputName="amount"
-                    inputType="text"
-                    onChange={handleEditChange}
-                  />
+                  <div className="card-input-wrapper">
+                    <EditInput
+                      value={editFormData.amount || ""}
+                      inputName="amount"
+                      inputType="text"
+                      onChange={handleEditChange}
+                    />
+                  </div>
                 ) : (
                   <span
                     className={`amount ${
@@ -107,10 +109,18 @@ function MobileTransactions({
               <div className="card-row">
                 <span className="label">Category</span>
                 {isEditing ? (
-                  <OptionInput
-                    value={editFormData.category || ""}
-                    onChange={handleEditChange}
-                  />
+                  <div className="edit-cat-and-tax">
+                    <OptionInput
+                      type="cat"
+                      value={editFormData.category || ""}
+                      onChange={handleEditChange}
+                    />
+                    <OptionInput
+                      type="not-cat"
+                      value={editFormData.isTaxable}
+                      onChange={handleEditChange}
+                    />
+                  </div>
                 ) : (
                   <div className="category-block">
                     <span className="category-block-values">
@@ -135,12 +145,14 @@ function MobileTransactions({
               <div className="card-row">
                 <span className="label">Date</span>
                 {isEditing ? (
-                  <EditInput
-                    value={editFormData.createdOn}
-                    inputName="createdOn"
-                    inputType="date"
-                    onChange={handleEditChange}
-                  />
+                  <div className="card-input-wrapper">
+                    <EditInput
+                      value={editFormData.createdOn}
+                      inputName="createdOn"
+                      inputType="date"
+                      onChange={handleEditChange}
+                    />
+                  </div>
                 ) : (
                   <span className="category-values">
                     {formatDate(transaction)}

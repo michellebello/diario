@@ -127,6 +127,7 @@ function Transactions() {
     setEditFormData({
       name: transaction.name ?? "",
       category: transaction.category ?? "",
+      isTaxable: transaction.isTaxable ?? false,
       amount: transaction.amount != null ? transaction.amount.toString() : "",
       createdOn: formattedDate,
     });

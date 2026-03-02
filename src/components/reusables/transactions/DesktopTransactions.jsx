@@ -13,6 +13,7 @@ function DesktopTransactions({
   categoryToIcon,
   EditInput,
   OptionInput,
+
   IconButton,
   TextButton,
 }) {
@@ -89,10 +90,18 @@ function DesktopTransactions({
                   </td>
                   <td>
                     {isEditing ? (
-                      <OptionInput
-                        value={editFormData.category || ""}
-                        onChange={handleEditChange}
-                      />
+                      <div className="edit-cat-and-tax">
+                        <OptionInput
+                          type="cat"
+                          value={editFormData.category || ""}
+                          onChange={handleEditChange}
+                        />
+                        <OptionInput
+                          type="not-cat"
+                          value={editFormData.isTaxable}
+                          onChange={handleEditChange}
+                        />
+                      </div>
                     ) : (
                       <div className="transaction-type-container">
                         <p className="transaction-type-cat">
