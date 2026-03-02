@@ -135,7 +135,6 @@
 }
 
 .allTransactions td.transaction-amount.plus {
-  text-align: right;
   font-size: clamp(0.8rem, 1vw, 1rem);
   color: #479647;
 }

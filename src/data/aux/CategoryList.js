@@ -15,3 +15,21 @@ export const CATEGORY_LIST = [
   "Miscenallenous",
   "Other",
 ];
+
+export const CATEGORY_TO_COLOR = {
+  Groceries: "#6A944D",
+  "Eat Out": "#48A9A6",
+  Income: "#2ECC71",
+  Utilities: "#EF6F6C",
+  Rent: "#C0392B",
+  Car: "#4281A4",
+  Transportation: "#DD5896",
+  Shopping: "#8B5E83",
+  Health: "#A3CB38",
+  Pet: "#D4C5E2",
+  Education: "#F1C40F",
+  Entertainment: "#9B59B6",
+  Streaming: "#34495E",
+  Miscenallenous: "#FCB97D",
+  Other: "#BDC3C7",
+};
