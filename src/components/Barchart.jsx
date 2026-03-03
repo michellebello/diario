@@ -3,7 +3,6 @@ import { RotatingLines } from "react-loader-spinner";
 import Network from "../utils/network.js";
 import DateRange from "./reusables/DateRange.jsx";
 import Ebarchart from "./reusables/data-charts/echarts/Ebarchart.jsx";
-import ReBarchart from "./reusables/data-charts/ReBarchart.jsx";
 import "./styles/barchart.css";
 
 function Barchart() {
@@ -84,6 +83,9 @@ function Barchart() {
                   xAxisData={Array.from(transactionMap.keys())}
                   yAxisData={Array.from(transactionMap.values())}
                 />
+                <div className="barchart-total-container ">
+                  <p className="barchart-total-expense">{`Total spent: $${grandTotal.toFixed(2)}`}</p>
+                </div>
               </div>
             ) : (
               <p className="no-transactions">No transactions found.</p>

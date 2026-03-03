@@ -195,7 +195,7 @@ li {
 .entryInput,
 .categorySelect {
   background-color: #f7f2f1;
-  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  font-size: clamp(0.85rem, 1vw, 1rem);
   font-weight: 200;
   padding: 0.3rem;
   border: 1px solid #c0bab9;
@@ -297,6 +297,9 @@ li {
   .itemType {
     font-size: 1rem;
     font-weight: 400;
+  }
+  .entries {
+    gap: 0.5rem;
   }
 
   .entry {

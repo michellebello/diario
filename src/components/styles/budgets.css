@@ -8,6 +8,12 @@
   gap: 1rem;
 }
 
+.no-curr-budget {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-weight: 200;
+  font-family: "Economica", sans-serif;
+}
+
 .budgets-top-part {
   display: flex;
   flex-direction: row;

@@ -21,10 +21,16 @@ function Budgets() {
   let currBudget = budgets.find(
     (budget) => budget.year === currYear && budget.monthNumber === currMonthNum,
   );
+  let currBudgetExists = true;
 
-  if (!currBudget && budgets.length > 0) {
-    currBudget = budgets[0];
+  if (!currBudget) {
+    currBudgetExists = false;
   }
+
+  // if (!currBudget && budgets.length > 0) {
+  //   curr
+  //   currBudget = budgets[0];
+  // }
 
   let displayBudgets;
   if (budgets.length > 1) {
@@ -65,12 +71,16 @@ function Budgets() {
       {budgets.length > 0 ? (
         <>
           <div className="curr-budget-container">
-            <CurrBudgetCard
-              currDate={currDate}
-              currAmount={currBudget.totalSpent}
-              currTotal={currBudget.totalAmount || 0}
-              onClick={() => goToBudgetPage(currBudget)}
-            />
+            {currBudgetExists ? (
+              <CurrBudgetCard
+                currDate={currDate}
+                currAmount={currBudget.totalSpent}
+                currTotal={currBudget.totalAmount || 0}
+                onClick={() => goToBudgetPage(currBudget)}
+              />
+            ) : (
+              <p className="no-curr-budget"> No current budget</p>
+            )}
           </div>
           <div className="all-budgets-container">
             <p className="all-budgets-title">Other budgets</p>

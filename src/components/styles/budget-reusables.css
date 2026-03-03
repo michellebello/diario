@@ -334,4 +334,8 @@
     flex-direction: row;
     justify-content: end;
   }
+  .budget-top-card-total {
+    padding: 0.8rem 1rem;
+    min-height: 6rem;
+  }
 }

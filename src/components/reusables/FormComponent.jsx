@@ -40,14 +40,19 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
     };
 
     try {
-      await network.post("/transactions", transactionData);
+      console.log("sending: " + JSON.stringify(transactionData));
+      const response = await network.post("/transactions", transactionData);
+      console.log("Response " + JSON.stringify(response));
       setErrorMessage("");
       onTransactionAdded();
       onCancel();
+      await fetchUserData();
     } catch (error) {
+      console.log(error);
       setErrorMessage(error.response?.data?.message);
     }
   };
+
   return (
     <form className="addItemForm" id="add-item-form">
       <div className="itemType-container">
@@ -113,8 +118,11 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            {CATEGORY_LIST.map((cat, idx) => (
-              <option key={idx} value={cat}>
+            <option value="" disabled hidden>
+              Select a category
+            </option>
+            {CATEGORY_LIST.map((cat) => (
+              <option key={cat} value={cat}>
                 {cat}
               </option>
             ))}

@@ -82,8 +82,8 @@ function AddAccountForm({
                 })
               }
             >
-              <option disabled selected value="">
-                Select
+              <option disabled value="">
+                Select an account type
               </option>
               {accountType.map((acc, idx) => (
                 <option key={idx}>{acc}</option>
