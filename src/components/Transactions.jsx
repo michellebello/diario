@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
 import { useAppContext } from "../contexts/context.jsx";
-import FormComponent from "./reusables/FormComponent.jsx";
 import { RotatingLines } from "react-loader-spinner";
 import DateRange from "./reusables/DateRange";
 import IconButton from "./reusables/buttons/IconButton.jsx";
@@ -39,7 +37,6 @@ function Transactions() {
   const fetchUserData = useUserData();
   const transactions = userInfo.transactions;
   const loadingState = userInfo.loading.transactions;
-  const { formVisibility, formLabel, closeForm } = useOutletContext();
 
   const categoryToIcon = {
     Groceries: ShoppingBasket,
@@ -65,7 +62,6 @@ function Transactions() {
     let year, month, day;
 
     if (Array.isArray(transaction.createdOn)) {
-      // backend returns array
       [year, month, day] = transaction.createdOn;
     } else if (typeof transaction.createdOn === "string") {
       // backend returns string ("YYYY-MM-DDTHH:mm:ss")
@@ -77,10 +73,6 @@ function Transactions() {
       2,
       "0",
     )}/${year}`;
-  };
-
-  const handleTransactionAdded = () => {
-    closeForm();
   };
 
   const [afterDate, setAfterDate] = useState("");
@@ -221,16 +213,6 @@ function Transactions() {
 
   return (
     <div className="transaction-content">
-      {formVisibility && (
-        <div className="addItemForm-container">
-          <FormComponent
-            formLabel={formLabel}
-            onCancel={closeForm}
-            onTransactionAdded={handleTransactionAdded}
-          />
-        </div>
-      )}
-
       <div className="topTransaction">
         <p className="title">Transactions Table View</p>
         <DateRange

@@ -6,6 +6,7 @@ import { useAppContext } from "../contexts/context.jsx";
 import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import { EyeOff, Eye } from "lucide-react";
 import LabelInputForm from "./reusables/LabelInputForm";
+import { ErrorMessage } from "./reusables/cards/ErrorMessage.jsx";
 import "./styles/signUp.css";
 
 function Login() {
@@ -112,7 +113,7 @@ function Login() {
           />
         )}
       </LabelInputForm>
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
       {successMessage && <p className="success">{successMessage}</p>}
       <button className="loginButton" type="submit">
         Login

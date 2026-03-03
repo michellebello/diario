@@ -44,7 +44,6 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
       setErrorMessage("");
       onTransactionAdded();
       onCancel();
-      await fetchUserData();
     } catch (error) {
       setErrorMessage(error.response?.data?.message);
     }

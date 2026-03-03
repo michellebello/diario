@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 /* error messages */
 .create-budget-error-message {
