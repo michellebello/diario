@@ -6,6 +6,7 @@ import Network from "../utils/network";
 import { BudgetTopCards } from "./reusables/cards/BudgetTopCards";
 import { BudgetCategories } from "./reusables/cards/BudgetCategories";
 import ReBarchart from "./reusables/data-charts/ReBarchart";
+import { Plus } from "lucide-react";
 import DeleteConfirmationForm from "../components/reusables/forms/DeleteConfirmationForm";
 
 import "../components/styles/budget-breakdown.css";
@@ -60,6 +61,9 @@ function BudgetBreakdown() {
     <div className="budgets-content">
       <div className="budgets-top">
         <p className="title">{`Budget Breakdown: ${monthNumToMonthName[month]} ${year}`}</p>
+        <button className="add-allocation-button">
+          <Plus color="#ececf2" />
+        </button>
       </div>
       {/* confirm delete account message */}
       {deleteMessageVisibility && (
