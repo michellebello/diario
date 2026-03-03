@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronRight, Save } from "lucide-react";
 import IconButton from "../buttons/IconButton.jsx";
+import DeleteConfirmationForm from "../forms/DeleteConfirmationForm.jsx";
 import Network from "../../../utils/network.js";
 import { useUserData } from "../../../data/user/fetchAndSaveUserData.js";
 import "../../../components/styles/budget-reusables.css";
@@ -18,15 +19,22 @@ export function CurrBudgetCard({
   const [isEditing, setIsEditing] = useState(false);
   const [newTotalAmount, setnewTotalAmount] = useState(currTotal);
 
-  const editBudget = async () => {
+  const editCurrBudget = async () => {
     try {
-      console.log("triggered button!");
-      console.log("new total value " + newTotalAmount);
-      console.log("curr budget id " + currBudgetId);
       const response = await network.patch(`/budgets/${currBudgetId}`, {
         totalAmount: newTotalAmount,
       });
-      console.log("Response: " + JSON.stringify(response));
+      if (response.status === 200) {
+        await fetchUserData();
+        setIsEditing(false);
+      }
+    } catch (err) {}
+  };
+
+  const [deleteFormVisibility, setDeleteFormVisibility] = useState(false);
+  const deleteCurrBudget = async () => {
+    try {
+      const response = await network.delete(`/budgets/${currBudgetId}`);
       if (response.status === 200) {
         await fetchUserData();
         setIsEditing(false);
@@ -36,6 +44,13 @@ export function CurrBudgetCard({
 
   return (
     <div className="curr-budget-top-card-total">
+      {deleteFormVisibility && (
+        <DeleteConfirmationForm
+          deletingObject="budget"
+          deleteFunction={deleteCurrBudget}
+          closeForm={() => setDeleteFormVisibility((prev) => !prev)}
+        />
+      )}
       <div className="curr-budget-div">
         <p className="curr-budget-date">{currDate} (current)</p>
         <div className="curr-budget-total-div">
@@ -48,7 +63,7 @@ export function CurrBudgetCard({
                 value={newTotalAmount}
                 onChange={(e) => setnewTotalAmount(e.target.value)}
               />
-              <button className="input-button" onClick={editBudget}>
+              <button className="input-button" onClick={() => editCurrBudget}>
                 <Save width="clamp(0.9rem, 1.5vw, 1.1rem)" />
               </button>
             </div>
@@ -58,10 +73,17 @@ export function CurrBudgetCard({
         </div>
       </div>
       <div className="action-buttons">
-        <IconButton
-          onClick={() => setIsEditing((prev) => !prev)}
-          color="#797575"
-        />
+        <div className="edit-delete-buttons">
+          <IconButton
+            onClick={() => setIsEditing((prev) => !prev)}
+            color="#797575"
+          />
+          <IconButton
+            type="delete"
+            onClick={() => setDeleteFormVisibility((prev) => !prev)}
+            color="#797575"
+          />
+        </div>
         <button onClick={viewBudget} className="view-budget-button">
           View budget
           <ChevronRight />
