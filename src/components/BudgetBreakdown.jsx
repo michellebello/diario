@@ -19,7 +19,7 @@ function BudgetBreakdown() {
 
   const getBudgetBreakdownData = async (budgetId) => {
     const response = await network.get(`/budgets/${budgetId}/allocations`);
-    console.log("budget info " + JSON.stringify(response.data));
+    console.log("budget ALLOCATIONS " + JSON.stringify(response.data));
     setBudgetData(response.data);
   };
 
@@ -48,6 +48,14 @@ function BudgetBreakdown() {
       console.error("Error deleting budget category");
     }
   };
+
+  let needsGraph = true;
+  for (const budget of budgetData) {
+    if (budget.spent === null || budget.spent < 0) {
+      needsGraph = false;
+    }
+  }
+
   return (
     <div className="budgets-content">
       <div className="budgets-top">
@@ -61,8 +69,38 @@ function BudgetBreakdown() {
           closeForm={() => setDeleteMessageVisibility(false)}
         />
       )}
-      <div className="budget-cards-top">
-        <div className="budget-cards-container">
+      {needsGraph ? (
+        <div className="budget-cards-top">
+          <div className="budget-cards-container">
+            <BudgetTopCards
+              cardTitle="Total Budgeted"
+              amount={`$${totalAmount}`}
+              amountColor="#000000"
+            />
+            <BudgetTopCards
+              cardTitle="Total spent"
+              amount={`$${totalSpent}`}
+              amountColor="#000000"
+            />
+            <BudgetTopCards
+              cardTitle="Remaining"
+              amount={`$${(totalAmount - totalSpent).toFixed(2)}`}
+              amountColor="#000000"
+            />
+          </div>
+          <div className="budget-categories-breakdown-chart-container">
+            <ReBarchart
+              dataObject={budgetData.reduce((acc, curr) => {
+                if (curr.spent !== null || curr.spent > 0) {
+                  acc[curr.category] = curr.spent;
+                }
+                return acc;
+              }, {})}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="budget-cards-top">
           <BudgetTopCards
             cardTitle="Total Budgeted"
             amount={`$${totalAmount}`}
@@ -79,15 +117,7 @@ function BudgetBreakdown() {
             amountColor="#000000"
           />
         </div>
-        <div className="budget-categories-breakdown-chart-container">
-          <ReBarchart
-            dataObject={budgetData.reduce((acc, curr) => {
-              acc[curr.category] = curr.spent;
-              return acc;
-            }, {})}
-          />
-        </div>
-      </div>
+      )}
 
       <div className="budget-categories-container">
         {budgetData.map((budget) => (
