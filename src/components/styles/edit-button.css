@@ -5,7 +5,15 @@
 }
 
 .edit-button {
-  border: none;
+  border: 1px solid transparent;
+  padding: 4px;
   background-color: transparent;
   cursor: pointer;
+}
+
+.edit-button:hover {
+  border: 1px solid gray;
+  padding: 4px;
+  border-radius: 99999px;
+  outline-offset: -2px;
 }

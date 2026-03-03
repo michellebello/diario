@@ -84,7 +84,7 @@ function Barchart() {
                   yAxisData={Array.from(transactionMap.values())}
                 />
                 <div className="barchart-total-container ">
-                  <p className="barchart-total-expense">{`Total spent: $${grandTotal.toFixed(2)}`}</p>
+                  <p className="barchart-total-expense">{`Total: $${grandTotal.toFixed(2)}`}</p>
                 </div>
               </div>
             ) : (

@@ -7,6 +7,8 @@ import BudgetCard from "./reusables/cards/BudgetCard.jsx";
 import { useAppContext } from "../contexts/context.jsx";
 import NewBudget from "../components/reusables/new-budget/NewBudget.jsx";
 import EmptyBodyCard from "./reusables/cards/EmptyBodyCard.jsx";
+import Network from "../utils/network.js";
+import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import "../components/styles/budgets.css";
 
 function Budgets() {
@@ -26,11 +28,6 @@ function Budgets() {
   if (!currBudget) {
     currBudgetExists = false;
   }
-
-  // if (!currBudget && budgets.length > 0) {
-  //   curr
-  //   currBudget = budgets[0];
-  // }
 
   let displayBudgets;
   if (budgets.length > 1) {
@@ -73,10 +70,11 @@ function Budgets() {
           <div className="curr-budget-container">
             {currBudgetExists ? (
               <CurrBudgetCard
+                currBudgetId={currBudget.id}
                 currDate={currDate}
                 currAmount={currBudget.totalSpent}
                 currTotal={currBudget.totalAmount || 0}
-                onClick={() => goToBudgetPage(currBudget)}
+                viewBudget={() => goToBudgetPage(currBudget)}
               />
             ) : (
               <p className="no-curr-budget"> No current budget</p>
