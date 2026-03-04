@@ -16,6 +16,23 @@ export const CATEGORY_LIST = [
   "Other",
 ];
 
+export const ALLOCATION_CATEGORY_LIST = [
+  "Groceries",
+  "Eat Out",
+  "Utilities",
+  "Rent",
+  "Car",
+  "Transportation",
+  "Shopping",
+  "Health",
+  "Pet",
+  "Education",
+  "Entertainment",
+  "Streaming",
+  "Miscenallenous",
+  "Other",
+];
+
 export const CATEGORY_TO_COLOR = {
   Income: "#888ac0", // Your App Navy (Strongest)
   Rent: "#4B4E97", // Deep Purple-Blue

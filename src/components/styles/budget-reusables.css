@@ -217,6 +217,7 @@
 }
 
 .input-field {
+  font-family: "Economica", sans-serif;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -458,10 +459,12 @@
     font-size: clamp(1rem, 1.1vw, 1.25em);
     transition: border-color 0.3s ease;
   }
-
   .input-button {
     padding: 1px 5px;
     border-radius: 8px;
     margin-left: 0.25rem;
+  }
+  .edit-delete-buttons {
+    gap: 0.1rem;
   }
 }

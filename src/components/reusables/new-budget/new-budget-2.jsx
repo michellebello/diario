@@ -4,7 +4,7 @@ import TextButton from "../buttons/TextButton";
 import BudgetCategoryRow from "../input/BudgetCategoryRow.jsx";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { CATEGORY_LIST } from "../../../data/aux/CategoryList";
+import { ALLOCATION_CATEGORY_LIST } from "../../../data/aux/CategoryList";
 import { ErrorMessage } from "../cards/ErrorMessage.jsx";
 import "../../../components/styles/create-new-budget.css";
 
@@ -14,7 +14,9 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [rows, setRows] = useState([{ category: CATEGORY_LIST[0], value: "" }]);
+  const [rows, setRows] = useState([
+    { category: ALLOCATION_CATEGORY_LIST[0], value: "" },
+  ]);
   const totalAllocated = rows.reduce(
     (sum, r) => sum + (parseFloat(r.value) || 0),
     0,
@@ -29,7 +31,7 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
       return;
     }
     setErrorMessage("");
-    const remaining = CATEGORY_LIST.filter(
+    const remaining = ALLOCATION_CATEGORY_LIST.filter(
       (cat) => !rows.some((r) => r.category === cat),
     );
     if (!remaining.length) return;
@@ -37,7 +39,7 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
     setRows((prev) => [...prev, { category: remaining[0], value: "" }]);
   };
 
-  const isButtonDisabled = rows.length >= CATEGORY_LIST.length;
+  const isButtonDisabled = rows.length >= ALLOCATION_CATEGORY_LIST.length;
 
   const updateCategory = (index, newCat) => {
     setRows((prev) => {
@@ -112,7 +114,7 @@ function NewBudget2({ budgetId, budgetAmount, handlePrev }) {
                 key={idx}
                 category={row.category}
                 input={row.value}
-                categoryList={CATEGORY_LIST.filter(
+                categoryList={ALLOCATION_CATEGORY_LIST.filter(
                   (cat) =>
                     !rows.some((r) => r.category === cat) ||
                     cat === row.category,
