@@ -54,8 +54,6 @@ function Login() {
       await fetchUserData();
       navigator("/mycuenta/transactions/table");
     } catch (error) {
-      console.error("Error during login:", error);
-
       if (error.response && error.response.data) {
         const errorMessage = error.response.data?.message || "Login failed";
 

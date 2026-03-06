@@ -37,6 +37,9 @@ function BudgetBreakdown() {
         `/budgets/${budgetId}/allocations`,
       );
       setBudgetData(allocationsRes.data);
+      console.log(
+        "setting getBudgetBreakdown " + JSON.stringify(allocationsRes.data),
+      );
     } catch (err) {
       console.error("Failed to refresh data", err);
     }
@@ -65,8 +68,10 @@ function BudgetBreakdown() {
         {
           category: newAllocation.category,
           amount: Number(newAllocation.amount),
+          spent: 0,
         },
       ]);
+
       console.log("response " + JSON.stringify(response));
       if (response.status === 201) {
         await getBudgetBreakdownData(budgetId);
@@ -126,12 +131,13 @@ function BudgetBreakdown() {
                     name="type"
                     className="inputForm"
                     value={newAllocation.category}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      e.preventDefault();
                       setNewAllocation((prev) => ({
                         ...prev,
                         category: e.target.value,
-                      }))
-                    }
+                      }));
+                    }}
                   >
                     <option value=""> Choose a category</option>
                     {remainingCategories.map((cat) => (
@@ -148,12 +154,13 @@ function BudgetBreakdown() {
                 name="allocation-amount"
                 type="number"
                 value={newAllocation.amount}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.preventDefault();
                   setNewAllocation((prev) => ({
                     ...prev,
                     amount: parseFloat(e.target.value) || 0,
-                  }))
-                }
+                  }));
+                }}
               />
             </div>
             <div className="add-allocation-buttons-div">

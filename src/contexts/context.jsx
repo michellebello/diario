@@ -35,7 +35,6 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
-    console.log("userInfo saved:", userInfo);
   }, [userInfo]);
 
   return (
