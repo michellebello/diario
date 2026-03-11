@@ -69,12 +69,17 @@
 }
 
 /* tax deductions body */
-/* .tax-reports-transactions-container {
+.tax-report-note-div {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  background-color: #faf9f7;
-  border-color: #e5e3df;
-  margin-top: 1.5rem;
-  border-radius: 20px;
-} */
+  align-items: center;
+  justify-content: center;
+}
+
+.tax-report-note {
+  padding: 0.3rem 0.45rem;
+  border-radius: 12px;
+  background-color: #add1d1;
+  color: #565656;
+  font-weight: 200;
+}

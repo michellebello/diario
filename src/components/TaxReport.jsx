@@ -165,10 +165,12 @@ function TaxReport() {
                     <td>{t.name}</td>
                     <td>
                       {t.note !== "" ? (
-                        t.note
+                        <div className="tax-report-note-div">
+                          <p className="tax-report-note">{t.note}</p>
+                        </div>
                       ) : (
                         <EditInput
-                          placeholder="ex. Doctor's Visit"
+                          placeholder="Add a note (ex. donation)"
                           value={transactionNote}
                           onChange={(e) => setTransactionNote(e.target.value)}
                           inputName="note"
