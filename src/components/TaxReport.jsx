@@ -1,10 +1,178 @@
+import { useState } from "react";
+import { ListFilter, Send } from "lucide-react";
+import DropdownFilters from "./reusables/input/DropdownFilters";
+import { CATEGORY_LIST } from "../data/aux/CategoryList";
+import { formatDate } from "../data/aux/formatDate";
 import "../components/styles/tax-report.css";
+import {
+  ShoppingBasket,
+  Utensils,
+  PiggyBank,
+  Wrench,
+  House,
+  Fuel,
+  TramFront,
+  ShoppingCart,
+  HeartPlus,
+  Dog,
+  GraduationCap,
+  Drama,
+  TvMinimalPlay,
+  Rows3,
+  Plus,
+} from "lucide-react";
+import { useAppContext } from "../contexts/context";
 
+const monthOptions = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const yearOptions = ["2024", "2025", "2026"];
+
+const categoryToIcon = {
+  Groceries: ShoppingBasket,
+  "Eat Out": Utensils,
+  Income: PiggyBank,
+  Utilities: Wrench,
+  Rent: House,
+  Car: Fuel,
+  Transportation: TramFront,
+  Shopping: ShoppingCart,
+  Health: HeartPlus,
+  Pet: Dog,
+  Education: GraduationCap,
+  Entertainment: Drama,
+  Streaming: TvMinimalPlay,
+  Miscenallenous: Rows3,
+  Other: Plus,
+};
 function TaxReport() {
+  const [monthFilter, setMonthFilter] = useState("");
+  const [yearFilter, setYearFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const { userInfo, setUserInfo } = useAppContext();
+  const taxableTransactions = Array.from(userInfo.transactions).filter(
+    (t) => t.isTaxable !== false,
+  );
+
   return (
-    <div className="account-content">
-      <div className="account-top">
-        <p className="title">My accounts</p>
+    <div className="tax-report-content">
+      <div className="tax-report-top">
+        <p className="tax-report-title">My Tax Reports</p>
+        <p className="tax-report-subtitle">
+          Manage transactions that count towards tax deductions
+        </p>
+      </div>
+      <div className="tax-reports-filters-container">
+        <div className="tax-reports-filters-top">
+          <ListFilter size="clamp(0.9rem, 1.2vw, 1.2rem)" />
+          <p className="tax-report-subtitle">Filters</p>
+        </div>
+
+        <div className="tax-report-filters-div">
+          <DropdownFilters
+            id="month-dropdown-filter"
+            value={monthFilter}
+            onChange={setMonthFilter}
+            defaultText="Select a month"
+            options={monthOptions}
+          />
+          <DropdownFilters
+            id="year-dropdown-filter"
+            value={yearFilter}
+            onChange={setYearFilter}
+            defaultText="Select a year"
+            options={yearOptions}
+          />
+          <DropdownFilters
+            id="cat-dropdown-filter"
+            value={categoryFilter}
+            onChange={setCategoryFilter}
+            defaultText="Select a category"
+            options={CATEGORY_LIST}
+          />
+          <button className="tax-report-button">
+            <Send
+              className="tax-report-button-icon"
+              size="clamp(1rem, 1.2vw, 1.2rem)"
+            />
+          </button>
+        </div>
+      </div>
+      <div className="allTransactions-div">
+        <div className="table-scroll">
+          <table className="allTransactions">
+            <colgroup>
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "14%" }} />
+              <col style={{ width: "14%" }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "15%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>{}</th>
+                <th>Expense</th>
+                <th>Note</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Account Number</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {taxableTransactions.map((t, index) => {
+                const Icon = categoryToIcon[t.category] || Plus;
+                return (
+                  <tr
+                    key={t.id}
+                    className={`${index % 2 === 0 ? "even-row" : "odd-row"} `}
+                  >
+                    <td>
+                      <Icon
+                        strokeWidth={2}
+                        size={32}
+                        className="transaction-type-icon"
+                        width="clamp(2rem, 3vw, 5rem)"
+                      />{" "}
+                    </td>
+                    <td>{t.name}</td>
+                    <td>Note</td>
+                    <td
+                      className={`transaction-amount 
+                              ${t.typeName !== "Expense" ? "plus" : ""}`}
+                    >
+                      {t.typeName !== "Expense"
+                        ? `+ $${t.amount.toFixed(2)}`
+                        : `- $${t.amount.toFixed(2)}`}
+                    </td>
+                    <td>
+                      <div className="transaction-type-container">
+                        <p className="transaction-type-cat">{t.category}</p>
+                      </div>
+                    </td>
+                    <td>{t.accountNumber}</td>
+                    <td>{formatDate(t)}</td>
+                    <td className="transaction-modify-buttons"></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

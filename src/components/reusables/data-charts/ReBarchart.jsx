@@ -20,7 +20,7 @@ function ReBarchart({ dataObject }) {
     });
   }, [dataObject]);
 
-  const [fontSize, setFontSize] = useState(12);
+  const [fontSize, setFontSize] = useState(10);
   const containerRef = useRef(null);
   useLayoutEffect(() => {
     if (!containerRef.current) return;
@@ -28,10 +28,10 @@ function ReBarchart({ dataObject }) {
     const resizeObserver = new ResizeObserver((entries) => {
       const width = entries[0].contentRect.width;
 
-      if (width < 400) setFontSize(7);
-      else if (width < 700) setFontSize(10);
-      else if (width < 1000) setFontSize(12);
-      else setFontSize(14);
+      if (width < 400) setFontSize(5);
+      else if (width < 700) setFontSize(6);
+      else if (width < 1000) setFontSize(7);
+      else setFontSize(12);
     });
 
     resizeObserver.observe(containerRef.current);

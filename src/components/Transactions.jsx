@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useAppContext } from "../contexts/context.jsx";
 import { RotatingLines } from "react-loader-spinner";
@@ -7,6 +6,7 @@ import IconButton from "./reusables/buttons/IconButton.jsx";
 import TextButton from "./reusables/buttons/TextButton.jsx";
 import EditInput from "./reusables/input/EditInput.jsx";
 import OptionInput from "./reusables/input/OptionInput.jsx";
+import { formatDate } from "../data/aux/formatDate.js";
 import Network from "../utils/network.js";
 import {
   ShoppingBasket,
@@ -56,25 +56,6 @@ function Transactions() {
     Other: Plus,
   };
 
-  const formatDate = (transaction) => {
-    if (!transaction.createdOn) return "N/A";
-
-    let year, month, day;
-
-    if (Array.isArray(transaction.createdOn)) {
-      [year, month, day] = transaction.createdOn;
-    } else if (typeof transaction.createdOn === "string") {
-      // backend returns string ("YYYY-MM-DDTHH:mm:ss")
-      const [datePart] = transaction.createdOn.split("T"); // taking "YYYY-MM-DD"
-      [year, month, day] = datePart.split("-").map(Number);
-    }
-
-    return `${String(month).padStart(2, "0")}/${String(day).padStart(
-      2,
-      "0",
-    )}/${year}`;
-  };
-
   const [afterDate, setAfterDate] = useState("");
   const [beforeDate, setBeforeDate] = useState("");
   const showFilteredTransactions = async () => {
@@ -95,10 +76,12 @@ function Transactions() {
   const [editFormData, setEditFormData] = useState({
     name: "",
     type: "",
+    isTaxable: "",
     amount: "",
     createdOn: "",
   });
 
+  const [originalData, setOriginalData] = useState(null);
   const startEdit = (transaction) => {
     setEditingRowId(transaction.id);
     let formattedDate = "";
@@ -116,13 +99,16 @@ function Transactions() {
       alert("Amount entered is not a number");
     }
 
-    setEditFormData({
-      name: transaction.name ?? "",
-      category: transaction.category ?? "",
-      isTaxable: transaction.isTaxable ?? false,
+    const initialValues = {
+      name: transaction.name,
+      type: transaction.type,
+      isTaxable: transaction.isTaxable,
       amount: transaction.amount != null ? transaction.amount.toString() : "",
       createdOn: formattedDate,
-    });
+    };
+
+    setEditFormData(initialValues);
+    setOriginalData(initialValues);
   };
 
   const cancelEdit = () => {
@@ -131,6 +117,7 @@ function Transactions() {
       name: "",
       type: "",
       amount: "",
+      isTaxable: "",
       createdOn: "",
     });
   };
@@ -151,19 +138,39 @@ function Transactions() {
       return;
     }
 
-    try {
-      const payload = {
-        name: editFormData.name,
-        type: editFormData.type,
-        amount: parseFloat(editFormData.amount),
-        createdOn: editFormData.createdOn + "T00:00:00",
-      };
+    const payload = {};
+    payload.id = transactionId;
 
+    if (editFormData.name !== originalData.name) {
+      payload.name = editFormData.name;
+    }
+
+    const currentAmount = parseFloat(editFormData.amount);
+    const prevAmount = parseFloat(originalData.amount);
+    if (currentAmount !== prevAmount) {
+      payload.amount = currentAmount;
+    }
+
+    if (editFormData.type !== originalData.type) {
+      payload.type = editFormData.type;
+    }
+
+    if (editFormData.isTaxable !== originalData.isTaxable) {
+      payload.isTaxable = editFormData.isTaxable;
+    }
+
+    if (editFormData.createdOn !== originalData.createdOn) {
+      payload.createdOn = editFormData.createdOn + "T00:00:00";
+    }
+
+    try {
+      console.log("sending as payload " + JSON.stringify(payload));
       const response = await network.patch(
         `/transactions/${transactionId}`,
         payload,
       );
-      if (response.data === "Transaction successfully updated.") {
+      console.log(JSON.stringify(response.data));
+      if (response.status === 200) {
         await fetchUserData();
         setEditingRowId(null);
       } else {
@@ -175,7 +182,6 @@ function Transactions() {
   };
 
   const deleteTransaction = async (transactionId) => {
-    console.log("transaction id is " + transactionId);
     const response = await network.delete(`/transactions/${transactionId}`);
     if (response.data === "Successfully deleted transaction") {
       await fetchUserData();

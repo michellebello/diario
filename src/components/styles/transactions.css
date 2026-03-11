@@ -79,6 +79,7 @@
   overflow: hidden;
   display: flex;
   width: 100%;
+  border-radius: 20px;
 }
 
 .allTransactions {
@@ -86,7 +87,6 @@
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  border-radius: 10px;
   background-color: #f5f3f0;
   table-layout: fixed;
   min-width: 0;

@@ -1,13 +1,13 @@
 import { CATEGORY_LIST } from "../../../data/aux/CategoryList";
 import "../../../components/styles/edit-input.css";
 
-function OptionInput({ type, value, onChange }) {
+function OptionInput({ name, type, value, onChange }) {
   return (
     <div className="edit-input-container">
       {type !== "not-cat" ? (
         <select
-          name="type"
-          id="categories-option"
+          name={name}
+          id="categories-option-cat"
           className="edit-input-tag"
           value={value}
           onChange={onChange}
@@ -20,8 +20,8 @@ function OptionInput({ type, value, onChange }) {
         </select>
       ) : (
         <select
-          name="type"
-          id="categories-option"
+          name={name}
+          id="categories-option-taxable"
           className="edit-input-tag"
           value={value}
           onChange={onChange}
