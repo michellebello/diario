@@ -1,9 +1,10 @@
 import "../../../components/styles/edit-input.css";
 
-function EditInput({ value, inputType, inputName, onChange }) {
+function EditInput({ placeholder, value, inputType, inputName, onChange }) {
   return (
     <div className="edit-input-container">
       <input
+        placeholder={placeholder}
         className="edit-input-tag"
         type={inputType}
         name={inputName}

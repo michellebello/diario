@@ -1,8 +1,11 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from "react";
 import { ListFilter, Send } from "lucide-react";
 import DropdownFilters from "./reusables/input/DropdownFilters";
+import EditInput from "./reusables/input/EditInput";
 import { CATEGORY_LIST } from "../data/aux/CategoryList";
 import { formatDate } from "../data/aux/formatDate";
+import Network from "../utils/network";
 import "../components/styles/tax-report.css";
 import {
   ShoppingBasket,
@@ -21,7 +24,6 @@ import {
   Rows3,
   Plus,
 } from "lucide-react";
-import { useAppContext } from "../contexts/context";
 
 const monthOptions = [
   "January",
@@ -58,13 +60,24 @@ const categoryToIcon = {
   Other: Plus,
 };
 function TaxReport() {
+  const network = new Network();
   const [monthFilter, setMonthFilter] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const { userInfo, setUserInfo } = useAppContext();
-  const taxableTransactions = Array.from(userInfo.transactions).filter(
-    (t) => t.isTaxable !== false,
-  );
+  const [taxableTransactions, setTaxableTransactions] = useState([]);
+
+  const getTaxableTransactions = async () => {
+    const response = await network.get("/transactions/taxable");
+    if (response.status === 200) {
+      setTaxableTransactions(response.data);
+    }
+  };
+
+  useEffect(() => {
+    getTaxableTransactions();
+  }, []);
+
+  const [transactionNote, setTransactionNote] = useState("");
 
   return (
     <div className="tax-report-content">
@@ -150,7 +163,19 @@ function TaxReport() {
                       />{" "}
                     </td>
                     <td>{t.name}</td>
-                    <td>Note</td>
+                    <td>
+                      {t.note !== "" ? (
+                        t.note
+                      ) : (
+                        <EditInput
+                          placeholder="ex. Doctor's Visit"
+                          value={transactionNote}
+                          onChange={(e) => setTransactionNote(e.target.value)}
+                          inputName="note"
+                          inputType="text"
+                        />
+                      )}
+                    </td>
                     <td
                       className={`transaction-amount 
                               ${t.typeName !== "Expense" ? "plus" : ""}`}
