@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, data } from "react-router-dom";
 import { NUM_TO_MONTH } from "../data/aux/MonthNumToName";
 import Network from "../utils/network";
 import { BudgetTopCards } from "./reusables/cards/BudgetTopCards";
@@ -11,13 +11,14 @@ import DeleteConfirmationForm from "../components/reusables/forms/DeleteConfirma
 import "../components/styles/budget-breakdown.css";
 import { ALLOCATION_CATEGORY_LIST } from "../data/aux/CategoryList";
 import LabelInputForm from "./reusables/forms/LabelInputForm";
+import LoadingBar from "./reusables/LoadingBar";
 
 function BudgetBreakdown() {
   const network = new Network();
   const { state } = useLocation();
   const { budgetId } = useParams();
   const [budgetData, setBudgetData] = useState([]);
-  const [budgetInfo, setBudgetInfo] = useState(state);
+  const [budgetInfo] = useState(state);
   const [deleteMessageVisibility, setDeleteMessageVisibility] = useState(false);
   const [allocationIdToDelete, setAllocationIdToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,17 +32,19 @@ function BudgetBreakdown() {
     amount: "",
   });
 
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   const getBudgetBreakdownData = async (budgetId) => {
     try {
       const allocationsRes = await network.get(
         `/budgets/${budgetId}/allocations`,
       );
       setBudgetData(allocationsRes.data);
-      console.log(
-        "setting getBudgetBreakdown " + JSON.stringify(allocationsRes.data),
-      );
+      setDataLoaded(true);
     } catch (err) {
       console.error("Failed to refresh data", err);
+      setDataLoaded(false);
+      return;
     }
   };
 
@@ -72,7 +75,6 @@ function BudgetBreakdown() {
         },
       ]);
 
-      console.log("response " + JSON.stringify(response));
       if (response.status === 201) {
         await getBudgetBreakdownData(budgetId);
         setAddAllocationVisibility((prev) => !prev);
@@ -116,92 +118,123 @@ function BudgetBreakdown() {
 
   return (
     <div className="budgets-content">
-      {addAllocationVisibility && (
-        <div className="add-allocation-container">
-          <form className="add-allocation-form">
-            <p>New Allocation</p>
-            <div className="form-entries">
-              <div className="duoLabelInput">
-                <label htmlFor="type" className="labelForm">
-                  Allocation Type
-                </label>
-                <div className="inputContainer">
-                  <select
-                    id="type"
-                    name="type"
-                    className="inputForm"
-                    value={newAllocation.category}
-                    onChange={(e) => {
-                      e.preventDefault();
-                      setNewAllocation((prev) => ({
-                        ...prev,
-                        category: e.target.value,
-                      }));
-                    }}
-                  >
-                    <option value=""> Choose a category</option>
-                    {remainingCategories.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
+      <LoadingBar loading={!dataLoaded}>
+        {addAllocationVisibility && (
+          <div className="add-allocation-container">
+            <form className="add-allocation-form">
+              <p>New Allocation</p>
+              <div className="form-entries">
+                <div className="duoLabelInput">
+                  <label htmlFor="type" className="labelForm">
+                    Allocation Type
+                  </label>
+                  <div className="inputContainer">
+                    <select
+                      id="type"
+                      name="type"
+                      className="inputForm"
+                      value={newAllocation.category}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setNewAllocation((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }));
+                      }}
+                    >
+                      <option value=""> Choose a category</option>
+                      {remainingCategories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
+                <LabelInputForm
+                  inputType="input"
+                  label="Amount"
+                  name="allocation-amount"
+                  type="number"
+                  value={newAllocation.amount}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setNewAllocation((prev) => ({
+                      ...prev,
+                      amount: parseFloat(e.target.value) || 0,
+                    }));
+                  }}
+                />
               </div>
-              <LabelInputForm
-                inputType="input"
-                label="Amount"
-                name="allocation-amount"
-                type="number"
-                value={newAllocation.amount}
-                onChange={(e) => {
-                  e.preventDefault();
-                  setNewAllocation((prev) => ({
-                    ...prev,
-                    amount: parseFloat(e.target.value) || 0,
-                  }));
-                }}
+              <div className="add-allocation-buttons-div">
+                <button
+                  className="add-allocation-buttons"
+                  type="text"
+                  onClick={() => setAddAllocationVisibility((prev) => !prev)}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={(e) => addNewBudgetAllocation(e)}
+                  className="add-allocation-buttons"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        <div className="budgets-top">
+          <p className="title">{`Budget Breakdown: ${NUM_TO_MONTH[month]} ${year}`}</p>
+          <button className="add-allocation-button">
+            <Plus
+              color="#ececf2"
+              onClick={() => setAddAllocationVisibility((prev) => !prev)}
+            />
+          </button>
+        </div>
+        {/* confirm delete account message */}
+        {deleteMessageVisibility && (
+          <DeleteConfirmationForm
+            deletingObject="budget allocation"
+            deleteFunction={() => deleteBudgetAllocation(allocationIdToDelete)}
+            closeForm={() => setDeleteMessageVisibility(false)}
+          />
+        )}
+        {needsGraph ? (
+          <div className="budget-cards-top">
+            <div className="budget-cards-container">
+              <BudgetTopCards
+                cardTitle="Total Budgeted"
+                amount={`$${numericTotalBudget.toFixed(2)}`}
+                amountColor="#000000"
+              />
+              <BudgetTopCards
+                cardTitle="Total spent"
+                amount={`$${calculatedTotalSpent.toFixed(2)}`}
+                amountColor="#000000"
+              />
+              <BudgetTopCards
+                cardTitle="Remaining"
+                amount={`$${(numericTotalBudget - calculatedTotalSpent).toFixed(2)}`}
+                amountColor="#000000"
               />
             </div>
-            <div className="add-allocation-buttons-div">
-              <button
-                className="add-allocation-buttons"
-                type="text"
-                onClick={() => setAddAllocationVisibility((prev) => !prev)}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={(e) => addNewBudgetAllocation(e)}
-                className="add-allocation-buttons"
-                type="submit"
-              >
-                Submit
-              </button>
+            <div className="budget-categories-breakdown-chart-container">
+              <ReBarchart
+                dataObject={budgetData.reduce((acc, curr) => {
+                  if (curr.spent !== null || curr.spent > 0) {
+                    acc[curr.category] = curr.spent;
+                  }
+                  return acc;
+                }, {})}
+              />
             </div>
-          </form>
-        </div>
-      )}
-      <div className="budgets-top">
-        <p className="title">{`Budget Breakdown: ${NUM_TO_MONTH[month]} ${year}`}</p>
-        <button className="add-allocation-button">
-          <Plus
-            color="#ececf2"
-            onClick={() => setAddAllocationVisibility((prev) => !prev)}
-          />
-        </button>
-      </div>
-      {/* confirm delete account message */}
-      {deleteMessageVisibility && (
-        <DeleteConfirmationForm
-          deletingObject="budget allocation"
-          deleteFunction={() => deleteBudgetAllocation(allocationIdToDelete)}
-          closeForm={() => setDeleteMessageVisibility(false)}
-        />
-      )}
-      {needsGraph ? (
-        <div className="budget-cards-top">
-          <div className="budget-cards-container">
+          </div>
+        ) : (
+          <div className="budget-cards-top">
             <BudgetTopCards
               cardTitle="Total Budgeted"
               amount={`$${numericTotalBudget.toFixed(2)}`}
@@ -214,55 +247,27 @@ function BudgetBreakdown() {
             />
             <BudgetTopCards
               cardTitle="Remaining"
-              amount={`$${(numericTotalBudget - calculatedTotalSpent).toFixed(2)}`}
+              amount={`$${remainingBalance.toFixed(2)}`}
               amountColor="#000000"
             />
           </div>
-          <div className="budget-categories-breakdown-chart-container">
-            <ReBarchart
-              dataObject={budgetData.reduce((acc, curr) => {
-                if (curr.spent !== null || curr.spent > 0) {
-                  acc[curr.category] = curr.spent;
-                }
-                return acc;
-              }, {})}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="budget-cards-top">
-          <BudgetTopCards
-            cardTitle="Total Budgeted"
-            amount={`$${numericTotalBudget.toFixed(2)}`}
-            amountColor="#000000"
-          />
-          <BudgetTopCards
-            cardTitle="Total spent"
-            amount={`$${calculatedTotalSpent.toFixed(2)}`}
-            amountColor="#000000"
-          />
-          <BudgetTopCards
-            cardTitle="Remaining"
-            amount={`$${remainingBalance.toFixed(2)}`}
-            amountColor="#000000"
-          />
-        </div>
-      )}
+        )}
 
-      <div className="budget-categories-container">
-        {budgetData.map((budget) => (
-          <BudgetCategories
-            key={budget.id}
-            id={budget.id}
-            budgetId={budget.budgetId}
-            category={budget.category}
-            spent={budget.spent !== null ? budget.spent.toFixed(2) : 0}
-            total={budget.amount.toFixed(2)}
-            setDeleteMessageVisibility={setDeleteMessageVisibility}
-            setAllocationIdToDelete={setAllocationIdToDelete}
-          />
-        ))}
-      </div>
+        <div className="budget-categories-container">
+          {budgetData.map((budget) => (
+            <BudgetCategories
+              key={budget.id}
+              id={budget.id}
+              budgetId={budget.budgetId}
+              category={budget.category}
+              spent={budget.spent !== null ? budget.spent.toFixed(2) : 0}
+              total={budget.amount.toFixed(2)}
+              setDeleteMessageVisibility={setDeleteMessageVisibility}
+              setAllocationIdToDelete={setAllocationIdToDelete}
+            />
+          ))}
+        </div>
+      </LoadingBar>
     </div>
   );
 }

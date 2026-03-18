@@ -17,8 +17,8 @@
   padding: 3px 5px;
   border-radius: 5px;
   border: none;
-  font-style: italic;
-  font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+  font-style: oblique;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
 }
 
 .edit-input-tag:focus {

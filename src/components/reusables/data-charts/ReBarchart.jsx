@@ -7,10 +7,13 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import LoadingBar from "../LoadingBar";
 import { useMemo, useState, useLayoutEffect, useRef } from "react";
 
 function ReBarchart({ dataObject }) {
+  const [dataLoaded, setDataLoaded] = useState(false);
   const chartData = useMemo(() => {
+    setDataLoaded(true);
     return Object.entries(dataObject).map(([key, value]) => {
       const isCredit = key === "Credit";
       return {
@@ -35,39 +38,44 @@ function ReBarchart({ dataObject }) {
     });
 
     resizeObserver.observe(containerRef.current);
-
     return () => resizeObserver.disconnect();
   }, []);
 
   return (
-    <div>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#eaeaf0" />
-          <XAxis
-            dataKey="Account Type"
-            tick={{ fill: "#717182", fontSize }}
-            axisLine={{ stroke: "#eaeaf0" }}
-          />
-          <YAxis
-            tick={{ fill: "#717182", fontSize }}
-            axisLine={{ stroke: "#eaeaf0" }}
-            tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
-          />
-          <Tooltip
-            formatter={(value) =>
-              `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-            }
-            contentStyle={{
-              backgroundColor: "#fffffc",
-              border: "1px solid #0000001a",
-              borderRadius: "8px",
-            }}
-          />
-          <Bar dataKey="Total Balance" fill="#43457cff" radius={[8, 8, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <LoadingBar loading={!dataLoaded}>
+      <div>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#eaeaf0" />
+            <XAxis
+              dataKey="Account Type"
+              tick={{ fill: "#717182", fontSize }}
+              axisLine={{ stroke: "#eaeaf0" }}
+            />
+            <YAxis
+              tick={{ fill: "#717182", fontSize }}
+              axisLine={{ stroke: "#eaeaf0" }}
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+            />
+            <Tooltip
+              formatter={(value) =>
+                `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+              }
+              contentStyle={{
+                backgroundColor: "#fffffc",
+                border: "1px solid #0000001a",
+                borderRadius: "8px",
+              }}
+            />
+            <Bar
+              dataKey="Total Balance"
+              fill="#43457cff"
+              radius={[8, 8, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </LoadingBar>
   );
 }
 

@@ -38,7 +38,6 @@ function Accounts() {
 
   const addAccount = async (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(newAccount));
     if (
       !newAccount.name ||
       !newAccount.number ||
@@ -95,7 +94,6 @@ function Accounts() {
           />
         )}
       </div>
-
       <div className="account-top-barchart">
         {accounts.length > 0 && (
           <ReBarchart

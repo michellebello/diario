@@ -1,6 +1,7 @@
 .loading-container {
   width: 100%;
-  background-color: #faf8ef;
+  height: 100vh;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
