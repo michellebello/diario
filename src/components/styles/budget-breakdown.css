@@ -156,7 +156,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .labelForm {
@@ -180,7 +180,7 @@
   border-radius: 5px;
   box-sizing: border-box;
   font-weight: 400;
-  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  font-size: clamp(0.9rem, 1vw, 1rem);
   font-family: "Economica", sans-serif;
   font-weight: 300;
   color: #717182;

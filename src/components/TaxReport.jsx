@@ -93,12 +93,27 @@ function TaxReport() {
   }, []);
 
   const [transactionNote, setTransactionNote] = useState({});
-  const handleAddTransactionNote = async (id, note) => {
+  const handleAddTransactionNote = (id, note) => {
     setTransactionNote((prev) => ({
       ...prev,
       [id]: note,
     }));
-    console.log("note: " + note + " ,added for transaction id : " + id);
+  };
+
+  const addTransactionNote = async (id) => {
+    const noteFromId = transactionNote[id];
+    if (noteFromId == null || !noteFromId) {
+      return;
+    }
+    const response = await network.post(`/transactions/taxable`, {
+      id: id,
+      note: noteFromId,
+    });
+    if (response.status === 200) {
+      await fetchTaxableTransactions();
+    } else {
+      return;
+    }
   };
 
   return (
@@ -151,7 +166,9 @@ function TaxReport() {
       <div className="allTransactions-div">
         <div className="table-scroll">
           {taxableTransactions.length < 1 ? (
-            <p>No transactions found.</p>
+            <div className="no-taxable-transactions-container">
+              <p>No transactions found.</p>
+            </div>
           ) : (
             <table className="allTransactions">
               <colgroup>
@@ -208,8 +225,11 @@ function TaxReport() {
                               inputName="note"
                               inputType="text"
                             />
-                            {transactionNote.length > 0 && (
-                              <button className="table-note-edit-button">
+                            {transactionNote[t.id] && (
+                              <button
+                                onClick={() => addTransactionNote(t.id)}
+                                className="table-note-edit-button"
+                              >
                                 ✓
                               </button>
                             )}

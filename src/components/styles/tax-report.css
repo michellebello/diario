@@ -71,12 +71,20 @@
   color: #ffffff;
 }
 
+.no-taxable-transactions-container {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.no-taxable-transactions-container p {
+  font-weight: 200;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
 /* tax deductions body */
 
-/* .table-note-row {
-  max-width: 200px;
-  overflow: hidden;
-} */
 .tax-report-note-div {
   width: 100%;
   display: flex;
@@ -86,7 +94,6 @@
 }
 
 .tax-report-note {
-  /* Your existing styles */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -121,5 +128,5 @@
 }
 
 .table-note-edit-button:hover {
-  background-color: #3a2c64;
+  background-color: #473873;
 }

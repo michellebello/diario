@@ -67,6 +67,7 @@
   flex-direction: column;
   width: 100%;
   margin-top: 0.5rem;
+  gap: 1rem;
 }
 
 /* budget allocation configuration part */
