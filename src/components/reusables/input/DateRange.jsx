@@ -1,4 +1,4 @@
-import "../styles/transactions.css";
+import "../../styles/transactions.css";
 
 export default function DateRange({
   afterDate,

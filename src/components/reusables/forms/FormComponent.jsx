@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from "react";
 import Network from "/Users/michelle/code/diario/src/utils/network.js";
-import { useAppContext } from "../../contexts/context";
-import { useUserData } from "../../data/user/fetchAndSaveUserData";
-import { CATEGORY_LIST } from "../../data/aux/CategoryList";
-import SliderButton from "./buttons/SliderButton";
-import "../styles/sidebar.css";
+import { useAppContext } from "../../../contexts/context";
+import { useUserData } from "../../../data/user/fetchAndSaveUserData";
+import { CATEGORY_LIST } from "../../../data/aux/CategoryList";
+import SliderButton from "../buttons/SliderButton";
+import "../../styles/sidebar.css";
 
 function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
   const [selectedAccountId, setSelectedAccountId] = useState("");

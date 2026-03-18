@@ -10,7 +10,7 @@ import { Plus } from "lucide-react";
 import DeleteConfirmationForm from "../components/reusables/forms/DeleteConfirmationForm";
 import "../components/styles/budget-breakdown.css";
 import { ALLOCATION_CATEGORY_LIST } from "../data/aux/CategoryList";
-import LabelInputForm from "./reusables/LabelInputForm";
+import LabelInputForm from "./reusables/forms/LabelInputForm";
 
 function BudgetBreakdown() {
   const network = new Network();

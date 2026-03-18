@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ListFilter, Send } from "lucide-react";
 import DropdownFilters from "./reusables/input/DropdownFilters";
 import EditInput from "./reusables/input/EditInput";
+import LoadingBar from "./reusables/LoadingBar";
 import { CATEGORY_LIST } from "../data/aux/CategoryList";
 import { formatDate } from "../data/aux/formatDate";
 import Network from "../utils/network";
@@ -65,6 +66,8 @@ function TaxReport() {
   const [yearFilter, setYearFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [taxableTransactions, setTaxableTransactions] = useState([]);
+  const [taxableTransactionsLoaded, setTaxableTransactionsLoaded] =
+    useState(false);
 
   const fetchTaxableTransactions = async () => {
     const params = new URLSearchParams();
@@ -78,13 +81,16 @@ function TaxReport() {
     if (categoryFilter) {
       params.append("category", categoryFilter);
     }
+
     const response = await network.get(
       `/transactions/taxable?${params.toString()}`,
     );
     if (response.status === 200) {
       setTaxableTransactions(response.data);
+      setTaxableTransactionsLoaded(true);
     } else {
       console.log(response.error);
+      setTaxableTransactionsLoaded(true);
     }
   };
 
@@ -164,101 +170,103 @@ function TaxReport() {
         </div>
       </div>
       <div className="allTransactions-div">
-        <div className="table-scroll">
-          {taxableTransactions.length < 1 ? (
-            <div className="no-taxable-transactions-container">
-              <p>No transactions found.</p>
-            </div>
-          ) : (
-            <table className="allTransactions">
-              <colgroup>
-                <col style={{ width: "7%" }} />
-                <col style={{ width: "15%" }} />
-                <col style={{ width: "15%" }} />
-                <col style={{ width: "14%" }} />
-                <col style={{ width: "14%" }} />
-                <col style={{ width: "20%" }} />
-                <col style={{ width: "15%" }} />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th>{}</th>
-                  <th>Expense</th>
-                  <th>Note</th>
-                  <th>Amount</th>
-                  <th>Category</th>
-                  <th>Account Number</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
+        <LoadingBar loading={!taxableTransactionsLoaded}>
+          <div className="table-scroll">
+            {taxableTransactions.length < 1 ? (
+              <div className="no-taxable-transactions-container">
+                <p>No transactions found.</p>
+              </div>
+            ) : (
+              <table className="allTransactions">
+                <colgroup>
+                  <col style={{ width: "7%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "14%" }} />
+                  <col style={{ width: "14%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "15%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>{}</th>
+                    <th>Expense</th>
+                    <th>Note</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Account Number</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {taxableTransactions.map((t, index) => {
-                  const Icon = categoryToIcon[t.category] || Plus;
-                  return (
-                    <tr
-                      key={t.id}
-                      className={`${index % 2 === 0 ? "even-row" : "odd-row"} `}
-                    >
-                      <td>
-                        <Icon
-                          strokeWidth={2}
-                          size={32}
-                          className="transaction-type-icon"
-                          width="clamp(2rem, 3vw, 5rem)"
-                        />{" "}
-                      </td>
-                      <td>{t.name}</td>
-                      <td className="table-note-row">
-                        {t.note !== "" ? (
-                          <div className="tax-report-note-div">
-                            <p className="tax-report-note">{t.note}</p>
-                          </div>
-                        ) : (
-                          <div className="table-note-edit-row">
-                            <EditInput
-                              placeholder="Add a note (ex. donation)"
-                              value={transactionNote[t.id] || ""}
-                              onChange={(e) =>
-                                handleAddTransactionNote(t.id, e.target.value)
-                              }
-                              inputName="note"
-                              inputType="text"
-                            />
-                            {transactionNote[t.id] && (
-                              <button
-                                onClick={() => addTransactionNote(t.id)}
-                                className="table-note-edit-button"
-                              >
-                                ✓
-                              </button>
-                            )}
-                          </div>
-                        )}
-                      </td>
-                      <td
-                        className={`transaction-amount 
-                              ${t.typeName !== "Expense" ? "plus" : ""}`}
+                <tbody>
+                  {taxableTransactions.map((t, index) => {
+                    const Icon = categoryToIcon[t.category] || Plus;
+                    return (
+                      <tr
+                        key={t.id}
+                        className={`${index % 2 === 0 ? "even-row" : "odd-row"} `}
                       >
-                        {t.typeName !== "Expense"
-                          ? `+ $${t.amount.toFixed(2)}`
-                          : `- $${t.amount.toFixed(2)}`}
-                      </td>
-                      <td>
-                        <div className="transaction-type-container">
-                          <p className="transaction-type-cat">{t.category}</p>
-                        </div>
-                      </td>
-                      <td>{t.accountNumber}</td>
-                      <td>{formatDate(t)}</td>
-                      <td className="transaction-modify-buttons"></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
-        </div>
+                        <td>
+                          <Icon
+                            strokeWidth={2}
+                            size={32}
+                            className="transaction-type-icon"
+                            width="clamp(2rem, 3vw, 5rem)"
+                          />{" "}
+                        </td>
+                        <td>{t.name}</td>
+                        <td className="table-note-row">
+                          {t.note !== "" ? (
+                            <div className="tax-report-note-div">
+                              <p className="tax-report-note">{t.note}</p>
+                            </div>
+                          ) : (
+                            <div className="table-note-edit-row">
+                              <EditInput
+                                placeholder="Add a note (ex. donation)"
+                                value={transactionNote[t.id] || ""}
+                                onChange={(e) =>
+                                  handleAddTransactionNote(t.id, e.target.value)
+                                }
+                                inputName="note"
+                                inputType="text"
+                              />
+                              {transactionNote[t.id] && (
+                                <button
+                                  onClick={() => addTransactionNote(t.id)}
+                                  className="table-note-edit-button"
+                                >
+                                  ✓
+                                </button>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                        <td
+                          className={`transaction-amount 
+                              ${t.typeName !== "Expense" ? "plus" : ""}`}
+                        >
+                          {t.typeName !== "Expense"
+                            ? `+ $${t.amount.toFixed(2)}`
+                            : `- $${t.amount.toFixed(2)}`}
+                        </td>
+                        <td>
+                          <div className="transaction-type-container">
+                            <p className="transaction-type-cat">{t.category}</p>
+                          </div>
+                        </td>
+                        <td>{t.accountNumber}</td>
+                        <td>{formatDate(t)}</td>
+                        <td className="transaction-modify-buttons"></td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </LoadingBar>
       </div>
     </div>
   );

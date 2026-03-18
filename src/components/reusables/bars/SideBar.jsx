@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import "../styles/sidebar.css";
+import "../../styles/sidebar.css";
 
 function SideBar({ open, openForm, activeLabel, setActiveLabel }) {
   const ADD_ITEMS = ["Expense", "Deposit", "Transfer"];

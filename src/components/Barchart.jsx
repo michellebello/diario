@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import Network from "../utils/network.js";
-import DateRange from "./reusables/DateRange.jsx";
+import DateRange from "./reusables/input/DateRange.jsx";
 import Ebarchart from "./reusables/data-charts/echarts/Ebarchart.jsx";
 import "./styles/barchart.css";
 
@@ -11,8 +11,6 @@ function Barchart() {
   const [beforeDate, setBeforeDate] = useState("");
   const [grandTotal, setGrandTotal] = useState(0);
   const [loadingState, setLoadingState] = useState(false);
-
-  const svgReference = useRef(null);
 
   const network = new Network();
   const transactionsBreakdown = async () => {

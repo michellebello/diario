@@ -1,4 +1,4 @@
-import "../styles/labelInputForm.css";
+import "../../styles/labelInputForm.css";
 
 function LabelInputForm({
   inputType,

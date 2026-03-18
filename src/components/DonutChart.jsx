@@ -1,17 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Network from "../utils/network.js";
 import { RotatingLines } from "react-loader-spinner";
 import "./styles/donutchart.css";
-import DateRange from "./reusables/DateRange.jsx";
+import DateRange from "./reusables/input/DateRange.jsx";
 import Edonut from "./reusables/data-charts/echarts/Edonut.jsx";
 import Epidonut from "./reusables/data-charts/echarts/Epidonut.jsx";
 
 function DonutChart() {
   const [loadingState, setLoadingState] = useState(false);
   const [transactionMap, setTransactionMap] = useState(new Map());
-  const [grandTotal, setGrandTotal] = useState(0);
-
-  const svgReference = useRef(null);
+  const [_, setGrandTotal] = useState(0);
 
   const network = new Network();
   const transactionsBreakdown = async () => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppContext } from "../contexts/context.jsx";
 import { RotatingLines } from "react-loader-spinner";
-import DateRange from "./reusables/DateRange";
+import DateRange from "./reusables/input/DateRange.jsx";
 import IconButton from "./reusables/buttons/IconButton.jsx";
 import TextButton from "./reusables/buttons/TextButton.jsx";
 import EditInput from "./reusables/input/EditInput.jsx";

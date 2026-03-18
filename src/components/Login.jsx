@@ -5,7 +5,7 @@ import Network from "../utils/network.js";
 import { useAppContext } from "../contexts/context.jsx";
 import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import { EyeOff, Eye } from "lucide-react";
-import LabelInputForm from "./reusables/LabelInputForm";
+import LabelInputForm from "./reusables/forms/LabelInputForm.jsx";
 import { ErrorMessage } from "./reusables/cards/ErrorMessage.jsx";
 import "./styles/signUp.css";
 

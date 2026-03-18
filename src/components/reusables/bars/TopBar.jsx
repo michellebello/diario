@@ -4,11 +4,11 @@ import {
   getTokenHeader,
   clearToken,
 } from "/Users/michelle/code/diario/src/contexts/Session.js";
-import { initialState, useAppContext } from "../../contexts/context";
-import Network from "../../utils/network";
-import logoView from "../pictures/logoView.png";
-import user from "../pictures/user.png";
-import "../styles/cuentaview.css";
+import { initialState, useAppContext } from "../../../contexts/context";
+import Network from "../../../utils/network";
+import logoView from "../../pictures/logoView.png";
+import user from "../../pictures/user.png";
+import "../../styles/cuentaview.css";
 
 function TopBar({ onLogoClick }) {
   const TOPBAR_LINKS = [

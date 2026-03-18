@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Network from "../../../utils/network";
-import LabelInputForm from "../LabelInputForm";
+import LabelInputForm from "../forms/LabelInputForm";
 import { NUM_TO_MONTH } from "../../../data/aux/MonthNumToName";
 import TextButton from "../buttons/TextButton";
 import { ErrorMessage } from "../cards/ErrorMessage";

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useUserData } from "../data/user/fetchAndSaveUserData";
-import FormComponent from "./reusables/FormComponent";
-import SideBar from "./reusables/SideBar";
-import TopBar from "./reusables/TopBar";
+import FormComponent from "./reusables/forms/FormComponent.jsx";
+import SideBar from "./reusables/bars/SideBar.jsx";
+import TopBar from "./reusables/bars/TopBar.jsx";
 import "./styles/layout.css";
 
 function Layout() {

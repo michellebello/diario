@@ -130,3 +130,10 @@
 .table-note-edit-button:hover {
   background-color: #473873;
 }
+
+.loading-bar-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
