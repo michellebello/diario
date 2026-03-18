@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import DeleteConfirmationForm from "../forms/DeleteConfirmationForm.jsx";
-import { monthNumToMonthName } from "../../../data/aux/MonthNumToName.js";
+import { NUM_TO_MONTH } from "../../../data/aux/MonthNumToName.js";
 import { CircleAlert, TrashIcon } from "lucide-react";
 import Network from "../../../utils/network.js";
 import { useUserData } from "../../../data/user/fetchAndSaveUserData.js";
@@ -17,12 +17,11 @@ export default function BudgetCard({
   const network = new Network();
   const fetchUserData = useUserData();
   const [deleteFormVisibilility, setDeleteFormVisibility] = useState(false);
-  const monthName = monthNumToMonthName[month];
+  const monthName = NUM_TO_MONTH.get(month);
   const percent = (spent / total) * 100;
   const isOverBudget = spent > total;
 
   const deleteBudget = async () => {
-    console.log("selected budget id is " + budgetId);
     const response = await network.delete(`/budgets/${budgetId}`);
     console.log(response.data);
     if (response.status === 200) {

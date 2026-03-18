@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { monthNumToMonthName } from "../data/aux/MonthNumToName";
+import { NUM_TO_MONTH } from "../data/aux/MonthNumToName";
 import Network from "../utils/network";
 import { BudgetTopCards } from "./reusables/cards/BudgetTopCards";
 import { BudgetCategories } from "./reusables/cards/BudgetCategories";
@@ -183,7 +183,7 @@ function BudgetBreakdown() {
         </div>
       )}
       <div className="budgets-top">
-        <p className="title">{`Budget Breakdown: ${monthNumToMonthName[month]} ${year}`}</p>
+        <p className="title">{`Budget Breakdown: ${NUM_TO_MONTH[month]} ${year}`}</p>
         <button className="add-allocation-button">
           <Plus
             color="#ececf2"

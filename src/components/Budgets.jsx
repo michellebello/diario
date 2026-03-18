@@ -7,8 +7,6 @@ import BudgetCard from "./reusables/cards/BudgetCard.jsx";
 import { useAppContext } from "../contexts/context.jsx";
 import NewBudget from "../components/reusables/new-budget/NewBudget.jsx";
 import EmptyBodyCard from "./reusables/cards/EmptyBodyCard.jsx";
-import Network from "../utils/network.js";
-import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import "../components/styles/budgets.css";
 
 function Budgets() {

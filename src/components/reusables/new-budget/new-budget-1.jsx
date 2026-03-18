@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Network from "../../../utils/network";
 import LabelInputForm from "../LabelInputForm";
-import { NUM_TO_MONTH } from "./monthData";
+import { NUM_TO_MONTH } from "../../../data/aux/MonthNumToName";
 import TextButton from "../buttons/TextButton";
 import { ErrorMessage } from "../cards/ErrorMessage";
 import "../../../components/styles/create-new-budget.css";
