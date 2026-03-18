@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BarLoader } from "react-spinners";
-import "../styles/loading-bar.css";
+import "../../styles/loading-bar.css";
 
 export default function LoadingBar({ loading, children, minDuration = 800 }) {
   const [showLoader, setShowLoader] = useState(loading);

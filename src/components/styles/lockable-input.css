@@ -26,3 +26,10 @@
   border-radius: 5px;
   box-shadow: 0 0 0.1px 0.4px#717182;
 }
+
+@media (max-width: 768px) {
+  .lockable-input-dropdown,
+  .lockable-input-input {
+    font-size: clamp(0.7rem, 1vw, 0.8rem);
+  }
+}

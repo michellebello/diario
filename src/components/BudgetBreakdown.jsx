@@ -11,7 +11,7 @@ import DeleteConfirmationForm from "../components/reusables/forms/DeleteConfirma
 import "../components/styles/budget-breakdown.css";
 import { ALLOCATION_CATEGORY_LIST } from "../data/aux/CategoryList";
 import LabelInputForm from "./reusables/forms/LabelInputForm";
-import LoadingBar from "./reusables/LoadingBar";
+import LoadingBar from "./reusables/bars/LoadingBar";
 
 function BudgetBreakdown() {
   const network = new Network();

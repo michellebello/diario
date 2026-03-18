@@ -164,12 +164,10 @@ function Transactions() {
     }
 
     try {
-      console.log("sending as payload " + JSON.stringify(payload));
       const response = await network.patch(
         `/transactions/${transactionId}`,
         payload,
       );
-      console.log(JSON.stringify(response.data));
       if (response.status === 200) {
         await fetchUserData();
         setEditingRowId(null);

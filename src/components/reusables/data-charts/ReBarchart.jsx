@@ -7,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import LoadingBar from "../LoadingBar";
+import LoadingBar from "../bars/LoadingBar";
 import { useMemo, useState, useLayoutEffect, useRef } from "react";
 
 function ReBarchart({ dataObject }) {
