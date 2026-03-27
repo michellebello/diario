@@ -13,7 +13,7 @@ export default function PaginationBar({
         disabled={pageNumber === 0}
         onClick={() => onPageChange(pageNumber - 1)}
       >
-        <ChevronLeft color="#333578" width="clamp(0.85rem, 1wv, 1.05rem)" />
+        <ChevronLeft color="#333578" fontSize="clamp(0.85rem, 1wv, 1.05rem)" />
       </button>
       <span className="pagination-bar-span">Page {pageNumber + 1}</span>
 
@@ -22,7 +22,7 @@ export default function PaginationBar({
         disabled={totalTransactions < pageSize}
         onClick={() => onPageChange(pageNumber + 1)}
       >
-        <ChevronRight color="#333578" width="clamp(0.85rem, 1wv, 1.05rem)" />
+        <ChevronRight color="#333578" fontSize="clamp(0.85rem, 1wv, 1.05rem)" />
       </button>
     </div>
   );

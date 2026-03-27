@@ -58,15 +58,14 @@ function Transactions() {
   const [pageNumber, setPageNumber] = useState(0);
   const [loadingState, setLoadingState] = useState(false);
 
-  const showFilteredTransactions = async (pageNumber = 0) => {
+  const showFilteredTransactions = async (page = 0) => {
     setLoadingState(true);
-    setPageNumber(pageNumber);
+    const cleanPage = typeof page !== "number" ? 0 : page;
+    setPageNumber(cleanPage);
     try {
-      console.log("Sending page number " + pageNumber);
       const response = await network.get(
-        `/transactions?after=${afterDate}&before=${beforeDate}&page=${pageNumber}&pageSize=20`,
+        `/transactions?after=${afterDate}&before=${beforeDate}&page=${cleanPage}&pageSize=20`,
       );
-      console.log("response was " + JSON.stringify(response));
       setTransactions(response.data);
     } catch (err) {
       console.log(err);
