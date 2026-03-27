@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { RotatingLines } from "react-loader-spinner";
+import LoadingBar from "./reusables/bars/LoadingBar.jsx";
 import Network from "../utils/network.js";
 import DateRange from "./reusables/input/DateRange.jsx";
 import Ebarchart from "./reusables/data-charts/echarts/Ebarchart.jsx";
@@ -67,13 +68,7 @@ function Barchart() {
         />
       </div>
       <div className="flex-content">
-        {loadingState ? (
-          <RotatingLines
-            strokeColor="grey"
-            animationDuration="2.75"
-            visible={true}
-          />
-        ) : (
+        <LoadingBar loading={loadingState}>
           <div className="total-barchart">
             {transactionMap.size > 0 ? (
               <div className="barchart-container">
@@ -89,7 +84,7 @@ function Barchart() {
               <p className="no-transactions">No transactions found.</p>
             )}
           </div>
-        )}
+        </LoadingBar>
       </div>
     </div>
   );

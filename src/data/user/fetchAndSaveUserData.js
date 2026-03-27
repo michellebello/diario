@@ -11,7 +11,6 @@ export function useUserData() {
         ...prev,
         loading: {
           accounts: true,
-          transactions: true,
           accountNumbers: true,
           accountBalance: true,
           budgets: true,
@@ -38,16 +37,12 @@ export function useUserData() {
         },
       }));
 
-      const [resTransaction, resBudgets] = await Promise.all([
-        network.get("/transactions"),
-        network.get("/budgets"),
-      ]);
+      const [resBudgets] = await Promise.all([network.get("/budgets")]);
 
       setUserInfo((prev) => ({
         ...prev,
-        transactions: resTransaction.data,
         budgets: resBudgets.data,
-        loading: { ...prev.loading, transactions: false, budgets: false },
+        loading: { ...prev.loading, budgets: false },
       }));
     } catch (err) {
       console.error("Fetch failed:", err);

@@ -183,7 +183,7 @@
 
 .curr-budget-date {
   font-size: clamp(1.25rem, 1.2vw, 1.5rem);
-  font-weight: 200;
+  font-weight: 300;
 }
 
 .curr-budget-total-div {

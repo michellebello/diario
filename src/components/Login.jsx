@@ -52,7 +52,7 @@ function Login() {
       }));
 
       await fetchUserData();
-      navigator("/mycuenta/transactions/table");
+      navigator("/mycuenta/accounts/");
     } catch (error) {
       if (error.response && error.response.data) {
         const errorMessage = error.response.data?.message || "Login failed";

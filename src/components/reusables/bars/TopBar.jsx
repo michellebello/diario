@@ -13,12 +13,12 @@ import "../../styles/cuentaview.css";
 function TopBar({ onLogoClick }) {
   const TOPBAR_LINKS = [
     {
-      path: "/mycuenta/transactions/table",
-      label: "Transactions",
-    },
-    {
       path: "/mycuenta/accounts",
       label: "Accounts",
+    },
+    {
+      path: "/mycuenta/transactions/table",
+      label: "Transactions",
     },
     {
       path: "/mycuenta/budgets",

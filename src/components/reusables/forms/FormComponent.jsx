@@ -5,6 +5,7 @@ import { useAppContext } from "../../../contexts/context";
 import { useUserData } from "../../../data/user/fetchAndSaveUserData";
 import { CATEGORY_LIST } from "../../../data/aux/CategoryList";
 import SliderButton from "../buttons/SliderButton";
+import { ErrorMessage } from "../cards/ErrorMessage";
 import "../../styles/sidebar.css";
 
 function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
@@ -40,7 +41,6 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
     };
 
     try {
-      console.log("sending: " + JSON.stringify(transactionData));
       const response = await network.post("/transactions", transactionData);
       console.log("Response " + JSON.stringify(response));
       setErrorMessage("");
@@ -152,6 +152,7 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
             onSelect={() => setIsTaxable((prev) => !prev)}
           />
         </div>
+        {errorMessage && <ErrorMessage message={errorMessage} />}
       </div>
 
       <div className="buttons">
@@ -162,8 +163,6 @@ function FormComponent({ formLabel, onCancel, onTransactionAdded }) {
           Cancel
         </button>
       </div>
-
-      {errorMessage && <p className="error">{errorMessage}</p>}
     </form>
   );
 }

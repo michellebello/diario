@@ -8,6 +8,7 @@ import "./styles/accounts.css";
 import { useAppContext } from "../contexts/context.jsx";
 import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import AddAccountForm from "./reusables/forms/AddAcountForm.jsx";
+import LoadingBar from "./reusables/bars/LoadingBar.jsx";
 
 const accountType = ["Credit", "Checking", "Savings", "Investment"];
 
@@ -35,6 +36,7 @@ function Accounts() {
   const [deleteMessageVisibility, setDeleteMessageVisibility] = useState(false);
   const [accountToDelete, setAccountToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loadingState, setLoadingState] = useState(false);
 
   const addAccount = async (e) => {
     e.preventDefault();
@@ -47,6 +49,7 @@ function Accounts() {
       setErrorMessage("Please fill in all required fields.");
     }
     try {
+      setLoadingState(true);
       const result = await network.post("/accounts", newAccount);
       if (result.data === "New account added") {
         setErrorMessage("");
@@ -66,10 +69,13 @@ function Accounts() {
         return;
       }
       setErrorMessage(error.message || "Failed to add account");
+    } finally {
+      setLoadingState(false);
     }
   };
 
   const deleteAccount = async (accountId) => {
+    setLoadingState(true);
     const response = await network.delete(`/accounts/${accountId}`);
     if (response.data === "account deleted") {
       setDeleteMessageVisibility(false);
@@ -80,6 +86,7 @@ function Accounts() {
     } else {
       alert("Error deleting account, please try again");
     }
+    setLoadingState(false);
   };
 
   return (
@@ -94,76 +101,78 @@ function Accounts() {
           />
         )}
       </div>
-      <div className="account-top-barchart">
-        {accounts.length > 0 && (
-          <ReBarchart
-            dataObject={accountBalance}
-            xAxis="Account type"
-            yAxis="Total"
-          />
-        )}
-      </div>
-      {/* account cards */}
-      <div className="accounts-body">
-        {accounts.length > 0 ? (
-          accounts.map((acc) => (
-            <AccountCard
-              key={acc.id}
-              className="account-grid"
-              id={acc.id}
-              name={acc.name}
-              number={acc.number}
-              balance={acc.balance}
-              type={acc.type.slice(0, 14)}
-              deleteMessageVisibility={deleteMessageVisibility}
-              setDeleteMessageVisibility={setDeleteMessageVisibility}
-              setAccountToDelete={setAccountToDelete}
+      <LoadingBar loading={loadingState}>
+        <div className="account-top-barchart">
+          {accounts.length > 0 && (
+            <ReBarchart
+              dataObject={accountBalance}
+              xAxis="Account type"
+              yAxis="Total"
             />
-          ))
-        ) : (
-          <EmptyBodyCard
-            type="account"
-            isAccount={true}
-            showAddFormFunction={() => setShowAddAccount(true)}
-          />
-        )}
-        {showAddAccount && (
-          <AddAccountForm
-            accountType={accountType}
-            errorMessage={errorMessage}
-            addAcount={(e) => addAccount(e)}
-            hideForm={() => setShowAddAccount(false)}
-            newAccount={newAccount}
-            setNewAccount={setNewAccount}
-          />
-        )}
-      </div>
-      {/* confirm delete account message */}
-      {deleteMessageVisibility && (
-        <div className="delete-account-total">
-          <div className="delete-account-container">
-            <p className="delete-account-message">
-              Are you sure you want to delete this account?
-            </p>
-            <div className="delete-account-buttons">
-              <button
-                type="text"
-                className="delete-account-button"
-                onClick={() => deleteAccount(accountToDelete)}
-              >
-                Yes
-              </button>
-              <button
-                type="text"
-                className="delete-account-button"
-                onClick={() => setDeleteMessageVisibility(false)}
-              >
-                No
-              </button>
+          )}
+        </div>
+        {/* account cards */}
+        <div className="accounts-body">
+          {accounts.length > 0 ? (
+            accounts.map((acc) => (
+              <AccountCard
+                key={acc.id}
+                className="account-grid"
+                id={acc.id}
+                name={acc.name}
+                number={acc.number}
+                balance={acc.balance}
+                type={acc.type.slice(0, 14)}
+                deleteMessageVisibility={deleteMessageVisibility}
+                setDeleteMessageVisibility={setDeleteMessageVisibility}
+                setAccountToDelete={setAccountToDelete}
+              />
+            ))
+          ) : (
+            <EmptyBodyCard
+              type="account"
+              isAccount={true}
+              showAddFormFunction={() => setShowAddAccount(true)}
+            />
+          )}
+          {showAddAccount && (
+            <AddAccountForm
+              accountType={accountType}
+              errorMessage={errorMessage}
+              addAcount={(e) => addAccount(e)}
+              hideForm={() => setShowAddAccount(false)}
+              newAccount={newAccount}
+              setNewAccount={setNewAccount}
+            />
+          )}
+        </div>
+        {/* confirm delete account message */}
+        {deleteMessageVisibility && (
+          <div className="delete-account-total">
+            <div className="delete-account-container">
+              <p className="delete-account-message">
+                Are you sure you want to delete this account?
+              </p>
+              <div className="delete-account-buttons">
+                <button
+                  type="text"
+                  className="delete-account-button"
+                  onClick={() => deleteAccount(accountToDelete)}
+                >
+                  Yes
+                </button>
+                <button
+                  type="text"
+                  className="delete-account-button"
+                  onClick={() => setDeleteMessageVisibility(false)}
+                >
+                  No
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </LoadingBar>
     </div>
   );
 }

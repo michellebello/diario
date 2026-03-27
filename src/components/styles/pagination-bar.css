@@ -1,0 +1,27 @@
+.pagination-bar-total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.pagination-bar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e3e3f6c1;
+  border: none;
+  border-radius: 10px;
+  padding: 0.15rem 0.075rem;
+}
+
+.pagination-bar-button:hover {
+  background-color: #9a9ad4c1;
+}
+
+.pagination-bar-span {
+  font-size: clamp(0.9rem, 1vw, 1.1rem);
+  font-weight: 200;
+}

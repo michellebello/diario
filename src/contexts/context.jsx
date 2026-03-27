@@ -6,21 +6,18 @@ const AppContext = createContext(null);
 export const initialState = {
   username: null,
   accounts: [],
-  transactions: [],
   accountNumbers: [],
   accountBalance: [],
   budgets: [],
   isLoggedIn: false,
   loading: {
     accounts: false,
-    transactions: false,
     accountNumbers: false,
     accountBalance: false,
     budgets: false,
   },
   error: {
     accounts: null,
-    transactions: null,
     accountNumbers: null,
     accountBalance: null,
     budgets: null,

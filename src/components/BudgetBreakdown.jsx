@@ -187,7 +187,7 @@ function BudgetBreakdown() {
         )}
 
         <div className="budgets-top">
-          <p className="title">{`Budget Breakdown: ${NUM_TO_MONTH[month]} ${year}`}</p>
+          <p className="title">{`Budget Breakdown: ${NUM_TO_MONTH.get(month)} ${year}`}</p>
           <button className="add-allocation-button">
             <Plus
               color="#ececf2"

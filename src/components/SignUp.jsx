@@ -2,6 +2,7 @@ import { useState } from "react";
 import LabelInputForm from "./reusables/forms/LabelInputForm.jsx";
 import Network from "../utils/network.js";
 import { EyeOff, Eye } from "lucide-react";
+import { ErrorMessage } from "./reusables/cards/ErrorMessage.jsx";
 import "./styles/signUp.css";
 
 function SignUp() {
@@ -136,7 +137,7 @@ function SignUp() {
         )}
       </LabelInputForm>
 
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
       {successMessage && <p className="success">{successMessage}</p>}
       <button className="loginButton" type="submit">
         Register

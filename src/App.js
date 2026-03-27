@@ -25,10 +25,10 @@ function App() {
           path: "/mycuenta",
           element: <Layout />,
           children: [
+            { path: "accounts", element: <Accounts /> },
             { path: "transactions/table", element: <Transactions /> },
             { path: "transactions/barchart", element: <Barchart /> },
             { path: "transactions/donutchart", element: <DonutChart /> },
-            { path: "accounts", element: <Accounts /> },
             { path: "budgets", element: <Budgets /> },
             { path: "budgets/:budgetId", element: <BudgetBreakdown /> },
             { path: "taxreport", element: <TaxReport /> },

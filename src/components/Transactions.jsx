@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { useAppContext } from "../contexts/context.jsx";
-import { RotatingLines } from "react-loader-spinner";
+import LoadingBar from "./reusables/bars/LoadingBar.jsx";
 import DateRange from "./reusables/input/DateRange.jsx";
 import IconButton from "./reusables/buttons/IconButton.jsx";
 import TextButton from "./reusables/buttons/TextButton.jsx";
@@ -27,16 +27,12 @@ import {
 } from "lucide-react";
 
 import "./styles/transactions.css";
-import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import MobileTransactions from "./reusables/transactions/MobileTransactions.jsx";
 import DesktopTransactions from "./reusables/transactions/DesktopTransactions.jsx";
+import PaginationBar from "./reusables/bars/PaginationBar.jsx";
 
 function Transactions() {
   const network = new Network();
-  const { userInfo, setUserInfo } = useAppContext();
-  const fetchUserData = useUserData();
-  const transactions = userInfo.transactions;
-  const loadingState = userInfo.loading.transactions;
 
   const categoryToIcon = {
     Groceries: ShoppingBasket,
@@ -58,19 +54,30 @@ function Transactions() {
 
   const [afterDate, setAfterDate] = useState("");
   const [beforeDate, setBeforeDate] = useState("");
-  const showFilteredTransactions = async () => {
-    await network
-      .get("/transactions?after=" + afterDate + "&before=" + beforeDate)
-      .then((result) => {
-        setUserInfo((prev) => ({
-          ...prev,
-          transactions: result.data,
-        }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const [transactions, setTransactions] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [loadingState, setLoadingState] = useState(false);
+
+  const showFilteredTransactions = async (pageNumber = 0) => {
+    setLoadingState(true);
+    setPageNumber(pageNumber);
+    try {
+      console.log("Sending page number " + pageNumber);
+      const response = await network.get(
+        `/transactions?after=${afterDate}&before=${beforeDate}&page=${pageNumber}&pageSize=20`,
+      );
+      console.log("response was " + JSON.stringify(response));
+      setTransactions(response.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoadingState(false);
+    }
   };
+
+  useEffect(() => {
+    showFilteredTransactions(0);
+  }, []);
 
   const [editingRowId, setEditingRowId] = useState("");
   const [editFormData, setEditFormData] = useState({
@@ -169,7 +176,7 @@ function Transactions() {
         payload,
       );
       if (response.status === 200) {
-        await fetchUserData();
+        showFilteredTransactions();
         setEditingRowId(null);
       } else {
         alert(`An error occured: ${JSON.stringify(response.data)}`);
@@ -182,7 +189,7 @@ function Transactions() {
   const deleteTransaction = async (transactionId) => {
     const response = await network.delete(`/transactions/${transactionId}`);
     if (response.data === "Successfully deleted transaction") {
-      await fetchUserData();
+      showFilteredTransactions();
     } else {
       alert("Could not delete transaction");
     }
@@ -228,22 +235,23 @@ function Transactions() {
           apply={showFilteredTransactions}
         />
       </div>
-
-      {loadingState ? (
-        <RotatingLines
-          strokeColor="grey"
-          animationDuration="2.75"
-          visible={true}
-        />
-      ) : transactions && transactions.length > 0 ? (
-        isMobile ? (
-          <MobileTransactions {...sharedProps} />
+      <LoadingBar loading={loadingState}>
+        {transactions && transactions.length > 0 ? (
+          isMobile ? (
+            <MobileTransactions {...sharedProps} />
+          ) : (
+            <DesktopTransactions {...sharedProps} />
+          )
         ) : (
-          <DesktopTransactions {...sharedProps} />
-        )
-      ) : (
-        <p className="no-transactions">No transactions found</p>
-      )}
+          <p className="no-transactions">No transactions found</p>
+        )}
+        <PaginationBar
+          pageNumber={pageNumber}
+          pageSize={20}
+          totalTransactions={transactions.length}
+          onPageChange={(pageNumber) => showFilteredTransactions(pageNumber)}
+        />
+      </LoadingBar>
     </div>
   );
 }

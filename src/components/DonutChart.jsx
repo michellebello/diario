@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Network from "../utils/network.js";
-import { RotatingLines } from "react-loader-spinner";
+import LoadingBar from "./reusables/bars/LoadingBar.jsx";
 import "./styles/donutchart.css";
 import DateRange from "./reusables/input/DateRange.jsx";
 import Edonut from "./reusables/data-charts/echarts/Edonut.jsx";
@@ -79,13 +79,7 @@ function DonutChart() {
         />
       </div>
       <div className="flex-content">
-        {loadingState ? (
-          <RotatingLines
-            strokeColor="grey"
-            animationDuration="2.75"
-            visible={true}
-          />
-        ) : (
+        <LoadingBar loading={loadingState}>
           <div className="donut-chart-container">
             {transactionMap.size > 0 ? (
               <>
@@ -99,7 +93,7 @@ function DonutChart() {
               <p className="no-transactions"> No transactions found.</p>
             )}
           </div>
-        )}
+        </LoadingBar>
       </div>
     </div>
   );
