@@ -244,12 +244,14 @@ function Transactions() {
         ) : (
           <p className="no-transactions">No transactions found</p>
         )}
-        <PaginationBar
-          pageNumber={pageNumber}
-          pageSize={20}
-          totalTransactions={transactions.length}
-          onPageChange={(pageNumber) => showFilteredTransactions(pageNumber)}
-        />
+        {transactions && transactions.length > 0 && (
+          <PaginationBar
+            pageNumber={pageNumber}
+            pageSize={20}
+            totalTransactions={transactions.length}
+            onPageChange={(pageNumber) => showFilteredTransactions(pageNumber)}
+          />
+        )}
       </LoadingBar>
     </div>
   );

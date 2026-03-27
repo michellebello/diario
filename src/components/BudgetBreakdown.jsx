@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { useParams, useLocation, data } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { NUM_TO_MONTH } from "../data/aux/MonthNumToName";
 import Network from "../utils/network";
 import { BudgetTopCards } from "./reusables/cards/BudgetTopCards";
@@ -21,7 +21,7 @@ function BudgetBreakdown() {
   const [budgetInfo] = useState(state);
   const [deleteMessageVisibility, setDeleteMessageVisibility] = useState(false);
   const [allocationIdToDelete, setAllocationIdToDelete] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [_, setErrorMessage] = useState("");
   const [addAllocationVisibility, setAddAllocationVisibility] = useState(false);
   const usedCategories = budgetData.map((budget) => budget.category);
   const remainingCategories = ALLOCATION_CATEGORY_LIST.filter(

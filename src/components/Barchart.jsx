@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { RotatingLines } from "react-loader-spinner";
 import LoadingBar from "./reusables/bars/LoadingBar.jsx";
 import Network from "../utils/network.js";
 import DateRange from "./reusables/input/DateRange.jsx";
