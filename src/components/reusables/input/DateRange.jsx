@@ -20,8 +20,7 @@ export default function DateRange({
       setBeforeDate(currBeforeDate);
     }
   };
-  console.log("Sending before date " + beforeDate);
-  console.log("Sending after date " + afterDate);
+
   return (
     <div className="total-date-range">
       <div className="date-selectors">

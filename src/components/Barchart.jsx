@@ -6,7 +6,7 @@ import Ebarchart from "./reusables/data-charts/echarts/Ebarchart.jsx";
 import "./styles/barchart.css";
 
 function Barchart() {
-  const [transactionMap, setTransactionMap] = useState(new Map());
+  const [transactionMap, setTransactionMap] = useState({});
   const [afterDate, setAfterDate] = useState("");
   const [beforeDate, setBeforeDate] = useState("");
   const [grandTotal, setGrandTotal] = useState(0);
@@ -16,31 +16,15 @@ function Barchart() {
   const transactionsBreakdown = async () => {
     setLoadingState(true);
     try {
-      let result = "";
-      if (beforeDate && afterDate) {
-        result = await network.get(
-          "/transactions?after=" + afterDate + "&before=" + beforeDate,
-        );
-      } else {
-        result = await network.get("/transactions");
-      }
-      const transactionData = result.data;
-      const totalPerCategory = new Map();
+      const result = await network.get(
+        "/transactions/chart?after=" + afterDate + "&before=" + beforeDate,
+      );
+      const transactionTotals = result.data;
+      setTransactionMap(transactionTotals);
       let totalExpense = 0;
-      for (let transaction of transactionData) {
-        const category = transaction.category;
-        if (category !== "Income") {
-          if (totalPerCategory.has(category)) {
-            let total = totalPerCategory.get(category);
-            total = total + transaction.amount;
-            totalPerCategory.set(category, total);
-          } else {
-            totalPerCategory.set(category, transaction.amount);
-          }
-          totalExpense += transaction.amount;
-        }
+      for (const val of Object.values(transactionTotals)) {
+        totalExpense += val;
       }
-      setTransactionMap(totalPerCategory);
       setGrandTotal(totalExpense);
     } catch (err) {
       console.log(err);
@@ -69,11 +53,11 @@ function Barchart() {
       <div className="flex-content">
         <LoadingBar loading={loadingState}>
           <div className="total-barchart">
-            {transactionMap.size > 0 ? (
+            {Object.keys(transactionMap).length > 0 ? (
               <div className="barchart-container">
                 <Ebarchart
-                  xAxisData={Array.from(transactionMap.keys())}
-                  yAxisData={Array.from(transactionMap.values())}
+                  xAxisData={Object.keys(transactionMap)}
+                  yAxisData={Object.values(transactionMap)}
                 />
                 <div className="barchart-total-container ">
                   <p className="barchart-total-expense">{`Total: $${grandTotal.toFixed(2)}`}</p>

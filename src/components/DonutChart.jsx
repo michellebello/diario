@@ -8,38 +8,24 @@ import Epidonut from "./reusables/data-charts/echarts/Epidonut.jsx";
 
 function DonutChart() {
   const [loadingState, setLoadingState] = useState(false);
-  const [transactionMap, setTransactionMap] = useState(new Map());
+  const [transactionMap, setTransactionMap] = useState({});
   const [_, setGrandTotal] = useState(0);
+  const [afterDate, setAfterDate] = useState("");
+  const [beforeDate, setBeforeDate] = useState("");
 
   const network = new Network();
   const transactionsBreakdown = async () => {
     setLoadingState(true);
     try {
-      let result = "";
-      if (beforeDate && afterDate) {
-        result = await network.get(
-          "/transactions?after=" + afterDate + "&before=" + beforeDate,
-        );
-      } else {
-        result = await network.get("/transactions");
-      }
-      const transactionData = result.data;
-      const totalPerCategory = new Map();
+      const result = await network.get(
+        "/transactions/chart?after=" + afterDate + "&before=" + beforeDate,
+      );
+      const transactionTotals = result.data;
+      setTransactionMap(transactionTotals);
       let totalExpense = 0;
-      for (let transaction of transactionData) {
-        const category = transaction.category;
-        if (category !== "Income") {
-          if (totalPerCategory.has(category)) {
-            let total = totalPerCategory.get(category);
-            total = total + transaction.amount;
-            totalPerCategory.set(category, total);
-          } else {
-            totalPerCategory.set(category, transaction.amount);
-          }
-          totalExpense += transaction.amount;
-        }
+      for (const val of Object.values(transactionTotals)) {
+        totalExpense += val;
       }
-      setTransactionMap(totalPerCategory);
       setGrandTotal(totalExpense);
     } catch (err) {
       console.log(err);
@@ -52,9 +38,6 @@ function DonutChart() {
     transactionsBreakdown();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const [afterDate, setAfterDate] = useState("");
-  const [beforeDate, setBeforeDate] = useState("");
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -81,12 +64,16 @@ function DonutChart() {
       <div className="flex-content">
         <LoadingBar loading={loadingState}>
           <div className="donut-chart-container">
-            {transactionMap.size > 0 ? (
+            {Object.keys(transactionMap).length > 0 ? (
               <>
                 {isMobile ? (
-                  <Epidonut transactionMap={transactionMap} />
+                  <Epidonut
+                    transactionMap={new Map(Object.entries(transactionMap))}
+                  />
                 ) : (
-                  <Edonut transactionMap={transactionMap} />
+                  <Edonut
+                    transactionMap={new Map(Object.entries(transactionMap))}
+                  />
                 )}
               </>
             ) : (
