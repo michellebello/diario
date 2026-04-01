@@ -57,16 +57,21 @@ function Transactions() {
   const [transactions, setTransactions] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [loadingState, setLoadingState] = useState(false);
+  const [paginationCursor, setPaginationCursor] = useState(null);
+  const [_, setHasMore] = useState(true);
 
-  const showFilteredTransactions = async (page = 0) => {
+  const showFilteredTransactions = async (isReset = false) => {
     setLoadingState(true);
-    const cleanPage = typeof page !== "number" ? 0 : page;
-    setPageNumber(cleanPage);
+    const cursorParam = isReset ? 0 : paginationCursor;
     try {
       const response = await network.get(
-        `/transactions?after=${afterDate}&before=${beforeDate}&page=${cleanPage}&pageSize=20`,
+        `/transactions?after=${afterDate}&before=${beforeDate}&cursor=${cursorParam}`,
       );
-      setTransactions(response.data);
+      console.log(JSON.stringify(response.data));
+      const transactionList = response.data.transactionJsonList;
+      setTransactions(transactionList);
+      setPaginationCursor(response.data.cursor);
+      transactionList.length > 20 ? setHasMore(true) : setHasMore(false);
     } catch (err) {
       console.log(err);
     } finally {
@@ -75,7 +80,7 @@ function Transactions() {
   };
 
   useEffect(() => {
-    showFilteredTransactions(0);
+    showFilteredTransactions(true);
   }, []);
 
   const [editingRowId, setEditingRowId] = useState("");

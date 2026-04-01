@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getDefaultDates } from "../data/aux/getDefaultDates.js";
 import LoadingBar from "./reusables/bars/LoadingBar.jsx";
 import Network from "../utils/network.js";
 import DateRange from "./reusables/input/DateRange.jsx";
@@ -7,8 +8,9 @@ import "./styles/barchart.css";
 
 function Barchart() {
   const [transactionMap, setTransactionMap] = useState({});
-  const [afterDate, setAfterDate] = useState("");
-  const [beforeDate, setBeforeDate] = useState("");
+  const { after, before } = getDefaultDates();
+  const [afterDate, setAfterDate] = useState(after);
+  const [beforeDate, setBeforeDate] = useState(before);
   const [grandTotal, setGrandTotal] = useState(0);
   const [loadingState, setLoadingState] = useState(false);
 

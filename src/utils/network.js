@@ -1,49 +1,22 @@
 import axios from "axios";
-import { getTokenHeader } from "../contexts/Session.js";
+import { clearToken, getTokenHeader } from "../contexts/Session.js";
 
 const BASE_URL = "http://localhost:8080";
 
 export default class Network {
-  get(url, additionalConfigs) {
-    return axios.get(this._buildUrl(url), this._getConfigs(additionalConfigs));
-  }
-
-  delete(url, additionalConfigs) {
-    return axios.delete(
-      this._buildUrl(url),
-      this._getConfigs(additionalConfigs)
+  constructor() {
+    this.client = axios.create({ baseURL: BASE_URL });
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          console.warn("Unauthorized! Clearing session...");
+          clearToken();
+          window.location.href = "/";
+        }
+        return Promise.reject(error);
+      },
     );
-  }
-
-  post(url, body, additionalConfigs, isAuthenticated = true) {
-    return isAuthenticated
-      ? axios.post(
-          this._buildUrl(url),
-          body,
-          this._getConfigs(additionalConfigs)
-        )
-      : axios.post(this._buildUrl(url), body, additionalConfigs);
-  }
-
-  patch(url, data, additionalConfigs) {
-    const config = this._getConfigs(additionalConfigs);
-    console.log("Patch config headers:", this._getConfigs(config.headers));
-    return axios.patch(this._buildUrl(url), data, config);
-  }
-
-  put(url, additionalConfigs) {
-    return axios.put(this._buildUrl(url), this._getConfigs(additionalConfigs));
-  }
-
-  /**
-   * Build the url with the base URL.
-   *
-   * @param {string} url The url suffix - should start with a /
-   * @returns the fully formed url
-   */
-  _buildUrl(url) {
-    this._validateUrl(url);
-    return `${BASE_URL}${url}`;
   }
 
   /**
@@ -59,6 +32,32 @@ export default class Network {
 
   _getConfigs(externalConfigs) {
     return { headers: { ...getTokenHeader(), ...externalConfigs } };
+  }
+
+  get(url, additionalConfigs) {
+    this._validateUrl(url);
+    return this.client.get(url, this._getConfigs(additionalConfigs));
+  }
+
+  delete(url, additionalConfigs) {
+    this._validateUrl(url);
+    return this.client.delete(url, this._getConfigs(additionalConfigs));
+  }
+
+  post(url, body, additionalConfigs, isAuthenticated = true) {
+    this._validateUrl(url);
+    return this.client.post(url, body, this._getConfigs(additionalConfigs));
+  }
+
+  patch(url, data, additionalConfigs) {
+    const config = this._getConfigs(additionalConfigs);
+    this._validateUrl(url);
+    return this.client.patch(url, data, config);
+  }
+
+  put(url, additionalConfigs) {
+    this._validateUrl(url);
+    return this.client.put(url, this._getConfigs(additionalConfigs));
   }
 }
 
