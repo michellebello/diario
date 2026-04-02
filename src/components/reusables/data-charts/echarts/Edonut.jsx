@@ -33,7 +33,8 @@ function Edonut({ transactionMap }) {
     tooltip: {
       trigger: "item",
       formatter: function (params) {
-        return `$${params.value.toFixed(2)}`;
+        return `${params.name}
+        $${params.value.toFixed(2)}`;
       },
     },
     series: [

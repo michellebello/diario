@@ -55,14 +55,14 @@ function Transactions() {
   const [afterDate, setAfterDate] = useState("");
   const [beforeDate, setBeforeDate] = useState("");
   const [transactions, setTransactions] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0);
   const [loadingState, setLoadingState] = useState(false);
   const [paginationCursor, setPaginationCursor] = useState(null);
-  const [_, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
 
   const showFilteredTransactions = async (isReset = false) => {
     setLoadingState(true);
     const cursorParam = isReset ? 0 : paginationCursor;
+    console.log("cursor at: " + cursorParam);
     try {
       const response = await network.get(
         `/transactions?after=${afterDate}&before=${beforeDate}&cursor=${cursorParam}`,
@@ -70,8 +70,14 @@ function Transactions() {
       console.log(JSON.stringify(response.data));
       const transactionList = response.data.transactionJsonList;
       setTransactions(transactionList);
+      console.log("is reset? : " + isReset);
+      if (isReset) {
+        setTransactions(transactionList);
+      } else {
+        setTransactions((prev) => [...prev, ...transactionList]);
+      }
       setPaginationCursor(response.data.cursor);
-      transactionList.length > 20 ? setHasMore(true) : setHasMore(false);
+      setHasMore(response.data.hasMore);
     } catch (err) {
       console.log(err);
     } finally {
@@ -249,12 +255,9 @@ function Transactions() {
         ) : (
           <p className="no-transactions">No transactions found</p>
         )}
-        {transactions && transactions.length > 0 && (
+        {hasMore && (
           <PaginationBar
-            pageNumber={pageNumber}
-            pageSize={20}
-            totalTransactions={transactions.length}
-            onPageChange={(pageNumber) => showFilteredTransactions(pageNumber)}
+            showMoreTransactions={() => showFilteredTransactions(false)}
           />
         )}
       </LoadingBar>

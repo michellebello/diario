@@ -11,21 +11,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e3e3f6c1;
+  background-color: #453c87;
   border: none;
-  border-radius: 12px;
-  padding: 0.15rem 0.075rem;
+  color: white;
+  padding: 0.45rem 0.65rem;
+  border-radius: 20px;
 }
 
 .pagination-bar-button:hover {
-  background-color: #9a9ad4c1;
+  background-color: #46469ac1;
 }
 
 .pagination-bar-button:disabled {
   background-color: #e3e3e4c1;
 }
 
-.pagination-bar-span {
-  font-size: clamp(0.85rem, 1vw, 1rem);
-  font-weight: 200;
+.pagination-text {
+  font-family: "Economica", sans-serif;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  font-weight: 300;
 }
