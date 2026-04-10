@@ -11,6 +11,7 @@ import BudgetBreakdown from "./components/BudgetBreakdown";
 import TaxReport from "./components/TaxReport";
 import Barchart from "./components/Barchart";
 import DonutChart from "./components/DonutChart";
+
 import { AppProvider } from "./contexts/context";
 
 function App() {

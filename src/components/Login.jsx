@@ -7,6 +7,7 @@ import { useUserData } from "../data/user/fetchAndSaveUserData.js";
 import { EyeOff, Eye } from "lucide-react";
 import LabelInputForm from "./reusables/forms/LabelInputForm.jsx";
 import { ErrorMessage } from "./reusables/cards/ErrorMessage.jsx";
+import { ArrowLeft } from "lucide-react";
 import "./styles/signUp.css";
 
 function Login() {
@@ -16,6 +17,7 @@ function Login() {
   const navigator = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -24,6 +26,9 @@ function Login() {
   const toggleVisibility = () => {
     setPasswordVisible(passwordVisible ? false : true);
   };
+
+  const [forgotPasswordFormVisibility, setForgotPasswordFormVisibility] =
+    useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,51 +77,92 @@ function Login() {
   };
 
   return (
-    <form className="entries" onSubmit={handleSubmit}>
-      <LabelInputForm
-        inputType="input"
-        label="Username"
-        name="username"
-        type="text"
-        value={username}
-        autocomplete="username"
-        onChange={(e) => {
-          setUsername(e.target.value);
-        }}
-      ></LabelInputForm>
-      <LabelInputForm
-        inputType="input"
-        label="Password"
-        name="password"
-        type={passwordVisible ? "text" : "password"}
-        value={password}
-        autocomplete="*******"
-        onChange={(e) => {
-          setPassword(e.target.value);
-        }}
-      >
-        {passwordVisible ? (
-          <Eye
-            size="1.25rem"
-            color="#717182"
-            strokeWidth={1.5}
-            onClick={toggleVisibility}
-          />
-        ) : (
-          <EyeOff
-            size="1.25rem"
-            color="#717182"
-            strokeWidth={1.5}
-            onClick={toggleVisibility}
-          />
-        )}
-      </LabelInputForm>
-      {errorMessage && <ErrorMessage message={errorMessage} />}
-      {successMessage && <p className="success">{successMessage}</p>}
-      <button className="loginButton" type="submit">
-        Login
-      </button>
-    </form>
+    <>
+      {forgotPasswordFormVisibility ? (
+        <form className="entries">
+          <div className="forgot-password-top">
+            <button
+              className="forgot-password-back-button"
+              onClick={() => setForgotPasswordFormVisibility(false)}
+            >
+              <ArrowLeft size="clamp(0.5rem, 1vw, 0.95rem)"></ArrowLeft>
+            </button>
+            <p className="forgot-password-back-text">Back to Login</p>
+          </div>
+          <p className="forgot-password-title">Forgot Password?</p>
+          <p className="forgot-password-text">
+            Enter the email associated with your account to receive a token to
+            reset your password
+          </p>
+          <LabelInputForm
+            inputType="input"
+            label="Email"
+            name="email"
+            type="text"
+            value={email}
+            autocomplete="email"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          ></LabelInputForm>
+          <button className="loginButton" type="submit">
+            Send me a token
+          </button>
+        </form>
+      ) : (
+        <form className="entries" onSubmit={handleSubmit}>
+          <LabelInputForm
+            inputType="input"
+            label="Username"
+            name="username"
+            type="text"
+            value={username}
+            autocomplete="username"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          ></LabelInputForm>
+          <LabelInputForm
+            inputType="input"
+            label="Password"
+            name="password"
+            type={passwordVisible ? "text" : "password"}
+            value={password}
+            autocomplete="*******"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          >
+            {passwordVisible ? (
+              <Eye
+                size="1.25rem"
+                color="#717182"
+                strokeWidth={1.5}
+                onClick={toggleVisibility}
+              />
+            ) : (
+              <EyeOff
+                size="1.25rem"
+                color="#717182"
+                strokeWidth={1.5}
+                onClick={toggleVisibility}
+              />
+            )}
+          </LabelInputForm>
+          <p
+            className="forgot-password-link"
+            onClick={() => setForgotPasswordFormVisibility(true)}
+          >
+            Forgot password?
+          </p>
+          {errorMessage && <ErrorMessage message={errorMessage} />}
+          {successMessage && <p className="success">{successMessage}</p>}
+          <button className="loginButton" type="submit">
+            Login
+          </button>
+        </form>
+      )}
+    </>
   );
 }
 

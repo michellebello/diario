@@ -64,6 +64,53 @@
   gap: 0.5rem;
 }
 
+.forgot-password-link {
+  text-align: right;
+  font-weight: 100;
+  font-size: clamp(0.85rem, 1vw, 1rem);
+}
+
+.forgot-password-link:hover {
+  font-weight: 200;
+}
+
+.forgot-password-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.forgot-password-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dad8f4;
+  border-radius: 20px;
+  background-color: transparent;
+  padding: 2px;
+}
+
+.forgot-password-back-button:hover {
+  background-color: #dad8f4;
+}
+
+.forgot-password-back-text {
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  font-weight: 200;
+}
+
+.forgot-password-title {
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.2vw, 1.25rem);
+}
+
+.forgot-password-text {
+  font-weight: 200;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+}
+
 @media (max-width: 768px) {
   .form-title {
     font-size: 1.05rem;
