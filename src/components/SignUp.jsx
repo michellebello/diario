@@ -4,8 +4,10 @@ import Network from "../utils/network.js";
 import { EyeOff, Eye } from "lucide-react";
 import { ErrorMessage } from "./reusables/cards/ErrorMessage.jsx";
 import "./styles/signUp.css";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -16,13 +18,12 @@ function SignUp() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [messageVisibility, setMessageVisibility] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setErrorMessage("");
-    setSuccessMessage("");
 
     if (
       !firstName ||
@@ -54,7 +55,7 @@ function SignUp() {
     try {
       const network = new Network();
       await network.post("/auth/register", registerData);
-      setSuccessMessage("Registration sucessful");
+      setMessageVisibility(true);
     } catch (error) {
       console.error("Error object:", error);
       if (error.response) {
@@ -69,6 +70,23 @@ function SignUp() {
 
   return (
     <form className="entries" onSubmit={handleSubmit}>
+      {messageVisibility && (
+        <div className="email-sent-total">
+          <div className="email-sent-container">
+            <p className="email-sent-message">
+              You have been registered. Now, log in with your credentials to
+              start managing your finances!
+            </p>
+            <button
+              className="email-sent-button"
+              type="button"
+              onClick={() => setMessageVisibility(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       <div className="entries-name">
         <LabelInputForm
           label="First Name"
@@ -155,7 +173,6 @@ function SignUp() {
       </LabelInputForm>
 
       {errorMessage && <ErrorMessage message={errorMessage} />}
-      {successMessage && <p className="success">{successMessage}</p>}
       <button className="loginButton" type="submit">
         Register
       </button>
