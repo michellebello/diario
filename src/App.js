@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import MainPage from "./components/MainPage";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/Login";
+import UpdatePassword from "./components/UpdatePassword";
 import Layout from "./components/Layout";
 import Transactions from "./components/Transactions";
 import Accounts from "./components/Accounts";
@@ -19,6 +20,7 @@ function App() {
     { path: "/", element: <MainPage /> },
     { path: "/signup", element: <SignUp /> },
     { path: "/login", element: <SignIn /> },
+    { path: "/update-password", element: <UpdatePassword /> },
     {
       element: <ProtectedRoute />,
       children: [

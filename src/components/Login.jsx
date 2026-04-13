@@ -91,8 +91,8 @@ function Login() {
           </div>
           <p className="forgot-password-title">Forgot Password?</p>
           <p className="forgot-password-text">
-            Enter the email associated with your account to receive a token to
-            reset your password
+            Enter the email associated with your account to receive a token that
+            will let you reset your password
           </p>
           <LabelInputForm
             inputType="input"

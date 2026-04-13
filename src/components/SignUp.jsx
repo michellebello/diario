@@ -11,6 +11,7 @@ function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
@@ -23,7 +24,14 @@ function SignUp() {
     setErrorMessage("");
     setSuccessMessage("");
 
-    if (!firstName || !lastName || !username || !password || !confirmPassword) {
+    if (
+      !firstName ||
+      !lastName ||
+      !username ||
+      !password ||
+      !confirmPassword ||
+      !email
+    ) {
       setErrorMessage("All fields are required");
     }
     if (password !== confirmPassword) {
@@ -35,6 +43,7 @@ function SignUp() {
       userInfo: {
         firstName: firstName,
         lastName: lastName,
+        email: email,
       },
       credentials: {
         username: username,
@@ -86,6 +95,14 @@ function SignUp() {
         value={username}
         autocomplete="janedoe"
         onChange={(e) => setUsername(e.target.value)}
+      />
+      <LabelInputForm
+        label="Email"
+        name="email"
+        type="text"
+        value={email}
+        autocomplete="janedoe@gmail.com"
+        onChange={(e) => setEmail(e.target.value)}
       />
       <LabelInputForm
         label="Password"

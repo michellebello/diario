@@ -109,6 +109,7 @@
 .forgot-password-text {
   font-weight: 200;
   font-size: clamp(0.85rem, 1.2vw, 1rem);
+  margin-bottom: 0.5rem;
 }
 
 @media (max-width: 768px) {
