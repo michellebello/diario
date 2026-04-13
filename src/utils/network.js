@@ -10,9 +10,17 @@ export default class Network {
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 401) {
-          console.warn("Unauthorized! Clearing session...");
-          clearToken();
-          window.location.href = "/";
+          const url = error.config.url;
+          const isAuthRoute =
+            url.includes("/auth/login") ||
+            url.includes("/auth/forgot-password") ||
+            url.includes("auth/register") ||
+            url.includes("/auth/new-password");
+          if (!isAuthRoute) {
+            console.warn("Unauthorized! Clearing session...");
+            clearToken();
+            window.location.href = "/";
+          }
         }
         return Promise.reject(error);
       },

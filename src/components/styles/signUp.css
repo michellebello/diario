@@ -147,12 +147,16 @@
   background-color: #393073d5;
   border: none;
   border-radius: 5px;
-  padding: 0.25rem 0.5rem;
+  padding: 0.375rem 0.5rem;
   color: white;
   font-family: "Economica", sans-serif;
   font-weight: 200;
   cursor: pointer;
-  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+}
+
+.email-sent-button:hover {
+  background-color: #675e9dd5;
 }
 
 @media (max-width: 768px) {

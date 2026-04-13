@@ -75,22 +75,33 @@ function Login() {
     }
   };
 
+  const [tokenRequestMessage, setTokenRequestMessage] = useState("");
+
   const sendEmail = async (e) => {
     e.preventDefault();
-    if (!email) {
+    setErrorMessage("");
+    setTokenRequestMessage("");
+    if (!email || email.length < 1) {
       setErrorMessage("Please specify your email");
+      return;
     }
     try {
       const response = await network.post("/auth/forgot-password", {
         email: email,
       });
-      console.log(JSON.stringify(response));
       if (response.data === "Token sent") {
+        setTokenRequestMessage(
+          "Token sent. Check your inbox and follow instructions on how to reset your password",
+        );
         setEmailMessageVisibility(true);
-        console.log("Sucess");
       }
     } catch (err) {
-      setErrorMessage(err);
+      if (err.response?.status === 401) {
+        setTokenRequestMessage("Email not recognized");
+      } else {
+        setTokenRequestMessage("Something went wrong. Please try again.");
+      }
+      setEmailMessageVisibility(true);
     }
   };
 
@@ -103,10 +114,7 @@ function Login() {
           {emailMessageVisibility && (
             <div className="email-sent-total">
               <div className="email-sent-container">
-                <p className="email-sent-message">
-                  Token sent. Check your inbox and follow instructions on how to
-                  reset your password.
-                </p>
+                <p className="email-sent-message">{tokenRequestMessage}</p>
                 <button
                   className="email-sent-button"
                   type="button"
