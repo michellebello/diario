@@ -13,6 +13,7 @@ import "./styles/signUp.css";
 function Login() {
   const { _, setUserInfo } = useAppContext();
   const fetchUserData = useUserData();
+  const network = new Network();
 
   const navigator = useNavigate();
   const [username, setUsername] = useState("");
@@ -43,8 +44,6 @@ function Login() {
     }
 
     try {
-      const network = new Network();
-
       const result = await network.post("/auth/login", credentials, false);
       const token = result.data;
 
@@ -76,12 +75,51 @@ function Login() {
     }
   };
 
+  const sendEmail = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      setErrorMessage("Please specify your email");
+    }
+    try {
+      const response = await network.post("/auth/forgot-password", {
+        email: email,
+      });
+      console.log(JSON.stringify(response));
+      if (response.data === "Token sent") {
+        setEmailMessageVisibility(true);
+        console.log("Sucess");
+      }
+    } catch (err) {
+      setErrorMessage(err);
+    }
+  };
+
+  const [emailMessageVisibility, setEmailMessageVisibility] = useState(false);
+
   return (
     <>
       {forgotPasswordFormVisibility ? (
-        <form className="entries">
+        <form name="forgot-password" className="entries" onSubmit={sendEmail}>
+          {emailMessageVisibility && (
+            <div className="email-sent-total">
+              <div className="email-sent-container">
+                <p className="email-sent-message">
+                  Token sent. Check your inbox and follow instructions on how to
+                  reset your password.
+                </p>
+                <button
+                  className="email-sent-button"
+                  type="button"
+                  onClick={() => setEmailMessageVisibility((prev) => !prev)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
           <div className="forgot-password-top">
             <button
+              type="button"
               className="forgot-password-back-button"
               onClick={() => setForgotPasswordFormVisibility(false)}
             >
@@ -105,12 +143,13 @@ function Login() {
               setEmail(e.target.value);
             }}
           ></LabelInputForm>
-          <button className="loginButton" type="submit">
+          {errorMessage && <ErrorMessage message={errorMessage} />}
+          <button name="forgot-password" className="loginButton" type="submit">
             Send me a token
           </button>
         </form>
       ) : (
-        <form className="entries" onSubmit={handleSubmit}>
+        <form name="login" className="entries" onSubmit={handleSubmit}>
           <LabelInputForm
             inputType="input"
             label="Username"
@@ -157,7 +196,7 @@ function Login() {
           </p>
           {errorMessage && <ErrorMessage message={errorMessage} />}
           {successMessage && <p className="success">{successMessage}</p>}
-          <button className="loginButton" type="submit">
+          <button name="login" className="loginButton" type="submit">
             Login
           </button>
         </form>

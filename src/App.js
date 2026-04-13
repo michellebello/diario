@@ -20,7 +20,7 @@ function App() {
     { path: "/", element: <MainPage /> },
     { path: "/signup", element: <SignUp /> },
     { path: "/login", element: <SignIn /> },
-    { path: "/update-password", element: <UpdatePassword /> },
+    { path: "/reset-password", element: <UpdatePassword /> },
     {
       element: <ProtectedRoute />,
       children: [
