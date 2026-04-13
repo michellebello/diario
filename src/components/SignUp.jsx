@@ -4,10 +4,8 @@ import Network from "../utils/network.js";
 import { EyeOff, Eye } from "lucide-react";
 import { ErrorMessage } from "./reusables/cards/ErrorMessage.jsx";
 import "./styles/signUp.css";
-import { useNavigate } from "react-router-dom";
 
 function SignUp() {
-  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
